@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: krew-manager
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: krew-manager
+  template:
+    metadata:
+      labels:
+        app: krew-manager
+    spec:
+      containers:
+      - name: krew-manager
+        image: alpine:latest
+        command: ["/bin/sh"]
+        args: ["-c", "apk add --no-cache curl git && curl -fsSLO https://github.com/kubernetes-sigs/krew/releases/latest/download/krew-linux_amd64.tar.gz && tar zxvf krew-linux_amd64.tar.gz && ./krew-linux_amd64 install krew && export PATH=\"${KREW_ROOT:-$HOME/.krew}/bin:$PATH\" && while true; do sleep 30; done"]
+        volumeMounts:
+        - name: krew-plugins
+          mountPath: /root/.krew
+      volumes:
+      - name: krew-plugins
+        emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: krew-manager
+  namespace: default
+spec:
+  selector:
+    app: krew-manager
+  ports:
+  - port: 80
+    targetPort: 3000
+  type: ClusterIP 

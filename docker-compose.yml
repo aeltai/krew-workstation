@@ -1,0 +1,53 @@
+version: '3.8'
+services:
+  rancher:
+    image: rancher/rancher:v2.10-head
+    privileged: true
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - CATTLE_BOOTSTRAP_PASSWORD=admin
+      - CATTLE_UI_DASHBOARD_INDEX=https://releases.rancher.com/dashboard/latest/index.html
+      - CATTLE_UI_OFFLINE_PREFERRED=true
+      - CATTLE_DEV_MODE=true
+    volumes:
+      - rancher-data:/var/lib/rancher
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - rancher-net
+
+  doom:
+    image: b0nam/docker-doom
+    ports:
+      - "5901:5901"  # VNC port
+      - "8080:8080"  # noVNC web interface
+    environment:
+      - TIGER_VNC_PASSWORD=rancher
+      - VNC_PORT=5901
+      - NOVNC_UI=yes
+      - WEBSOCKIFY_OPTS=--web=/usr/share/novnc/ --heartbeat=30 --ssl-only=false
+    command: sh -c "vncserver :1 -geometry 1024x768 -depth 24 && websockify --web /usr/share/novnc/ --heartbeat 30 --ssl-only=false 8080 localhost:5901"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "8080"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    depends_on:
+      rancher:
+        condition: service_healthy
+    networks:
+      - rancher-net
+
+networks:
+  rancher-net:
+    driver: bridge
+
+volumes:
+  rancher-data: {} 

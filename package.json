@@ -8,6 +8,8 @@
     "@rancher/shell": "^3.0.1",
     "cache-loader": "^4.1.0",
     "color": "4.2.3",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
     "ip": "2.0.1",
     "node-polyfill-webpack-plugin": "^3.0.0"
   },
@@ -22,6 +24,9 @@
     "build-pkg": "./node_modules/@rancher/shell/scripts/build-pkg.sh",
     "serve-pkgs": "./node_modules/@rancher/shell/scripts/serve-pkgs",
     "publish-pkgs": "./node_modules/@rancher/shell/scripts/extension/publish",
-    "parse-tag-name": "./node_modules/@rancher/shell/scripts/extension/parse-tag-name"
-  }
+    "parse-tag-name": "./node_modules/@rancher/shell/scripts/extension/parse-tag-name",
+    "start": "node pkg/greeting/backend/server.js",
+    "dev-backend": "nodemon pkg/greeting/backend/server.js"
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
