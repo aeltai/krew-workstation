@@ -1,13 +1,12 @@
 {
-  "name": "greeting",
-  "description": "A simple greeting plugin for Rancher Dashboard",
+  "name": "krew-plugin-manager",
+  "description": "Kubectl Plugin Manager for Rancher Dashboard",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "rancher": {
     "annotations": {
       "catalog.cattle.io/ui-component": "plugin",
-      "catalog.cattle.io/rancher-version": ">= 2.10.0-0",
-      "catalog.cattle.io/ui-extensions-version": ">= 3.0.0 < 4.0.0"
+      "catalog.cattle.io/rancher-version": ">= 2.10.0"
     }
   },
   "scripts": {

@@ -88,6 +88,31 @@
           </div>
           <pre>{{ terminalOutput }}</pre>
         </div>
+
+        <!-- SSH Connection Box -->
+        <div class="ssh-connection-box">
+          <div class="terminal-header">
+            <h3>SSH Connection</h3>
+            <div class="connection-status" :class="{ connected: sshConnected }">
+              {{ sshConnected ? 'Connected' : 'Disconnected' }}
+            </div>
+          </div>
+          <div class="terminal-window">
+            <div class="terminal-content" ref="terminalContent">
+              <pre v-for="(line, index) in sshOutput" :key="index">{{ line }}</pre>
+            </div>
+            <div class="terminal-input">
+              <span class="prompt">$</span>
+              <input 
+                type="text" 
+                v-model="sshCommand" 
+                @keyup.enter="sendCommand"
+                :disabled="!sshConnected"
+                placeholder="Enter command..."
+              />
+            </div>
+          </div>
+        </div>
         
         <table v-else>
           <thead>
@@ -152,6 +177,9 @@ export default {
       searchQuery: '',
       isLoading: false,
       terminalOutput: '',
+      sshConnected: false,
+      sshCommand: '',
+      sshOutput: [],
       krewService: new KrewService()
     };
   },
@@ -173,6 +201,7 @@ export default {
 
   async mounted() {
     await this.refreshPlugins();
+    this.connectSSH();
   },
 
   methods: {
@@ -243,6 +272,7 @@ export default {
 
     clearTerminal() {
       this.terminalOutput = '';
+      this.sshOutput = [];
     },
 
     async refreshPlugins() {
@@ -332,6 +362,45 @@ export default {
         alert('Failed to upgrade plugin. Please try again.');
       } finally {
         this.isLoading = false;
+      }
+    },
+
+    async connectSSH() {
+      try {
+        // Connect to krew-manager-backend on port 9000
+        this.sshConnected = true;
+        this.sshOutput.push('Connected to krew-manager-backend');
+      } catch (error) {
+        console.error('SSH connection failed:', error);
+        this.sshOutput.push('Failed to connect: ' + error.message);
+      }
+    },
+
+    async sendCommand() {
+      if (!this.sshCommand.trim()) return;
+
+      try {
+        // Send command to backend
+        const response = await fetch('http://localhost:9000/execute', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ command: this.sshCommand }),
+        });
+
+        const result = await response.text();
+        this.sshOutput.push(`$ ${this.sshCommand}`);
+        this.sshOutput.push(result);
+        this.sshCommand = '';
+
+        // Auto-scroll to bottom
+        this.$nextTick(() => {
+          const terminal = this.$refs.terminalContent;
+          terminal.scrollTop = terminal.scrollHeight;
+        });
+      } catch (error) {
+        this.sshOutput.push('Error: ' + error.message);
       }
     }
   }
@@ -496,6 +565,83 @@ export default {
       white-space: pre-wrap;
       max-height: 300px;
       overflow-y: auto;
+    }
+  }
+
+  .ssh-connection-box {
+    margin-top: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+
+    .terminal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      background: #f5f5f5;
+      border-bottom: 1px solid #ddd;
+
+      .connection-status {
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        
+        &.connected {
+          background: #4caf50;
+          color: white;
+        }
+
+        &:not(.connected) {
+          background: #f44336;
+          color: white;
+        }
+      }
+    }
+
+    .terminal-window {
+      background: #1e1e1e;
+      color: #fff;
+      padding: 10px;
+      min-height: 300px;
+      display: flex;
+      flex-direction: column;
+
+      .terminal-content {
+        flex: 1;
+        overflow-y: auto;
+        margin-bottom: 10px;
+        font-family: monospace;
+
+        pre {
+          margin: 0;
+          white-space: pre-wrap;
+          word-wrap: break-word;
+        }
+      }
+
+      .terminal-input {
+        display: flex;
+        align-items: center;
+        
+        .prompt {
+          color: #4caf50;
+          margin-right: 8px;
+        }
+
+        input {
+          flex: 1;
+          background: transparent;
+          border: none;
+          color: #fff;
+          font-family: monospace;
+          outline: none;
+
+          &:disabled {
+            opacity: 0.5;
+          }
+        }
+      }
     }
   }
 }
