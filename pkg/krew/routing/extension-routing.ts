@@ -12,7 +12,7 @@ const routes = [
   // Redirect hub to krew (legacy)
   {
     path: `/${YOUR_PRODUCT_NAME}/c/:cluster/${TOOLS_HUB_PAGE}`,
-    redirect: (to) => ({ name: `${YOUR_PRODUCT_NAME}-c-cluster-${KREW_PAGE}`, params: { cluster: to.params.cluster } }),
+    redirect: (to: { params: { cluster: string } }) => ({ name: `${YOUR_PRODUCT_NAME}-c-cluster-${KREW_PAGE}`, params: { cluster: to.params.cluster } }),
   },
   // Krew Workstation
   {

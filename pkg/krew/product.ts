@@ -14,7 +14,8 @@ export function init($plugin: any, store: any) {
 
   // Registering a top-level product — goes directly to Krew Workstation
   product({
-    icon: 'globe',
+    icon:  'terminal',
+    label: 'Krew Workstation',
     inStore: 'management',
     weight: 100,
     to: {
@@ -37,7 +38,7 @@ export function init($plugin: any, store: any) {
         cluster: BLANK_CLUSTER
       }
     },
-    icon: 'icon-download'
+    icon: 'terminal'
   });
 
   // Registering the defined pages as side-menu entries

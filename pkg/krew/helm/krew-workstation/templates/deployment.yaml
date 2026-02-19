@@ -47,13 +47,13 @@ spec:
                   key: token
                   optional: true
             - name: KREW_ROOT
-              value: /root/.krew
+              value: /opt/krew
             - name: PORT
               value: "3000"
           {{- if .Values.persistence.enabled }}
           volumeMounts:
             - name: krew-data
-              mountPath: /root/.krew
+              mountPath: /opt/krew
           {{- end }}
           livenessProbe:
             httpGet:

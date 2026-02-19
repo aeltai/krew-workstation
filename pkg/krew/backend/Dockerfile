@@ -31,20 +31,31 @@ RUN cd /tmp && \
 RUN curl -LO "https://dl.k8s.io/release/$(curl -sL https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" \
     && chmod +x kubectl && mv kubectl /usr/local/bin/
 
-# Install krew
-RUN set -x && \
+# Install k9s (standalone binary — more reliable than krew in restricted networks)
+RUN cd /tmp && \
+    K9S_VER=$(curl -sL https://api.github.com/repos/derailed/k9s/releases/latest | grep tag_name | cut -d'"' -f4) && \
+    curl -fsSL "https://github.com/derailed/k9s/releases/download/${K9S_VER}/k9s_Linux_amd64.tar.gz" | tar xz && \
+    mv k9s /usr/local/bin/ && chmod +x /usr/local/bin/k9s && \
+    rm -rf /tmp/* 2>/dev/null || true
+
+# Install krew to /opt/krew (non-root compatible)
+RUN mkdir -p /opt/krew && \
+    set -x && \
     OS="$(uname | tr '[:upper:]' '[:lower:]')" && \
     ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/aarch64/arm64/')" && \
     KREW="krew-${OS}_${ARCH}" && \
     curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/latest/download/${KREW}.tar.gz" && \
     tar zxvf "${KREW}.tar.gz" && \
-    ./"${KREW}" install krew && \
+    KREW_ROOT=/opt/krew ./"${KREW}" install krew && \
     rm -f "${KREW}.tar.gz" "${KREW}"
 
-ENV KREW_ROOT=/root/.krew
-ENV PATH="/root/.krew/bin:${PATH}"
+ENV KREW_ROOT=/opt/krew
+ENV PATH="/opt/krew/bin:${PATH}"
 
 RUN kubectl krew update
+
+# Keep a read-only copy so entrypoint can restore into volume when PVC overwrites /opt/krew (no runtime installer = no permission issues)
+RUN cp -a /opt/krew /usr/local/share/krew-default
 
 COPY --from=builder /app/krew-manager /usr/local/bin/krew-manager
 COPY entrypoint.sh /entrypoint.sh

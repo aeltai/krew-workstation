@@ -1,11 +1,47 @@
 # Default values for krew-workstation
-# Deploys the krew-backend service for Rancher Dashboard integration
+# Deploys the krew-backend service + UI extension for Rancher Dashboard
+# Target: management cluster (local) - where Rancher UI runs
 
 replicaCount: 1
 
+# Extension catalog - register repo so Krew appears in Extensions UI
+catalog:
+  createClusterRepo: false  # Set true to add the extension repo to Rancher catalog
+  name: krew-workstation
+  # Use url for Helm/GitHub Pages repo, or gitRepo+gitBranch for Git
+  url: ""  # e.g. https://aeltai.github.io/krew-workstation-charts
+  gitRepo: ""  # e.g. https://github.com/aeltai/krew-workstation
+  gitBranch: main
+  refreshInterval: 0
+
+# Bootstrap Job - creates ClusterRepo on install (adds extension catalog)
+bootstrap:
+  enabled: false  # Set true to auto-register catalog on install
+  image:
+    repository: bitnami/kubectl
+    tag: "latest"
+
+# UI extension - loads the Krew Workstation UI in Rancher Dashboard
+uiPlugin:
+  enabled: true
+  # Deploy UIPlugin to cattle-ui-plugin-system (where Rancher expects extensions)
+  namespace: cattle-ui-plugin-system
+  version: "0.1.0"
+  # URL to extension JS bundle (must be built and published)
+  # e.g. https://raw.githubusercontent.com/aeltai/ui-plugin-examples/main/extensions/krew-plugin-manager/0.1.0
+  endpoint: "https://raw.githubusercontent.com/aeltai/krew-workstation/main/extensions/krew/0.1.0"
+  noCache: true
+  noAuth: false
+  metadata:
+    catalog.cattle.io/display-name: Krew Workstation
+    catalog.cattle.io/kube-version: ">= 1.16.0-0"
+    catalog.cattle.io/rancher-version: ">= 2.10.0-0"
+    catalog.cattle.io/ui-extensions-version: ">= 3.0.0 < 4.0.0"
+
 image:
   repository: ghcr.io/aeltai/krew-workstation
-  pullPolicy: IfNotPresent
+  # Use Always to avoid Helm conflict with Rancher (Rancher often sets imagePullPolicy on managed apps)
+  pullPolicy: Always
   tag: "latest"
 
 imagePullSecrets: []
@@ -20,9 +56,11 @@ serviceAccount:
 
 podAnnotations: {}
 
+# Run as root for now so krew/entrypoint can write to /opt/krew (avoids production crashes)
 podSecurityContext:
-  runAsNonRoot: true
+  runAsNonRoot: false
   runAsUser: 0
+  fsGroup: 0
 
 securityContext:
   allowPrivilegeEscalation: false
@@ -30,6 +68,7 @@ securityContext:
     drop:
       - ALL
   readOnlyRootFilesystem: false
+  runAsUser: 0
 
 service:
   type: ClusterIP

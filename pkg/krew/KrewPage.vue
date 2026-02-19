@@ -1,26 +1,5 @@
 <template>
-  <div class="krew-page">
-    <header class="page-header">
-      <span class="brand">Krew Workstation</span>
-      <span v-if="containerInfo" class="meta">{{ containerInfo.baseImage }} · {{ containerInfo.goVersion }} · {{ containerInfo.hostname || '' }}{{ clusters.length ? ' · ' + clusters.length + ' cluster' + (clusters.length !== 1 ? 's' : '') : '' }}</span>
-      <span v-if="currentContext" class="context-badge" :title="'Current kubectl context'">{{ currentContext }}</span>
-      <button class="btn role-tertiary about-btn" :class="{ active: showAboutKrew }" title="About Krew" @click="showAboutKrew = !showAboutKrew">?</button>
-      <div v-if="showAboutKrew" class="about-krew-card">
-        <h3>What is Krew?</h3>
-        <p>Plugin manager for kubectl. <a href="https://krew.sigs.k8s.io" target="_blank" rel="noopener">krew.sigs.k8s.io</a></p>
-      </div>
-    </header>
-
-    <div v-show="activeTab !== 'terminal'" class="toolbar">
-      <div class="toolbar-left">
-        <button class="btn role-primary" :disabled="loading" @click="loadPlugins">
-          <i class="icon icon-refresh" /> Refresh plugins
-        </button>
-        <button class="btn role-secondary" :disabled="loading" @click="updateIndex">Update index</button>
-      </div>
-      <input v-model="search" type="text" class="search-input" placeholder="Search plugins by name or description…" />
-    </div>
-
+  <div class="krew-page" :class="themeClass" :style="themeVars">
     <div v-show="activeTab !== 'terminal'" v-if="clusters.length" class="cluster-info">
       Clusters:
       <span v-for="c in clusters" :key="c.id" :class="['cluster-badge', c.state]">{{ c.name }}</span>
@@ -35,10 +14,20 @@
       <button class="dismiss" @click="message = ''">&times;</button>
     </div>
 
-    <div v-show="activeTab !== 'terminal'" v-if="loading" class="loading-bar" />
+    <div v-if="loading" class="loading-bar" />
 
     <!-- Tabs: Plugins | Files | Terminal -->
     <div class="panels">
+      <div v-show="activeTab === 'plugins'" class="frame-toolbar">
+        <div class="toolbar-left">
+          <button class="btn role-primary xs" :disabled="loading" @click="loadPlugins">
+            <i class="icon icon-refresh" /> Refresh
+          </button>
+          <button class="btn role-secondary xs" :disabled="loading" @click="updateIndex">Update index</button>
+        </div>
+        <label class="search-label">Search plugins</label>
+        <input v-model="search" type="text" class="search-input" placeholder="by name or description…" />
+      </div>
       <div class="tabs">
         <button :class="{ active: activeTab === 'terminal' }" @click="activeTab = 'terminal'">Terminal</button>
         <button :class="{ active: activeTab === 'plugins' }" @click="activeTab = 'plugins'">Plugins</button>
@@ -118,25 +107,36 @@
 
       <div v-show="activeTab === 'terminal'" class="panel terminal-panel">
         <div class="shell-header">
-          <span class="shell-title">Shell — krew backend container</span>
-          <span v-if="shellConnected" class="shell-status connected">Connected</span>
-          <span v-else class="shell-status">Disconnected</span>
-          <button
-            v-if="terminalReady"
-            class="btn role-secondary sm"
-            :class="{ 'role-primary': shellConnected }"
-            @click="shellConnected ? disconnectShell() : connectShell()"
-          >
-            {{ shellConnected ? 'Disconnect' : 'Connect' }}
-          </button>
-          <button
-            class="btn role-tertiary sm cheatsheet-btn"
-            :class="{ active: showCheatsheet }"
-            title="Cheatsheet"
-            @click="showCheatsheet = !showCheatsheet"
-          >
-            Cheatsheet
-          </button>
+          <div class="shell-header-left">
+            <span v-if="containerInfo" class="shell-meta">{{ containerInfo.baseImage }} · {{ containerInfo.goVersion }} · {{ containerInfo.hostname || '' }}{{ clusters.length ? ' · ' + clusters.length + ' cluster' + (clusters.length !== 1 ? 's' : '') : '' }}</span>
+            <span v-if="currentContext" class="shell-context" :title="'Current kubectl context'">{{ currentContext }}</span>
+            <button class="btn role-tertiary xs theme-btn" :title="darkMode ? 'Switch to light mode' : 'Switch to dark mode'" @click="toggleTheme">{{ darkMode ? '☀' : '☽' }}</button>
+            <button class="btn role-tertiary xs about-btn" :class="{ active: showAboutKrew }" title="About Krew" @click="showAboutKrew = !showAboutKrew">?</button>
+            <div v-if="showAboutKrew" class="about-krew-card">
+              <h3>What is Krew?</h3>
+              <p>Plugin manager for kubectl. <a href="https://krew.sigs.k8s.io" target="_blank" rel="noopener">krew.sigs.k8s.io</a></p>
+            </div>
+          </div>
+          <div class="shell-header-right">
+            <span v-if="shellConnected" class="shell-status connected">Connected</span>
+            <span v-else class="shell-status">Disconnected</span>
+            <button
+              v-if="terminalReady"
+              class="btn role-secondary sm connect-btn"
+              :class="{ 'role-primary': shellConnected }"
+              @click="shellConnected ? disconnectShell() : connectShell()"
+            >
+              {{ shellConnected ? 'Disconnect' : 'Connect' }}
+            </button>
+            <button
+              class="btn role-tertiary sm cheatsheet-btn"
+              :class="{ active: showCheatsheet }"
+              title="Cheatsheet"
+              @click="showCheatsheet = !showCheatsheet"
+            >
+              Cheatsheet
+            </button>
+          </div>
           <div v-if="showCheatsheet" class="cheatsheet-panel">
             <div class="cheatsheet-title">Quick reference</div>
             <div class="cheatsheet-section">Aliases</div>
@@ -236,6 +236,8 @@ export default {
     return {
       showAboutKrew:    false,
       showCheatsheet:   false,
+      darkMode:         true,
+      pendingSyncMessage: '',
       clusters:         [],
       plugins:        [],
       search:         '',
@@ -262,6 +264,32 @@ export default {
   },
 
   computed: {
+    themeClass() {
+      return this.darkMode ? 'theme-dark' : 'theme-light';
+    },
+    themeVars() {
+      return this.darkMode
+        ? {
+            '--krew-bg': '#0d0d0d',
+            '--krew-panel': '#1a1a1a',
+            '--krew-panel-border': '#333',
+            '--krew-tabs': '#252525',
+            '--krew-toolbar': '#252525',
+            '--krew-shell-header': '#252525',
+            '--krew-text': '#e0e0e0',
+            '--krew-muted': '#888',
+          }
+        : {
+            '--krew-bg': '#f0f0f0',
+            '--krew-panel': '#fff',
+            '--krew-panel-border': '#ddd',
+            '--krew-tabs': '#f0f0f0',
+            '--krew-toolbar': '#f5f5f5',
+            '--krew-shell-header': '#e8e8e8',
+            '--krew-text': '#333',
+            '--krew-muted': '#666',
+          };
+    },
     filteredPlugins() {
       let list = this.plugins;
       if (this.search) {
@@ -294,6 +322,8 @@ export default {
   },
 
   async mounted() {
+    const saved = localStorage.getItem('krew-darkMode');
+    if (saved !== null) this.darkMode = saved === 'true';
     await Promise.all([this.fetchClusters(), this.loadPlugins(), this.fetchContainerInfo()]);
     this.loadFs(this.fsPath);
     await this.syncKubeconfig(); // Must complete before terminal — kubectl needs kubeconfig
@@ -301,6 +331,10 @@ export default {
   },
 
   watch: {
+    darkMode(v) {
+      localStorage.setItem('krew-darkMode', String(v));
+      this.$nextTick(() => this.applyTerminalTheme());
+    },
     activeTab(tab) {
       if (tab === 'terminal' && this.fitAddon) {
         this.$nextTick(() => this.fitAddon.fit());
@@ -314,6 +348,20 @@ export default {
   },
 
   methods: {
+    toggleTheme() {
+      this.darkMode = !this.darkMode;
+      this.$nextTick(() => this.applyTerminalTheme());
+    },
+    applyTerminalTheme() {
+      if (!this.term) return;
+      const theme = this.darkMode
+        ? { background: '#1a1a1a', foreground: '#e0e0e0' }
+        : { background: '#f5f5f5', foreground: '#333' };
+      this.term.options.theme = { ...theme };
+      if (typeof this.term.refresh === 'function') {
+        this.term.refresh(0, this.term.rows - 1);
+      }
+    },
     async api(method, path, opts = {}) {
       const headers = { ...opts.headers };
       try {
@@ -339,17 +387,13 @@ export default {
 
     async syncKubeconfig() {
       this.syncingKubeconfig = true;
-      this.message = '';
       this.error = '';
       try {
         const data = await this.api('POST', '/api/kubeconfig/sync');
         await this.fetchContext();
         const n = data.clusters ?? 0;
         const msg = n > 0 ? `Kubeconfig synced for ${n} cluster(s)` : 'No clusters to sync';
-        this.message = msg;
-        if (this.term && this.shellConnected) {
-          this.term.writeln('\r\n  ✓ ' + msg + '\r\n');
-        }
+        this.pendingSyncMessage = msg;
       } catch (e) {
         this.error = `Sync failed: ${e.message}`;
         await this.fetchContext();
@@ -497,7 +541,7 @@ export default {
 
       this.term = new Terminal({
         cursorBlink: true,
-        theme: { background: '#1a1a1a', foreground: '#e0e0e0' },
+        theme: this.darkMode ? { background: '#1a1a1a', foreground: '#e0e0e0' } : { background: '#f5f5f5', foreground: '#333' },
         fontSize: 13,
       });
       this.fitAddon = new FitAddon();
@@ -536,6 +580,10 @@ export default {
         this.shellConnected = true;
         this.fetchInstalledPlugins();
         this.sendResize();
+        if (this.pendingSyncMessage && this.term) {
+          this.term.writeln('\r\n  ✓ ' + this.pendingSyncMessage + '\r\n');
+          this.pendingSyncMessage = '';
+        }
       };
       ws.onclose = () => {
         this.shellConnected = false;
@@ -586,83 +634,38 @@ export default {
   margin: 0;
   padding: 6px 12px;
   overflow: hidden;
+  background: var(--krew-bg, #0d0d0d);
 }
 
-.page-header {
-  flex-shrink: 0;
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 6px;
-  padding: 4px 0;
-  min-height: 28px;
-  .brand {
-    font-size: 0.85em;
-    font-weight: 600;
-    color: var(--primary);
-  }
-  .meta {
-    font-size: 0.65em;
-    color: var(--muted);
-    font-family: monospace;
-  }
-  .context-badge {
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-size: 0.7em;
-    font-family: monospace;
-    background: #e3f2fd;
-    color: #1565c0;
-    max-width: 120px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .btn.xs {
-    padding: 2px 8px;
-    font-size: 0.7em;
-    min-height: 22px;
-    &.active { background: var(--primary); color: #fff; }
-  }
-  .btn.about-btn {
-    padding: 0 4px;
-    font-size: 0.55em;
-    min-height: 16px;
-    min-width: 16px;
-    line-height: 1;
-    &.active { background: var(--primary); color: #fff; }
-  }
-  .about-krew-card {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    z-index: 10;
-    margin-top: 4px;
-    padding: 8px 12px;
-    background: #f5f5f5;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    font-size: 0.8em;
-    h3 { margin: 0 0 4px; font-size: 0.95em; }
-    p { margin: 0; }
-    a { color: var(--primary); }
-  }
-}
-
-.toolbar {
+.frame-toolbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 8px;
   flex-shrink: 0;
-  margin-bottom: 6px;
-  .toolbar-left { display: flex; gap: 6px; }
+  padding: 6px 12px;
+  background: var(--krew-toolbar, #252525);
+  border-bottom: 1px solid var(--krew-panel-border, #333);
+  .toolbar-left { display: flex; gap: 6px; align-items: center; }
+  .toolbar-left .btn.xs {
+    padding: 2px 8px;
+    font-size: 0.7em;
+    min-height: 22px;
+  }
+  .search-label {
+    font-size: 0.8em;
+    color: var(--krew-text, #b0b0b0);
+    margin-right: 4px;
+  }
   .search-input {
     padding: 4px 8px;
     font-size: 0.8em;
-    border: 1px solid var(--border);
+    border: 1px solid var(--krew-panel-border, #444);
     border-radius: 4px;
-    width: 240px;
+    width: 200px;
+    background: var(--krew-panel, #1a1a1a);
+    color: var(--krew-text, #e0e0e0);
+    &::placeholder { color: var(--krew-muted, #666); }
   }
 }
 
@@ -672,6 +675,7 @@ export default {
   align-items: center;
   gap: 6px;
   margin-bottom: 6px;
+  margin-top: 2px;
   font-size: 0.75em;
   color: var(--muted);
   .cluster-badge {
@@ -710,15 +714,15 @@ export default {
   min-height: 300px;
   display: flex;
   flex-direction: column;
-  border: 1px solid #333;
+  border: 1px solid var(--krew-panel-border, #333);
   border-radius: 6px;
   overflow: hidden;
-  background: #1a1a1a;
+  background: var(--krew-panel, #1a1a1a);
 
   .tabs {
     display: flex;
-    background: #252525;
-    border-bottom: 1px solid #333;
+    background: var(--krew-tabs, #252525);
+    border-bottom: 1px solid var(--krew-panel-border, #333);
     flex-shrink: 0;
     button {
       padding: 4px 12px;
@@ -740,17 +744,17 @@ export default {
 
   .plugins-panel {
     min-height: 300px;
-    background: #1a1a1a;
-    color: #e0e0e0;
+    background: var(--krew-panel, #1a1a1a);
+    color: var(--krew-text, #e0e0e0);
     .plugin-table {
       width: 100%;
       border-collapse: collapse;
       font-size: 0.85em;
       font-family: monospace;
-      th, td { padding: 6px 10px; text-align: left; border-bottom: 1px solid #333; }
-      th { font-weight: 600; color: #4caf50; background: #252525; }
+      th, td { padding: 6px 10px; text-align: left; border-bottom: 1px solid var(--krew-panel-border, #333); }
+      th { font-weight: 600; color: #4caf50; background: var(--krew-tabs, #252525); }
       .name { font-weight: 600; color: #64b5f6; }
-      .desc { color: #888; max-width: 280px; }
+      .desc { color: var(--krew-muted, #888); max-width: 280px; }
       .badge {
         padding: 2px 6px;
         border-radius: 4px;
@@ -767,7 +771,7 @@ export default {
       gap: 12px;
       padding: 8px 0;
       font-size: 0.8em;
-      color: #888;
+      color: var(--krew-muted, #888);
       .pagination-info { margin-right: 8px; }
     }
   }
@@ -776,7 +780,7 @@ export default {
     display: flex;
     flex-direction: column;
     padding: 0;
-    background: #1a1a1a;
+    background: var(--krew-panel, #1a1a1a);
     min-height: 300px;
     overflow: hidden;
 
@@ -784,15 +788,74 @@ export default {
       flex-shrink: 0;
       position: relative;
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      gap: 8px;
-      padding: 4px 8px;
-      background: #252525;
-      color: #b0b0b0;
+      padding: 6px 12px;
+      background: var(--krew-shell-header, #252525);
+      color: var(--krew-text, #b0b0b0);
       font-size: 0.75em;
-      .shell-title { font-weight: 600; }
+      .shell-header-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        position: relative;
+        .shell-meta {
+          font-size: 0.9em;
+          font-family: monospace;
+          color: var(--krew-text, #b0b0b0);
+        }
+        .shell-context {
+          padding: 2px 6px;
+          border-radius: 4px;
+          font-size: 0.9em;
+          font-family: monospace;
+          background: #3d5a80;
+          color: #90caf9;
+          max-width: 120px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        .theme-light & .shell-context { background: #e3f2fd; color: #1565c0; }
+        .btn.xs {
+          padding: 0 6px;
+          font-size: 0.9em;
+          min-height: 20px;
+          min-width: 20px;
+          line-height: 1;
+          &.active { background: var(--primary); color: #fff; }
+        }
+        .about-krew-card {
+          position: absolute;
+          top: 100%;
+          left: 0;
+          z-index: 20;
+          margin-top: 4px;
+          padding: 8px 12px;
+          background: var(--krew-panel, #2d2d2d);
+          border: 1px solid var(--krew-panel-border, #444);
+          border-radius: 6px;
+          font-size: 0.8em;
+          color: var(--krew-text, #ccc);
+          h3 { margin: 0 0 4px; font-size: 0.95em; }
+          p { margin: 0; }
+          a { color: var(--primary); }
+        }
+      }
+      .shell-header-right {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        > *:not(:last-child)::after {
+          content: ' · ';
+          margin-left: 4px;
+          color: #555;
+          font-weight: normal;
+        }
+      }
+      .shell-status { color: #888; }
       .shell-status.connected { color: #4caf50; }
-      .cheatsheet-btn { margin-left: auto; &.active { background: var(--primary); color: #fff; } }
+      .connect-btn { min-width: 72px; }
+      .cheatsheet-btn { &.active { background: var(--primary); color: #fff; } }
       .cheatsheet-panel {
         position: absolute;
         top: 100%;
@@ -831,6 +894,10 @@ export default {
   .files-panel {
     background: #1a1a1a;
     color: #e0e0e0;
+    .theme-light & {
+      background: #fff;
+      color: #333;
+    }
     .files-toolbar {
       display: flex;
       align-items: center;
@@ -849,8 +916,8 @@ export default {
         padding: 6px 8px;
         font-weight: 600;
         color: #4caf50;
-        border-bottom: 1px solid #333;
-        background: #252525;
+        border-bottom: 1px solid var(--krew-panel-border, #333);
+        background: var(--krew-tabs, #252525);
       }
       .fs-row {
         display: grid;
@@ -860,7 +927,7 @@ export default {
         cursor: pointer;
         border-radius: 4px;
         align-items: center;
-        &.dir:hover { background: #252525; }
+        &.dir:hover { background: var(--krew-tabs, #252525); }
         &.file { cursor: default; }
         .fs-col-name {
           display: flex;
@@ -868,8 +935,8 @@ export default {
           gap: 8px;
           .fs-icon { font-size: 1.1em; }
         }
-        .fs-col-size, .fs-col-mode { font-size: 0.9em; color: #888; }
-        .fs-col-date { font-size: 0.9em; color: #888; }
+        .fs-col-size, .fs-col-mode { font-size: 0.9em; color: var(--krew-muted, #888); }
+        .fs-col-date { font-size: 0.9em; color: var(--krew-muted, #888); }
       }
     }
   }
@@ -883,11 +950,12 @@ export default {
 }
 .panels .plugins-panel .empty-state,
 .panels .files-panel .empty-state {
-  color: #888;
+  color: var(--krew-muted, #888);
 }
 
 ::v-deep .xterm {
   padding: 4px;
+  background-color: var(--krew-panel, #1a1a1a) !important;
 }
 ::v-deep .xterm-viewport {
   overflow-y: auto !important;
