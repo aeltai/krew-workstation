@@ -1,0 +1,12 @@
+{
+  "name": "krew",
+  "description": "Kubectl Plugin Manager for Rancher Dashboard",
+  "version": "0.1.0",
+  "private": false,
+  "rancher": true,
+  "engines": {
+    "node": ">=12"
+  },
+  "files": ["**/*"],
+  "main": "krew-0.1.0.umd.min.js"
+}
