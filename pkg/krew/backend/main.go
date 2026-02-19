@@ -51,6 +51,13 @@ var httpClient = &http.Client{
 }
 
 func rancherURL() string {
+	// When UI tokens are used (from browser at public URL), call Rancher at the same host so auth succeeds.
+	if h := os.Getenv("RANCHER_PUBLIC_HOST"); h != "" {
+		h = strings.TrimSpace(h)
+		if h != "" {
+			return "https://" + h
+		}
+	}
 	if u := os.Getenv("RANCHER_URL"); u != "" {
 		return strings.TrimRight(u, "/")
 	}
@@ -62,9 +69,10 @@ func rancherToken() string {
 }
 
 func rancherRequestWithToken(method, path, token string) ([]byte, error) {
-	tok := token
+	// Prefer RANCHER_TOKEN so sync works from the backend (browser tokens often 401 when used server-side).
+	tok := rancherToken()
 	if tok == "" {
-		tok = rancherToken()
+		tok = token
 	}
 	if tok == "" {
 		return nil, fmt.Errorf("no Rancher token: set RANCHER_TOKEN or pass Authorization header from logged-in session")
@@ -88,6 +96,9 @@ func rancherRequestWithToken(method, path, token string) ([]byte, error) {
 		return nil, err
 	}
 	if resp.StatusCode >= 400 {
+		if resp.StatusCode == 401 {
+			fmt.Printf("[krew] Rancher API 401: url=%s (token len=%d)\n", url, len(tok))
+		}
 		return nil, fmt.Errorf("rancher API %s returned %d: %s", path, resp.StatusCode, string(body))
 	}
 	return body, nil
@@ -752,7 +763,15 @@ func main() {
 	if port == "" {
 		port = "3000"
 	}
-	fmt.Printf("krew-manager listening on :%s  RANCHER_URL=%s\n", port, rancherURL())
+	tokenSet := "unset"
+	if rancherToken() != "" {
+		tokenSet = "set"
+	}
+	publicHostSet := "unset"
+	if os.Getenv("RANCHER_PUBLIC_HOST") != "" {
+		publicHostSet = "set"
+	}
+	fmt.Printf("krew-manager listening on :%s  rancherURL=%s  RANCHER_TOKEN=%s  RANCHER_PUBLIC_HOST=%s\n", port, rancherURL(), tokenSet, publicHostSet)
 	if err := r.Run(":" + port); err != nil {
 		fmt.Fprintf(os.Stderr, "failed to start: %v\n", err)
 		os.Exit(1)

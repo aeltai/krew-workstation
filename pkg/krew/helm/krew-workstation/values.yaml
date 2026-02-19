@@ -39,7 +39,8 @@ uiPlugin:
     catalog.cattle.io/ui-extensions-version: ">= 3.0.0 < 4.0.0"
 
 image:
-  repository: ghcr.io/aeltai/krew-workstation
+  # Use Docker Hub (aeltai/krew-workstation) or set to ghcr.io/owner/krew-workstation if you push there
+  repository: aeltai/krew-workstation
   # Use Always to avoid Helm conflict with Rancher (Rancher often sets imagePullPolicy on managed apps)
   pullPolicy: Always
   tag: "latest"
@@ -56,11 +57,11 @@ serviceAccount:
 
 podAnnotations: {}
 
-# Run as root for now so krew/entrypoint can write to /opt/krew (avoids production crashes)
+# Run as non-root (UID 1000) so cluster Pod Security accepts the pod. Image has /opt/krew and /opt/krew-workstation chown 1000:1000.
 podSecurityContext:
-  runAsNonRoot: false
-  runAsUser: 0
-  fsGroup: 0
+  runAsNonRoot: true
+  runAsUser: 1000
+  fsGroup: 1000
 
 securityContext:
   allowPrivilegeEscalation: false
@@ -68,7 +69,7 @@ securityContext:
     drop:
       - ALL
   readOnlyRootFilesystem: false
-  runAsUser: 0
+  runAsUser: 1000
 
 service:
   type: ClusterIP
@@ -102,8 +103,15 @@ autoscaling:
 rancher:
   # URL to Rancher API (from within cluster, use rancher.cattle-system.svc or your ingress)
   url: "https://rancher.cattle-system.svc"
-  # Optional: bearer token for backend-initiated calls (UI typically passes token per-request)
+  # Public host users use to reach Rancher (e.g. rancher.35.157.202.39.sslip.io). Set so tokens issued by the UI are accepted when the backend calls the internal URL.
+  publicHost: ""
+  # Optional: bearer token for backend-initiated calls (avoids 401 on Sync; list all clusters)
   token: ""
+  # Optional: use an existing Secret for token and public host (avoids putting secrets in values/CLI)
+  existingSecret:
+    name: ""           # e.g. krew-workstation-rancher
+    tokenKey: token
+    publicHostKey: publicHost
 
 # Persistent volume for krew plugins (survives pod restarts)
 persistence:

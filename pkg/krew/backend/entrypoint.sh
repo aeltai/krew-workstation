@@ -9,15 +9,13 @@ CONFIG_DIR="${CONFIG_DIR:-/opt/krew-workstation}"
 mkdir -p "${CONFIG_DIR}"
 mkdir -p "${KREW_ROOT}"
 
-# If krew binary missing (e.g. fresh PVC mounted at /opt/krew), copy from image — no runtime installer (avoids /root/.krew permission denied under runAsNonRoot)
-if ! command -v krew >/dev/null 2>&1; then
+# If krew not present (e.g. fresh PVC at /opt/krew), copy from image. Skip if volume already has krew (e.g. root-owned from prior run).
+if [ ! -f "${KREW_ROOT}/bin/kubectl-krew" ] && [ -d /usr/local/share/krew-default ]; then
   echo "[entrypoint] Restoring krew from image into ${KREW_ROOT}..."
-  if [ -d /usr/local/share/krew-default ]; then
-    cp -a /usr/local/share/krew-default/. "${KREW_ROOT}/"
-  else
-    echo "[entrypoint] ERROR: /usr/local/share/krew-default missing; rebuild image."
-    exit 1
-  fi
+  cp -a /usr/local/share/krew-default/. "${KREW_ROOT}/" || true
+elif ! command -v krew >/dev/null 2>&1 && [ ! -d /usr/local/share/krew-default ]; then
+  echo "[entrypoint] ERROR: /usr/local/share/krew-default missing; rebuild image."
+  exit 1
 fi
 
 # SSH key for node access (generate if not exists)

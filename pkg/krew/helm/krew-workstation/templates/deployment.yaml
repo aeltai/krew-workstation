@@ -40,12 +40,31 @@ spec:
           env:
             - name: RANCHER_URL
               value: {{ .Values.rancher.url | quote }}
+            {{- if .Values.rancher.existingSecret.name }}
+            - name: RANCHER_PUBLIC_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.rancher.existingSecret.name | quote }}
+                  key: {{ .Values.rancher.existingSecret.publicHostKey | default "publicHost" | quote }}
+                  optional: true
+            - name: RANCHER_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.rancher.existingSecret.name | quote }}
+                  key: {{ .Values.rancher.existingSecret.tokenKey | default "token" | quote }}
+                  optional: true
+            {{- else }}
+            {{- if .Values.rancher.publicHost }}
+            - name: RANCHER_PUBLIC_HOST
+              value: {{ .Values.rancher.publicHost | quote }}
+            {{- end }}
             - name: RANCHER_TOKEN
               valueFrom:
                 secretKeyRef:
                   name: {{ include "krew-workstation.fullname" . }}-rancher
                   key: token
                   optional: true
+            {{- end }}
             - name: KREW_ROOT
               value: /opt/krew
             - name: PORT

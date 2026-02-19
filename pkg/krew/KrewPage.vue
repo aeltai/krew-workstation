@@ -161,7 +161,13 @@
 </template>
 
 <script>
-const BACKEND_URL = 'http://localhost:9000';
+// Backend URL: same pattern as other ui-plugin-examples (node-driver uses relative /meta/proxy/*, VncViewer uses window.location). Same origin + /krew-api so no port-forward; dev uses localhost:9000.
+function getBackendUrl() {
+  const o = window.location.origin;
+  if (o.startsWith('http://localhost') || o.startsWith('http://127.0.0.1')) return 'http://localhost:9000';
+  return o + '/krew-api';
+}
+const BACKEND_URL = getBackendUrl();
 const WS_URL = BACKEND_URL.replace(/^http/, 'ws');
 
 // Get Rancher token from current session (cookie sent automatically to same origin)

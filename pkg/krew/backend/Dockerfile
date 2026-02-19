@@ -57,7 +57,11 @@ RUN kubectl krew update
 # Keep a read-only copy so entrypoint can restore into volume when PVC overwrites /opt/krew (no runtime installer = no permission issues)
 RUN cp -a /opt/krew /usr/local/share/krew-default
 
+# Writable dirs and user for non-root run (UID 1000); entrypoint uses CONFIG_DIR=/opt/krew-workstation and KREW_ROOT=/opt/krew
+RUN adduser -D -u 1000 krewuser && mkdir -p /opt/krew-workstation && chown -R 1000:1000 /opt/krew /opt/krew-workstation
+
 COPY --from=builder /app/krew-manager /usr/local/bin/krew-manager
+RUN chmod 755 /usr/local/bin/krew-manager
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 

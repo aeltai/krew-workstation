@@ -19,14 +19,16 @@ services:
       dockerfile: Dockerfile
       platforms:
         - linux/amd64
+    user: "1000:1000"
     ports:
       - "9000:3000"
     environment:
       - RANCHER_URL=https://rancher:443
       - RANCHER_TOKEN=${RANCHER_TOKEN:-}
+      - KREW_ROOT=/opt/krew
     volumes:
-      - krew-data:/root/.krew
-      - ssh-keys:/root/.ssh
+      - krew-data:/opt/krew
+      - krew-config:/opt/krew-workstation
     depends_on:
       - rancher
     restart: unless-stopped
@@ -34,4 +36,4 @@ services:
 volumes:
   rancher-data:
   krew-data:
-  ssh-keys:
+  krew-config:
