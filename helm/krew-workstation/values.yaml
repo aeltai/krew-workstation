@@ -24,10 +24,10 @@ bootstrap:
 # UI extension - loads the Krew Workstation UI in Rancher Dashboard
 uiPlugin:
   enabled: true
-  version: "1.0"
+  version: "0.1.0"
   # URL to extension JS bundle (must be built and published)
   # e.g. https://raw.githubusercontent.com/aeltai/ui-plugin-examples/main/extensions/krew-plugin-manager/0.1.0
-  endpoint: "https://raw.githubusercontent.com/aeltai/ui-plugin-examples/main/extensions/krew-plugin-manager/0.1.0"
+  endpoint: "https://raw.githubusercontent.com/aeltai/krew-workstation/main/extensions/krew/0.1.0"
   noCache: false
   noAuth: false
   metadata:
