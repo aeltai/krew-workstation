@@ -1,0 +1,16 @@
+apiVersion: v2
+name: krew-workstation
+description: Krew Workstation - kubectl plugin manager for Rancher Dashboard
+type: application
+version: 0.1.0
+appVersion: "1.0"
+keywords:
+  - krew
+  - kubectl
+  - rancher
+  - plugins
+home: https://github.com/aeltai/krew-workstation
+sources:
+  - https://github.com/aeltai/krew-workstation
+maintainers:
+  - name: aeltai

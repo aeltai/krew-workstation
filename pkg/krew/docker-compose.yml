@@ -1,47 +1,37 @@
-version: '3.8'
-
 services:
   rancher:
     image: rancher/rancher:latest
     privileged: true
     ports:
-      - "80:80"
-      - "8443:443"
+      - "8089:80"
+      - "8449:443"
     volumes:
       - rancher-data:/var/lib/rancher
-      - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - CATTLE_BOOTSTRAP_PASSWORD=admin
-      - CATTLE_AGENT_IMAGE=rancher/rancher-agent:v2.10.1
     command:
       - --no-cacerts
 
-  krew-manager-backend:
+  krew-backend:
+    platform: linux/amd64
     build:
       context: ./backend
       dockerfile: Dockerfile
+      platforms:
+        - linux/amd64
     ports:
       - "9000:3000"
     environment:
-      - NODE_ENV=development
-      - RANCHER_URL=https://rancher:8443
-      - RANCHER_TOKEN=token-brf42:78xhl9m4l6llngkjgm9nmn77p6fwxphz8c6tbf27ppftmhnrtffqnl
-      - NODE_TLS_REJECT_UNAUTHORIZED=0
-      - PORT=3000
-      - GIN_MODE=release
+      - RANCHER_URL=https://rancher:443
+      - RANCHER_TOKEN=${RANCHER_TOKEN:-}
     volumes:
-      - ./backend:/app/src
-      - krew-bin:/root/.krew/bin
-      - kubeconfig:/app/kubeconfig
+      - krew-data:/root/.krew
+      - ssh-keys:/root/.ssh
     depends_on:
       - rancher
-    healthcheck:
-      test: ["CMD", "nc", "-z", "localhost", "3000"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+    restart: unless-stopped
 
 volumes:
   rancher-data:
-  krew-bin:
-  kubeconfig: 
+  krew-data:
+  ssh-keys:

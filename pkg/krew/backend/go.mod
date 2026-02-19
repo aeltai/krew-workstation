@@ -2,7 +2,11 @@ module krew-manager
 
 go 1.21
 
-require github.com/gin-gonic/gin v1.9.1
+require (
+	github.com/creack/pty/v2 v2.0.1
+	github.com/gin-gonic/gin v1.9.1
+	github.com/gorilla/websocket v1.5.3
+)
 
 require (
 	github.com/bytedance/sonic v1.9.1 // indirect

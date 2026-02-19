@@ -1,0 +1,80 @@
+# Default values for krew-workstation
+# Deploys the krew-backend service for Rancher Dashboard integration
+
+replicaCount: 1
+
+image:
+  repository: ghcr.io/aeltai/krew-workstation
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+imagePullSecrets: []
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 0
+
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+  readOnlyRootFilesystem: false
+
+service:
+  type: ClusterIP
+  port: 3000
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    - host: krew-workstation.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+resources:
+  limits:
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 256Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80  # used when autoscaling.enabled=true
+
+# Rancher connection - backend fetches kubeconfig from Rancher API
+rancher:
+  # URL to Rancher API (from within cluster, use rancher.cattle-system.svc or your ingress)
+  url: "https://rancher.cattle-system.svc"
+  # Optional: bearer token for backend-initiated calls (UI typically passes token per-request)
+  token: ""
+
+# Persistent volume for krew plugins (survives pod restarts)
+persistence:
+  enabled: true
+  storageClass: ""
+  size: 1Gi
+
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

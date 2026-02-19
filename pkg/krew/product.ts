@@ -1,56 +1,45 @@
-import { DSL } from '@shell/store/type-map';
+// definition of a "blank cluster" in Rancher Dashboard
+const BLANK_CLUSTER = '_';
 
 export function init($plugin: any, store: any) {
+  const YOUR_PRODUCT_NAME = 'tools';
+  const TOOLS_HUB_PAGE = 'hub';
+  const KREW_PAGE = 'krew';
+
   const {
     product,
     basicType,
-    headers,
-    configureType,
     virtualType,
-  } = $plugin.DSL(store, 'tools');
+  } = $plugin.DSL(store, YOUR_PRODUCT_NAME);
 
-  // Create the top-level Tools product
+  // Registering a top-level product — goes directly to Krew Workstation
   product({
     icon: 'globe',
     inStore: 'management',
     weight: 100,
-    label: 'Tools',
-    category: 'global',
-    to: { name: 'tools' }
+    to: {
+      name: `${YOUR_PRODUCT_NAME}-c-cluster-${KREW_PAGE}`,
+      params: {
+        product: YOUR_PRODUCT_NAME,
+        cluster: BLANK_CLUSTER
+      }
+    }
   });
 
-  // Create the Tools type
+  // Creating custom pages
   virtualType({
-    label: 'Tools',
-    name: 'tools',
+    label: 'Krew Workstation',
+    name: KREW_PAGE,
     route: {
-      name: 'tools'
-    },
-    icon: 'icon-tools'
-  });
-
-  // Create the Krew type
-  virtualType({
-    label: 'Krew Plugin Manager',
-    name: 'krew',
-    route: {
-      name: 'krew-manager'
+      name: `${YOUR_PRODUCT_NAME}-c-cluster-${KREW_PAGE}`,
+      params: {
+        product: YOUR_PRODUCT_NAME,
+        cluster: BLANK_CLUSTER
+      }
     },
     icon: 'icon-download'
   });
 
-  // Add the navigation
-  store.dispatch('type-map/addNavigation', {
-    name: 'tools',
-    label: 'Tools',
-    icon: 'icon-tools',
-    children: [
-      {
-        name: 'krew',
-        label: 'Krew Plugin Manager',
-        route: { name: 'krew-manager' },
-        icon: 'icon-download'
-      }
-    ]
-  });
+  // Registering the defined pages as side-menu entries
+  basicType([KREW_PAGE]);
 } 

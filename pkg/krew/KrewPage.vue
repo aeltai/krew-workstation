@@ -1,123 +1,55 @@
 <template>
-  <div class="krew-manager-page">
-    <header>
-      <h1>Kubectl Plugin Manager</h1>
-      <div class="auth-controls">
-        <input 
-          type="text" 
-          v-model="rancherUrl" 
-          placeholder="Rancher URL"
-          class="input-field"
-        />
-        <input 
-          type="password" 
-          v-model="apiKey" 
-          placeholder="Rancher API Key"
-          class="input-field"
-        />
-        <button 
-          class="btn role-primary" 
-          @click="authenticate"
-          :disabled="!rancherUrl || !apiKey"
-        >
-          Connect to Rancher
-        </button>
+  <div class="krew-page">
+    <header class="page-header">
+      <span class="brand">Krew Workstation</span>
+      <span v-if="containerInfo" class="meta">{{ containerInfo.baseImage }} · {{ containerInfo.goVersion }} · {{ containerInfo.hostname || '' }}{{ clusters.length ? ' · ' + clusters.length + ' cluster' + (clusters.length !== 1 ? 's' : '') : '' }}</span>
+      <span v-if="currentContext" class="context-badge" :title="'Current kubectl context'">{{ currentContext }}</span>
+      <button class="btn role-tertiary about-btn" :class="{ active: showAboutKrew }" title="About Krew" @click="showAboutKrew = !showAboutKrew">?</button>
+      <div v-if="showAboutKrew" class="about-krew-card">
+        <h3>What is Krew?</h3>
+        <p>Plugin manager for kubectl. <a href="https://krew.sigs.k8s.io" target="_blank" rel="noopener">krew.sigs.k8s.io</a></p>
       </div>
     </header>
 
-    <div class="content">
-      <!-- Cluster Selection -->
-      <div v-if="isRancherConnected" class="cluster-section">
-        <select 
-          v-model="selectedClusterId"
-          class="cluster-select"
-          @change="onClusterChange"
-        >
-          <option value="">Select a cluster</option>
-          <option 
-            v-for="cluster in clusters" 
-            :key="cluster.id" 
-            :value="cluster.id"
-          >
-            {{ cluster.name }}
-          </option>
-        </select>
+    <div v-show="activeTab !== 'terminal'" class="toolbar">
+      <div class="toolbar-left">
+        <button class="btn role-primary" :disabled="loading" @click="loadPlugins">
+          <i class="icon icon-refresh" /> Refresh plugins
+        </button>
+        <button class="btn role-secondary" :disabled="loading" @click="updateIndex">Update index</button>
+      </div>
+      <input v-model="search" type="text" class="search-input" placeholder="Search plugins by name or description…" />
+    </div>
 
-        <!-- Kubeconfig Display -->
-        <div v-if="kubeConfig" class="kubeconfig-section">
-          <div class="section-header">
-            <h3>Kubeconfig</h3>
-            <button 
-              class="btn role-secondary sm" 
-              @click="copyKubeConfig"
-            >
-              Copy to Clipboard
-            </button>
-          </div>
-          <pre class="kubeconfig-display">{{ kubeConfig }}</pre>
-        </div>
+    <div v-show="activeTab !== 'terminal'" v-if="clusters.length" class="cluster-info">
+      Clusters:
+      <span v-for="c in clusters" :key="c.id" :class="['cluster-badge', c.state]">{{ c.name }}</span>
+    </div>
+
+    <div v-if="error" class="banner error">
+      {{ error }}
+      <button class="dismiss" @click="error = ''">&times;</button>
+    </div>
+    <div v-if="message" class="banner success">
+      {{ message }}
+      <button class="dismiss" @click="message = ''">&times;</button>
+    </div>
+
+    <div v-show="activeTab !== 'terminal'" v-if="loading" class="loading-bar" />
+
+    <!-- Tabs: Plugins | Files | Terminal -->
+    <div class="panels">
+      <div class="tabs">
+        <button :class="{ active: activeTab === 'terminal' }" @click="activeTab = 'terminal'">Terminal</button>
+        <button :class="{ active: activeTab === 'plugins' }" @click="activeTab = 'plugins'">Plugins</button>
+        <button :class="{ active: activeTab === 'files' }" @click="activeTab = 'files'">Files</button>
       </div>
 
-      <!-- Plugin List -->
-      <div v-if="selectedClusterId" class="plugin-list">
-        <div class="controls">
-          <button 
-            class="btn role-primary" 
-            @click="refreshPlugins"
-            :disabled="isLoading"
-          >
-            Refresh Plugins
-          </button>
-          <input 
-            type="text" 
-            v-model="searchQuery" 
-            placeholder="Search plugins..."
-            class="search-input"
-          />
-        </div>
-
-        <div v-if="isLoading" class="loading">
-          Loading plugins...
-        </div>
-
-        <!-- Terminal Output -->
-        <div v-if="terminalOutput" class="terminal-output">
-          <div class="terminal-header">
-            <h3>Terminal Output</h3>
-            <button @click="clearTerminal" class="btn role-secondary sm">Clear</button>
-          </div>
-          <pre>{{ terminalOutput }}</pre>
-        </div>
-
-        <!-- SSH Connection Box -->
-        <div class="ssh-connection-box">
-          <div class="terminal-header">
-            <h3>SSH Connection</h3>
-            <div class="connection-status" :class="{ connected: sshConnected }">
-              {{ sshConnected ? 'Connected' : 'Disconnected' }}
-            </div>
-          </div>
-          <div class="terminal-window">
-            <div class="terminal-content" ref="terminalContent">
-              <pre v-for="(line, index) in sshOutput" :key="index">{{ line }}</pre>
-            </div>
-            <div class="terminal-input">
-              <span class="prompt">$</span>
-              <input 
-                type="text" 
-                v-model="sshCommand" 
-                @keyup.enter="sendCommand"
-                :disabled="!sshConnected"
-                placeholder="Enter command..."
-              />
-            </div>
-          </div>
-        </div>
-        
-        <table v-else>
+      <div v-show="activeTab === 'plugins'" class="panel plugins-panel">
+        <table v-if="paginatedPlugins.length" class="plugin-table">
           <thead>
             <tr>
-              <th>Name</th>
+              <th>Plugin</th>
               <th>Version</th>
               <th>Description</th>
               <th>Status</th>
@@ -125,540 +57,839 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="plugin in filteredPlugins" :key="plugin.name">
-              <td>{{ plugin.name }}</td>
-              <td>{{ plugin.version || 'N/A' }}</td>
-              <td>{{ plugin.description }}</td>
+            <tr v-for="p in paginatedPlugins" :key="p.name">
+              <td class="name">{{ p.name }}</td>
+              <td>{{ p.version || '-' }}</td>
+              <td class="desc">{{ p.description }}</td>
               <td>
-                <span :class="['status', plugin.installed ? 'installed' : 'not-installed']">
-                  {{ plugin.installed ? 'Installed' : 'Not Installed' }}
+                <span :class="['badge', p.installed ? 'installed' : 'available']">
+                  {{ p.installed ? 'Installed' : 'Available' }}
                 </span>
               </td>
-              <td>
-                <button 
-                  class="btn role-secondary sm"
-                  @click="togglePlugin(plugin)"
-                  :disabled="isLoading"
-                >
-                  {{ plugin.installed ? 'Uninstall' : 'Install' }}
-                </button>
-                <button 
-                  v-if="plugin.installed"
-                  class="btn role-secondary sm"
-                  @click="upgradePlugin(plugin)"
-                  :disabled="isLoading"
-                >
-                  Upgrade
-                </button>
+              <td class="actions">
+                <button v-if="!p.installed" class="btn role-primary sm" :disabled="busy === p.name" @click="installPlugin(p)">Install</button>
+                <button v-if="p.installed" class="btn role-secondary sm" :disabled="busy === p.name" @click="upgradePlugin(p)">Upgrade</button>
+                <button v-if="p.installed" class="btn role-tertiary sm" :disabled="busy === p.name" @click="uninstallPlugin(p)">Uninstall</button>
               </td>
             </tr>
           </tbody>
         </table>
+        <div v-if="paginatedPlugins.length" class="pagination">
+          <span class="pagination-info">{{ pluginPageStart }}-{{ pluginPageEnd }} of {{ filteredPlugins.length }}</span>
+          <button class="btn role-tertiary sm" :disabled="pluginPage <= 1" @click="pluginPage = Math.max(1, pluginPage - 1)">Prev</button>
+          <button class="btn role-tertiary sm" :disabled="pluginPage >= pluginPageCount" @click="pluginPage = Math.min(pluginPageCount, pluginPage + 1)">Next</button>
+        </div>
+        <div v-else-if="!loading" class="empty-state">
+          <p v-if="search">No plugins matching "{{ search }}".</p>
+          <p v-else>Click <strong>Refresh plugins</strong> to load the list.</p>
+        </div>
+      </div>
+
+      <div v-show="activeTab === 'files'" class="panel files-panel">
+        <div class="files-toolbar">
+          <button class="btn role-secondary sm" :disabled="fsPath === '/root'" @click="fsNavigate('/root')">Root</button>
+          <button class="btn role-secondary sm" :disabled="!fsPath || fsPath === '/root'" @click="fsNavigate(parentPath)">↑ Up</button>
+          <span class="fs-path">{{ fsPath }}</span>
+        </div>
+        <div v-if="fsError" class="fs-error">{{ fsError }}</div>
+        <div v-else class="fs-tree">
+          <div class="fs-header">
+            <span class="fs-col-name">Name</span>
+            <span class="fs-col-size">Size</span>
+            <span class="fs-col-mode">Mode</span>
+            <span class="fs-col-date">Modified</span>
+          </div>
+          <div
+            v-for="e in fsEntries"
+            :key="e.path"
+            :class="['fs-row', e.dir ? 'dir' : 'file']"
+            @click="e.dir ? fsNavigate(e.path) : null"
+          >
+            <span class="fs-col-name">
+              <span :class="['fs-icon', e.dir ? 'dir' : 'file']">{{ e.dir ? '📁' : '📄' }}</span>
+              {{ e.name }}
+            </span>
+            <span class="fs-col-size">{{ formatSize(e.size) }}</span>
+            <span class="fs-col-mode">{{ e.mode }}</span>
+            <span class="fs-col-date">{{ e.modTime }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div v-show="activeTab === 'terminal'" class="panel terminal-panel">
+        <div class="shell-header">
+          <span class="shell-title">Shell — krew backend container</span>
+          <span v-if="shellConnected" class="shell-status connected">Connected</span>
+          <span v-else class="shell-status">Disconnected</span>
+          <button
+            v-if="terminalReady"
+            class="btn role-secondary sm"
+            :class="{ 'role-primary': shellConnected }"
+            @click="shellConnected ? disconnectShell() : connectShell()"
+          >
+            {{ shellConnected ? 'Disconnect' : 'Connect' }}
+          </button>
+          <button
+            class="btn role-tertiary sm cheatsheet-btn"
+            :class="{ active: showCheatsheet }"
+            title="Cheatsheet"
+            @click="showCheatsheet = !showCheatsheet"
+          >
+            Cheatsheet
+          </button>
+          <div v-if="showCheatsheet" class="cheatsheet-panel">
+            <div class="cheatsheet-title">Quick reference</div>
+            <div class="cheatsheet-section">Aliases</div>
+            <code>k</code> = kubectl · <code>kk</code> = kubectl krew
+            <div class="cheatsheet-section">Krew</div>
+            <code>kk list</code> · <code>kk search</code> · <code>kk install &lt;name&gt;</code><br>
+            <code>kk uninstall</code> · <code>kk upgrade</code> · <code>kk update</code>
+            <div class="cheatsheet-section">Plugins (run with k)</div>
+            <code>k stern . -n &lt;ns&gt;</code> · <code>k get-all -n &lt;ns&gt;</code><br>
+            <code>k lineage &lt;res&gt;</code> · <code>k9s</code>
+            <div class="cheatsheet-section">CLIs</div>
+            <code>zellij</code> · <code>crictl</code> · <code>etcdctl</code> · <code>runc</code>
+            <div class="cheatsheet-section">SSH to nodes</div>
+            <code>k ssh-jump</code> — kubectl plugin (needs ssh, ssh-agent)
+          </div>
+        </div>
+        <div ref="terminalContainer" class="terminal-container" />
+        <div v-if="!terminalReady" class="terminal-placeholder">Loading terminal…</div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { KrewService } from './krewService';
+const BACKEND_URL = 'http://localhost:9000';
+const WS_URL = BACKEND_URL.replace(/^http/, 'ws');
+
+// Get Rancher token from current session (cookie sent automatically to same origin)
+let _tokenCache = { token: null, expires: 0 };
+async function getRancherToken() {
+  if (_tokenCache.token && Date.now() < _tokenCache.expires) return _tokenCache.token;
+  const base = window.location.origin;
+  // Try Steve API (management cluster may be "local" or have a custom ID)
+  const paths = [
+    '/k8s/clusters/local/apis/ext.cattle.io/v1/tokens',
+    '/v1/tokens.ext.cattle.io',
+  ];
+  let lastErr;
+  for (const apiPath of paths) {
+    try {
+      const resp = await fetch(`${base}${apiPath}`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          apiVersion: 'ext.cattle.io/v1',
+          kind:       'Token',
+          metadata:   { generateName: 'krew-' },
+          spec:       { description: 'Krew Workstation', ttl: 3600000 },
+        }),
+      });
+      if (!resp.ok) {
+        const err = await resp.json().catch(() => ({}));
+        throw new Error(err.message || `Token API ${resp.status}`);
+      }
+      const data = await resp.json();
+      const token = data.status?.bearerToken || data.status?.value || data.token;
+      if (token) _tokenCache = { token, expires: Date.now() + 50 * 60 * 1000 };
+      return token;
+    } catch (e) {
+      lastErr = e;
+    }
+  }
+  throw lastErr || new Error('Could not get Rancher token');
+}
+
+const XTERM_CDN = 'https://cdn.jsdelivr.net/npm';
+const XTERM_VER = '5.3.0';
+const FIT_VER = '0.8.0';
+
+function loadScript(src) {
+  return new Promise((resolve, reject) => {
+    const s = document.createElement('script');
+    s.src = src;
+    s.onload = resolve;
+    s.onerror = reject;
+    document.head.appendChild(s);
+  });
+}
+
+function loadCss(href) {
+  return new Promise((resolve, reject) => {
+    const l = document.createElement('link');
+    l.rel = 'stylesheet';
+    l.href = href;
+    l.onload = resolve;
+    l.onerror = reject;
+    document.head.appendChild(l);
+  });
+}
 
 export default {
-  name: 'KrewManager',
+  name: 'KrewPage',
   layout: 'plain',
-  
+
   data() {
     return {
-      rancherUrl: localStorage.getItem('rancher_url') || window.location.origin,
-      apiKey: '',
-      clusters: [],
-      selectedClusterId: '',
-      kubeConfig: '',
-      plugins: [],
-      searchQuery: '',
-      isLoading: false,
-      terminalOutput: '',
-      sshConnected: false,
-      sshCommand: '',
-      sshOutput: [],
-      krewService: new KrewService()
+      showAboutKrew:    false,
+      showCheatsheet:   false,
+      clusters:         [],
+      plugins:        [],
+      search:         '',
+      loading:        false,
+      busy:           '',
+      error:          '',
+      message:        '',
+      activeTab:      'terminal',
+      terminalReady:  false,
+      shellConnected: false,
+      term:           null,
+      fitAddon:       null,
+      ws:             null,
+      fsPath:         '/root',
+      fsEntries:      [],
+      fsError:        '',
+      currentContext: '',
+      installedPlugins: [],
+      syncingKubeconfig: false,
+      containerInfo: null,
+      pluginPage: 1,
+      pluginsPerPage: 25,
     };
   },
 
   computed: {
-    isRancherConnected() {
-      return this.rancherUrl && this.clusters.length > 0;
-    },
-
     filteredPlugins() {
-      if (!this.searchQuery) return this.plugins;
-      const query = this.searchQuery.toLowerCase();
-      return this.plugins.filter(plugin => 
-        plugin.name.toLowerCase().includes(query) || 
-        plugin.description.toLowerCase().includes(query)
-      );
-    }
+      let list = this.plugins;
+      if (this.search) {
+        const q = this.search.toLowerCase();
+        list = list.filter(
+          (p) => p.name.toLowerCase().includes(q) || (p.description || '').toLowerCase().includes(q)
+        );
+      }
+      return [...list].sort((a, b) => (a.installed === b.installed ? 0 : a.installed ? -1 : 1));
+    },
+    pluginPageCount() {
+      return Math.max(1, Math.ceil(this.filteredPlugins.length / this.pluginsPerPage));
+    },
+    paginatedPlugins() {
+      const start = (this.pluginPage - 1) * this.pluginsPerPage;
+      return this.filteredPlugins.slice(start, start + this.pluginsPerPage);
+    },
+    pluginPageStart() {
+      return this.filteredPlugins.length ? (this.pluginPage - 1) * this.pluginsPerPage + 1 : 0;
+    },
+    pluginPageEnd() {
+      return Math.min(this.pluginPage * this.pluginsPerPage, this.filteredPlugins.length);
+    },
+    parentPath() {
+      if (!this.fsPath || this.fsPath === '/') return '/';
+      const parts = this.fsPath.split('/').filter(Boolean);
+      parts.pop();
+      return parts.length ? '/' + parts.join('/') : '/';
+    },
   },
 
   async mounted() {
-    await this.refreshPlugins();
-    this.connectSSH();
+    await Promise.all([this.fetchClusters(), this.loadPlugins(), this.fetchContainerInfo()]);
+    this.loadFs(this.fsPath);
+    await this.syncKubeconfig(); // Must complete before terminal — kubectl needs kubeconfig
+    this.initTerminal();
+  },
+
+  watch: {
+    activeTab(tab) {
+      if (tab === 'terminal' && this.fitAddon) {
+        this.$nextTick(() => this.fitAddon.fit());
+      }
+    },
+  },
+
+  beforeDestroy() {
+    this.disconnectShell();
+    if (this.term) this.term.dispose();
   },
 
   methods: {
-    async authenticate() {
+    async api(method, path, opts = {}) {
+      const headers = { ...opts.headers };
       try {
-        // Store Rancher URL for future use
-        localStorage.setItem('rancher_url', this.rancherUrl);
-        
-        // Make API call directly to Rancher
-        const response = await fetch(`${this.rancherUrl}/v3/clusters`, {
-          headers: {
-            'Authorization': `Bearer ${this.apiKey}`,
+        const token = await getRancherToken();
+        if (token) headers['Authorization'] = `Bearer ${token}`;
+      } catch (_) {}
+      const resp = await fetch(`${BACKEND_URL}${path}`, {
+        method,
+        headers: { 'Content-Type': 'application/json', ...headers },
+        ...opts,
+      });
+      const data = await resp.json();
+      if (!resp.ok) throw new Error(data.error || `HTTP ${resp.status}`);
+      return data;
+    },
+
+    async fetchClusters() {
+      try {
+        const data = await this.api('GET', '/api/clusters');
+        this.clusters = data.clusters || [];
+      } catch (e) {}
+    },
+
+    async syncKubeconfig() {
+      this.syncingKubeconfig = true;
+      this.message = '';
+      this.error = '';
+      try {
+        const data = await this.api('POST', '/api/kubeconfig/sync');
+        await this.fetchContext();
+        const n = data.clusters ?? 0;
+        const msg = n > 0 ? `Kubeconfig synced for ${n} cluster(s)` : 'No clusters to sync';
+        this.message = msg;
+        if (this.term && this.shellConnected) {
+          this.term.writeln('\r\n  ✓ ' + msg + '\r\n');
+        }
+      } catch (e) {
+        this.error = `Sync failed: ${e.message}`;
+        await this.fetchContext();
+      } finally {
+        this.syncingKubeconfig = false;
+      }
+    },
+
+    async fetchContext() {
+      try {
+        const data = await this.api('GET', '/api/context');
+        this.currentContext = data.context || '';
+      } catch (e) {
+        this.currentContext = '';
+      }
+    },
+
+    async fetchInstalledPlugins() {
+      try {
+        const data = await this.api('GET', '/api/plugins/installed');
+        this.installedPlugins = data.plugins || [];
+      } catch (e) {
+        this.installedPlugins = [];
+      }
+    },
+
+    async fetchContainerInfo() {
+      try {
+        const data = await this.api('GET', '/api/info');
+        this.containerInfo = data;
+      } catch (e) {
+        this.containerInfo = null;
+      }
+    },
+
+    formatSize(bytes) {
+      if (bytes < 0) return '-';
+      if (bytes < 1024) return bytes + ' B';
+      if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+      return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+    },
+
+    async loadPlugins() {
+      this.loading = true;
+      this.error = '';
+      try {
+        const data = await this.api('GET', '/api/plugins');
+        this.plugins = data.plugins || [];
+      } catch (e) {
+        this.error = `Backend unreachable at ${BACKEND_URL} — ${e.message}`;
+      } finally {
+        this.loading = false;
+      }
+    },
+
+    async updateIndex() {
+      this.loading = true;
+      this.message = '';
+      try {
+        await this.api('POST', '/api/plugins/update');
+        this.message = 'Plugin index updated';
+        await this.loadPlugins();
+      } catch (e) {
+        this.error = `Update failed: ${e.message}`;
+      } finally {
+        this.loading = false;
+      }
+    },
+
+    async installPlugin(p) {
+      this.busy = p.name;
+      this.message = '';
+      try {
+        await this.api('POST', `/api/plugins/${p.name}/install`);
+        this.message = `Installed ${p.name}`;
+        await this.loadPlugins();
+      } catch (e) {
+        this.error = `Install failed: ${e.message}`;
+      } finally {
+        this.busy = '';
+      }
+    },
+
+    async uninstallPlugin(p) {
+      this.busy = p.name;
+      this.message = '';
+      try {
+        await this.api('DELETE', `/api/plugins/${p.name}`);
+        this.message = `Uninstalled ${p.name}`;
+        await this.loadPlugins();
+      } catch (e) {
+        this.error = `Uninstall failed: ${e.message}`;
+      } finally {
+        this.busy = '';
+      }
+    },
+
+    async upgradePlugin(p) {
+      this.busy = p.name;
+      this.message = '';
+      try {
+        await this.api('POST', `/api/plugins/${p.name}/upgrade`);
+        this.message = `Upgraded ${p.name}`;
+        await this.loadPlugins();
+      } catch (e) {
+        this.error = `Upgrade failed: ${e.message}`;
+      } finally {
+        this.busy = '';
+      }
+    },
+
+    async loadFs(path) {
+      this.fsError = '';
+      try {
+        const data = await this.api('GET', `/api/fs?path=${encodeURIComponent(path)}`);
+        this.fsPath = data.path;
+        this.fsEntries = data.entries || [];
+      } catch (e) {
+        this.fsError = e.message;
+      }
+    },
+
+    fsNavigate(path) {
+      this.loadFs(path);
+    },
+
+    async initTerminal() {
+      const container = this.$refs.terminalContainer;
+      if (!container) return;
+      try {
+        await loadCss(`${XTERM_CDN}/xterm@${XTERM_VER}/css/xterm.css`);
+        await loadScript(`${XTERM_CDN}/xterm@${XTERM_VER}/lib/xterm.js`);
+        await loadScript(`${XTERM_CDN}/xterm-addon-fit@${FIT_VER}/lib/xterm-addon-fit.js`);
+      } catch (e) {
+        container.innerHTML = `<p class="fs-error">Failed to load terminal: ${e.message}</p>`;
+        return;
+      }
+
+      const { Terminal } = window;
+      const FitAddon = window.FitAddon?.FitAddon || window.FitAddon;
+      if (!Terminal || !FitAddon) {
+        container.innerHTML = '<p class="fs-error">Terminal not available</p>';
+        return;
+      }
+
+      this.term = new Terminal({
+        cursorBlink: true,
+        theme: { background: '#1a1a1a', foreground: '#e0e0e0' },
+        fontSize: 13,
+      });
+      this.fitAddon = new FitAddon();
+      this.term.loadAddon(this.fitAddon);
+      this.term.open(container);
+      this.fitAddon.fit();
+      this.terminalReady = true;
+
+      let resizeScheduled = false;
+      const resizeObserver = new ResizeObserver(() => {
+        if (resizeScheduled) return;
+        resizeScheduled = true;
+        setTimeout(() => {
+          resizeScheduled = false;
+          if (this.fitAddon) {
+            this.fitAddon.fit();
+            this.$nextTick(() => this.sendResize());
+          }
+        }, 0);
+      });
+      resizeObserver.observe(container);
+
+      this.term.writeln('');
+      this.term.writeln('  Krew Workstation — connecting…');
+      this.term.writeln('');
+      this.connectShell();
+    },
+
+    connectShell() {
+      if (this.ws && this.ws.readyState === WebSocket.OPEN) return;
+      const ws = new WebSocket(`${WS_URL}/api/ws/shell`);
+      this.ws = ws;
+
+      ws.binaryType = 'arraybuffer';
+      ws.onopen = () => {
+        this.shellConnected = true;
+        this.fetchInstalledPlugins();
+        this.sendResize();
+      };
+      ws.onclose = () => {
+        this.shellConnected = false;
+        this.term?.writeln('\r\nDisconnected.');
+      };
+      ws.onerror = () => {
+        this.term?.writeln('\r\nWebSocket error. Is the backend running on ' + BACKEND_URL + '?');
+      };
+      ws.onmessage = (ev) => {
+        if (ev.data instanceof ArrayBuffer && this.term) {
+          const buf = new Uint8Array(ev.data);
+          this.term.write(buf);
+        }
+      };
+
+      if (this.term) {
+        this.term.onData((data) => {
+          if (ws.readyState === WebSocket.OPEN) {
+            const bytes = new TextEncoder().encode(data);
+            ws.send(bytes.buffer);
           }
         });
-
-        if (!response.ok) {
-          throw new Error(`Failed to authenticate: ${response.status} ${response.statusText}`);
-        }
-
-        const data = await response.json();
-        this.clusters = data.data.map(cluster => ({
-          id: cluster.id,
-          name: cluster.name
-        }));
-
-        this.apiKey = ''; // Clear API key from memory
-      } catch (error) {
-        console.error('Authentication failed:', error);
-        alert('Failed to authenticate with Rancher. Please check your credentials and ensure you have access to the cluster.');
       }
     },
 
-    async onClusterChange() {
-      if (this.selectedClusterId) {
-        try {
-          const response = await fetch(
-            `${this.rancherUrl}/v3/clusters/${this.selectedClusterId}?action=generateKubeconfig`,
-            {
-              method: 'POST',
-              headers: {
-                'Authorization': `Bearer ${this.apiKey}`
-              }
-            }
-          );
-
-          if (response.ok) {
-            const data = await response.json();
-            this.kubeConfig = data.config;
-          } else {
-            throw new Error(`Failed to get kubeconfig: ${response.status} ${response.statusText}`);
-          }
-        } catch (error) {
-          console.error('Error fetching kubeconfig:', error);
-          alert('Failed to fetch kubeconfig. Please check your permissions and try again.');
-        }
-      }
+    sendResize() {
+      if (!this.ws || this.ws.readyState !== WebSocket.OPEN || !this.term) return;
+      this.ws.send(JSON.stringify({ type: 'resize', cols: this.term.cols, rows: this.term.rows }));
     },
 
-    async copyKubeConfig() {
-      try {
-        await navigator.clipboard.writeText(this.kubeConfig);
-        alert('Kubeconfig copied to clipboard!');
-      } catch (error) {
-        console.error('Failed to copy:', error);
-        alert('Failed to copy kubeconfig. Please try again.');
+    disconnectShell() {
+      if (this.ws) {
+        this.ws.close();
+        this.ws = null;
       }
+      this.shellConnected = false;
     },
-
-    clearTerminal() {
-      this.terminalOutput = '';
-      this.sshOutput = [];
-    },
-
-    async refreshPlugins() {
-      if (!this.selectedClusterId) return;
-
-      this.isLoading = true;
-      try {
-        const response = await fetch(
-          `https://krew-manager-backend:9000/clusters/${this.selectedClusterId}/plugins`,
-          {
-            headers: {
-              'Authorization': `Bearer ${this.apiKey}`
-            }
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch plugins');
-        }
-
-        const data = await response.json();
-        this.plugins = data.plugins;
-        this.terminalOutput = data.terminalOutput;
-      } catch (error) {
-        console.error('Error fetching plugins:', error);
-        alert('Failed to fetch plugins. Please try again.');
-      } finally {
-        this.isLoading = false;
-      }
-    },
-
-    async togglePlugin(plugin) {
-      this.isLoading = true;
-      try {
-        const method = plugin.installed ? 'DELETE' : 'POST';
-        const endpoint = plugin.installed 
-          ? `clusters/${this.selectedClusterId}/plugins/${plugin.name}`
-          : `clusters/${this.selectedClusterId}/plugins/${plugin.name}/install`;
-
-        const response = await fetch(
-          `https://krew-manager-backend:9000/${endpoint}`,
-          {
-            method,
-            headers: {
-              'Authorization': `Bearer ${this.apiKey}`
-            }
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error(`Failed to ${plugin.installed ? 'uninstall' : 'install'} plugin`);
-        }
-
-        const data = await response.json();
-        this.terminalOutput = data.terminalOutput;
-        await this.refreshPlugins();
-      } catch (error) {
-        console.error('Error toggling plugin:', error);
-        alert('Failed to toggle plugin. Please try again.');
-      } finally {
-        this.isLoading = false;
-      }
-    },
-
-    async upgradePlugin(plugin) {
-      this.isLoading = true;
-      try {
-        const response = await fetch(
-          `https://krew-manager-backend:9000/clusters/${this.selectedClusterId}/plugins/${plugin.name}/upgrade`,
-          {
-            method: 'POST',
-            headers: {
-              'Authorization': `Bearer ${this.apiKey}`
-            }
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error('Failed to upgrade plugin');
-        }
-
-        const data = await response.json();
-        this.terminalOutput = data.terminalOutput;
-        await this.refreshPlugins();
-      } catch (error) {
-        console.error('Error upgrading plugin:', error);
-        alert('Failed to upgrade plugin. Please try again.');
-      } finally {
-        this.isLoading = false;
-      }
-    },
-
-    async connectSSH() {
-      try {
-        // Connect to krew-manager-backend on port 9000
-        this.sshConnected = true;
-        this.sshOutput.push('Connected to krew-manager-backend');
-      } catch (error) {
-        console.error('SSH connection failed:', error);
-        this.sshOutput.push('Failed to connect: ' + error.message);
-      }
-    },
-
-    async sendCommand() {
-      if (!this.sshCommand.trim()) return;
-
-      try {
-        // Send command to backend
-        const response = await fetch('http://localhost:9000/execute', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ command: this.sshCommand }),
-        });
-
-        const result = await response.text();
-        this.sshOutput.push(`$ ${this.sshCommand}`);
-        this.sshOutput.push(result);
-        this.sshCommand = '';
-
-        // Auto-scroll to bottom
-        this.$nextTick(() => {
-          const terminal = this.$refs.terminalContent;
-          terminal.scrollTop = terminal.scrollHeight;
-        });
-      } catch (error) {
-        this.sshOutput.push('Error: ' + error.message);
-      }
-    }
-  }
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-.krew-manager-page {
-  padding: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
+.krew-page {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 60px);
+  max-width: none;
+  margin: 0;
+  padding: 6px 12px;
+  overflow: hidden;
+}
 
-  header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-
-    h1 {
-      color: var(--primary);
-      margin: 0;
-      font-size: 2em;
-    }
-
-    .auth-controls {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-
-      .input-field {
-        padding: 8px;
-        border: 1px solid var(--border);
-        border-radius: 4px;
-        width: 200px;
-      }
-    }
+.page-header {
+  flex-shrink: 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+  padding: 4px 0;
+  min-height: 28px;
+  .brand {
+    font-size: 0.85em;
+    font-weight: 600;
+    color: var(--primary);
   }
-
-  .content {
-    background: var(--box-bg);
+  .meta {
+    font-size: 0.65em;
+    color: var(--muted);
+    font-family: monospace;
+  }
+  .context-badge {
+    padding: 2px 6px;
     border-radius: 4px;
-    padding: 20px;
+    font-size: 0.7em;
+    font-family: monospace;
+    background: #e3f2fd;
+    color: #1565c0;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .btn.xs {
+    padding: 2px 8px;
+    font-size: 0.7em;
+    min-height: 22px;
+    &.active { background: var(--primary); color: #fff; }
+  }
+  .btn.about-btn {
+    padding: 0 4px;
+    font-size: 0.55em;
+    min-height: 16px;
+    min-width: 16px;
+    line-height: 1;
+    &.active { background: var(--primary); color: #fff; }
+  }
+  .about-krew-card {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 10;
+    margin-top: 4px;
+    padding: 8px 12px;
+    background: #f5f5f5;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 0.8em;
+    h3 { margin: 0 0 4px; font-size: 0.95em; }
+    p { margin: 0; }
+    a { color: var(--primary); }
+  }
+}
 
-    .cluster-section {
-      margin-bottom: 20px;
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  margin-bottom: 6px;
+  .toolbar-left { display: flex; gap: 6px; }
+  .search-input {
+    padding: 4px 8px;
+    font-size: 0.8em;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    width: 240px;
+  }
+}
 
-      .cluster-select {
-        width: 100%;
-        padding: 8px;
-        border: 1px solid var(--border);
-        border-radius: 4px;
-        margin-bottom: 15px;
-      }
-    }
+.cluster-info {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+  font-size: 0.75em;
+  color: var(--muted);
+  .cluster-badge {
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    background: #e3f2fd;
+    color: #1565c0;
+    &.active { background: #c8e6c9; color: #2e7d32; }
+  }
+}
 
-    .kubeconfig-section {
-      margin-bottom: 20px;
+.banner {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-bottom: 4px;
+  font-size: 0.75em;
+  &.error { background: #fdecea; color: #b71c1c; }
+  &.success { background: #e8f5e9; color: #1b5e20; }
+  .dismiss { background: none; border: none; cursor: pointer; font-size: 1.1em; padding: 0 4px; }
+}
 
-      .section-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 10px;
+.loading-bar {
+  flex-shrink: 0;
+  height: 2px;
+  background: var(--primary);
+  margin-bottom: 4px;
+}
 
-        h3 {
-          margin: 0;
-          color: var(--primary);
-        }
-      }
+  .panels {
+  flex: 1;
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #333;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #1a1a1a;
 
-      .kubeconfig-display {
-        background: var(--body-bg);
-        padding: 15px;
-        border-radius: 4px;
-        overflow-x: auto;
-        font-family: monospace;
-        font-size: 0.9em;
-      }
+  .tabs {
+    display: flex;
+    background: #252525;
+    border-bottom: 1px solid #333;
+    flex-shrink: 0;
+    button {
+      padding: 4px 12px;
+      font-size: 0.8em;
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-weight: 600;
+      color: #888;
+      &.active { color: #4caf50; border-bottom: 2px solid #4caf50; margin-bottom: -1px; }
     }
   }
 
-  .plugin-list {
-    .controls {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
+  .panel {
+    flex: 1;
+    overflow: auto;
+    padding: 12px;
+  }
 
-      .search-input {
-        padding: 8px;
-        border: 1px solid var(--border);
-        border-radius: 4px;
-        width: 300px;
-      }
-    }
-
-    table {
+  .plugins-panel {
+    min-height: 300px;
+    background: #1a1a1a;
+    color: #e0e0e0;
+    .plugin-table {
       width: 100%;
       border-collapse: collapse;
-
-      th, td {
-        padding: 12px;
-        text-align: left;
-        border-bottom: 1px solid var(--border);
-      }
-
-      th {
-        font-weight: bold;
-        color: var(--primary);
-      }
-
-      .status {
-        padding: 4px 8px;
-        border-radius: 4px;
-        font-size: 0.9em;
-
-        &.installed {
-          background: var(--success);
-          color: white;
-        }
-
-        &.not-installed {
-          background: var(--warning);
-          color: white;
-        }
-      }
-
-      .btn {
-        margin-right: 8px;
-
-        &:last-child {
-          margin-right: 0;
-        }
-      }
-    }
-  }
-
-  .terminal-output {
-    background: var(--body-bg);
-    border-radius: 4px;
-    margin: 20px 0;
-    overflow: hidden;
-
-    .terminal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 15px;
-      background: var(--primary);
-      color: white;
-
-      h3 {
-        margin: 0;
-        font-size: 1.1em;
-      }
-    }
-
-    pre {
-      margin: 0;
-      padding: 15px;
+      font-size: 0.85em;
       font-family: monospace;
-      white-space: pre-wrap;
-      max-height: 300px;
-      overflow-y: auto;
+      th, td { padding: 6px 10px; text-align: left; border-bottom: 1px solid #333; }
+      th { font-weight: 600; color: #4caf50; background: #252525; }
+      .name { font-weight: 600; color: #64b5f6; }
+      .desc { color: #888; max-width: 280px; }
+      .badge {
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 0.75em;
+        font-weight: 600;
+        &.installed { background: #2e7d32; color: #a5d6a7; }
+        &.available { background: #1565c0; color: #90caf9; }
+      }
+      .actions .btn { margin-right: 4px; }
+    }
+    .pagination {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 0;
+      font-size: 0.8em;
+      color: #888;
+      .pagination-info { margin-right: 8px; }
     }
   }
 
-  .ssh-connection-box {
-    margin-top: 20px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+  .terminal-panel {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    background: #1a1a1a;
+    min-height: 300px;
     overflow: hidden;
 
-    .terminal-header {
+    .shell-header {
+      flex-shrink: 0;
+      position: relative;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      padding: 10px;
-      background: #f5f5f5;
-      border-bottom: 1px solid #ddd;
-
-      .connection-status {
-        padding: 4px 8px;
-        border-radius: 4px;
-        font-size: 12px;
-        
-        &.connected {
-          background: #4caf50;
-          color: white;
-        }
-
-        &:not(.connected) {
-          background: #f44336;
-          color: white;
-        }
+      gap: 8px;
+      padding: 4px 8px;
+      background: #252525;
+      color: #b0b0b0;
+      font-size: 0.75em;
+      .shell-title { font-weight: 600; }
+      .shell-status.connected { color: #4caf50; }
+      .cheatsheet-btn { margin-left: auto; &.active { background: var(--primary); color: #fff; } }
+      .cheatsheet-panel {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        z-index: 20;
+        margin-top: 4px;
+        padding: 12px 14px;
+        min-width: 280px;
+        background: #2d2d2d;
+        border: 1px solid #444;
+        border-radius: 6px;
+        font-size: 0.8em;
+        line-height: 1.6;
+        color: #ccc;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        .cheatsheet-title { font-weight: 600; color: #fff; margin-bottom: 8px; }
+        .cheatsheet-section { font-weight: 600; color: #888; margin-top: 10px; margin-bottom: 4px; font-size: 0.9em; }
+        code { background: #1a1a1a; padding: 1px 4px; border-radius: 3px; font-size: 0.9em; }
       }
     }
 
-    .terminal-window {
-      background: #1e1e1e;
-      color: #fff;
-      padding: 10px;
-      min-height: 300px;
+    .terminal-container {
+      flex: 1;
+      min-height: 200px;
+      padding: 6px;
+      overflow: hidden;
+    }
+
+    .terminal-placeholder {
+      padding: 24px;
+      color: #666;
+      text-align: center;
+    }
+  }
+
+  .files-panel {
+    background: #1a1a1a;
+    color: #e0e0e0;
+    .files-toolbar {
       display: flex;
-      flex-direction: column;
-
-      .terminal-content {
-        flex: 1;
-        overflow-y: auto;
-        margin-bottom: 10px;
-        font-family: monospace;
-
-        pre {
-          margin: 0;
-          white-space: pre-wrap;
-          word-wrap: break-word;
-        }
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      .fs-path { font-family: monospace; font-size: 0.9em; color: #4caf50; }
+    }
+    .fs-error { color: #ef5350; font-size: 0.9em; }
+    .fs-tree {
+      font-size: 0.85em;
+      font-family: monospace;
+      .fs-header {
+        display: grid;
+        grid-template-columns: 1fr 80px 120px 140px;
+        gap: 12px;
+        padding: 6px 8px;
+        font-weight: 600;
+        color: #4caf50;
+        border-bottom: 1px solid #333;
+        background: #252525;
       }
-
-      .terminal-input {
-        display: flex;
+      .fs-row {
+        display: grid;
+        grid-template-columns: 1fr 80px 120px 140px;
+        gap: 12px;
+        padding: 6px 8px;
+        cursor: pointer;
+        border-radius: 4px;
         align-items: center;
-        
-        .prompt {
-          color: #4caf50;
-          margin-right: 8px;
+        &.dir:hover { background: #252525; }
+        &.file { cursor: default; }
+        .fs-col-name {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          .fs-icon { font-size: 1.1em; }
         }
-
-        input {
-          flex: 1;
-          background: transparent;
-          border: none;
-          color: #fff;
-          font-family: monospace;
-          outline: none;
-
-          &:disabled {
-            opacity: 0.5;
-          }
-        }
+        .fs-col-size, .fs-col-mode { font-size: 0.9em; color: #888; }
+        .fs-col-date { font-size: 0.9em; color: #888; }
       }
     }
   }
 }
 
-.loading {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 200px;
-  font-style: italic;
-  color: var(--secondary);
+.empty-state {
+  padding: 24px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.9em;
+}
+.panels .plugins-panel .empty-state,
+.panels .files-panel .empty-state {
+  color: #888;
 }
 
-.btn {
-  &.sm {
-    padding: 4px 8px;
-    font-size: 0.9em;
-  }
+::v-deep .xterm {
+  padding: 4px;
 }
-</style> 
+::v-deep .xterm-viewport {
+  overflow-y: auto !important;
+}
+</style>
