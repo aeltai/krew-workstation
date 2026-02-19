@@ -1,0 +1,37 @@
+services:
+  rancher:
+    image: rancher/rancher:latest
+    privileged: true
+    ports:
+      - "8089:80"
+      - "8449:443"
+    volumes:
+      - rancher-data:/var/lib/rancher
+    environment:
+      - CATTLE_BOOTSTRAP_PASSWORD=admin
+    command:
+      - --no-cacerts
+
+  krew-backend:
+    platform: linux/amd64
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      platforms:
+        - linux/amd64
+    ports:
+      - "9000:3000"
+    environment:
+      - RANCHER_URL=https://rancher:443
+      - RANCHER_TOKEN=${RANCHER_TOKEN:-}
+    volumes:
+      - krew-data:/root/.krew
+      - ssh-keys:/root/.ssh
+    depends_on:
+      - rancher
+    restart: unless-stopped
+
+volumes:
+  rancher-data:
+  krew-data:
+  ssh-keys:

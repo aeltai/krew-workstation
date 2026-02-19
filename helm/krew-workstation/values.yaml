@@ -1,0 +1,113 @@
+# Default values for krew-workstation
+# Deploys the krew-backend service + UI extension for Rancher Dashboard
+# Target: management cluster (local) - where Rancher UI runs
+
+replicaCount: 1
+
+# Extension catalog - register repo so Krew appears in Extensions UI
+catalog:
+  createClusterRepo: false  # Set true to add the extension repo to Rancher catalog
+  name: krew-workstation
+  # Use url for Helm/GitHub Pages repo, or gitRepo+gitBranch for Git
+  url: ""  # e.g. https://aeltai.github.io/krew-workstation-charts
+  gitRepo: ""  # e.g. https://github.com/aeltai/krew-workstation
+  gitBranch: main
+  refreshInterval: 0
+
+# Bootstrap Job - creates ClusterRepo on install (adds extension catalog)
+bootstrap:
+  enabled: false  # Set true to auto-register catalog on install
+  image:
+    repository: bitnami/kubectl
+    tag: "latest"
+
+# UI extension - loads the Krew Workstation UI in Rancher Dashboard
+uiPlugin:
+  enabled: true
+  version: "1.0"
+  # URL to extension JS bundle (must be built and published)
+  # e.g. https://raw.githubusercontent.com/aeltai/ui-plugin-examples/main/extensions/krew-plugin-manager/0.1.0
+  endpoint: "https://raw.githubusercontent.com/aeltai/ui-plugin-examples/main/extensions/krew-plugin-manager/0.1.0"
+  noCache: false
+  noAuth: false
+  metadata:
+    catalog.cattle.io/display-name: Krew Workstation
+    catalog.cattle.io/kube-version: ">= 1.16.0-0"
+    catalog.cattle.io/rancher-version: ">= 2.10.0-0"
+    catalog.cattle.io/ui-extensions-version: ">= 3.0.0 < 4.0.0"
+
+image:
+  repository: ghcr.io/aeltai/krew-workstation
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+imagePullSecrets: []
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 0
+
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+  readOnlyRootFilesystem: false
+
+service:
+  type: ClusterIP
+  port: 3000
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    - host: krew-workstation.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+resources:
+  limits:
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 256Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80  # used when autoscaling.enabled=true
+
+# Rancher connection - backend fetches kubeconfig from Rancher API
+rancher:
+  # URL to Rancher API (from within cluster, use rancher.cattle-system.svc or your ingress)
+  url: "https://rancher.cattle-system.svc"
+  # Optional: bearer token for backend-initiated calls (UI typically passes token per-request)
+  token: ""
+
+# Persistent volume for krew plugins (survives pod restarts)
+persistence:
+  enabled: true
+  storageClass: ""
+  size: 1Gi
+
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

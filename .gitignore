@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.shell/
+*.log
+.DS_Store
+backend/krew-manager
+backend/krew-manager-*
+*.png
