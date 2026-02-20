@@ -2,7 +2,7 @@
 const BLANK_CLUSTER = '_';
 
 export function init($plugin: any, store: any) {
-  const YOUR_PRODUCT_NAME = 'tools';
+  const YOUR_PRODUCT_NAME = 'vishnu';
   const TOOLS_HUB_PAGE = 'hub';
   const KREW_PAGE = 'krew';
 

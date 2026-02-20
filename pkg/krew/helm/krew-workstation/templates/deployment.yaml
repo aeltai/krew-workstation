@@ -67,6 +67,8 @@ spec:
             {{- end }}
             - name: KREW_ROOT
               value: /opt/krew
+            - name: HOME
+              value: /opt/krew-workstation
             - name: PORT
               value: "3000"
           {{- if .Values.persistence.enabled }}

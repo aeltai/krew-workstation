@@ -46,9 +46,9 @@ helm upgrade krew-workstation ./helm/krew-workstation -n krew-workstation \
 
 ## Backend via Rancher meta proxy (no Ingress for API)
 
-The extension uses **Rancher’s meta proxy** (same as node-driver): requests go to `/meta/proxy/krew-workstation.krew-workstation.svc:3000/api/...` so Rancher’s backend proxies to the krew-workstation Service. No Ingress path is required for REST API (Sync, clusters, plugins, etc.).
+The extension uses **Rancher’s meta proxy** (same as node-driver): requests go to `/meta/proxy/http:/krew-workstation.krew-workstation.svc:3000/api/...` so Rancher’s backend proxies to the krew-workstation Service. No Ingress path is required for REST API (Sync, clusters, plugins, etc.).
 
-**Allow list:** The chart creates a **ProxyEndpoint** (management.cattle.io) so the meta proxy allow list is updated automatically—same mechanism as other UI extensions. No manual Settings step. If you disabled it, set `metaProxy.enabled: true` or create a ProxyEndpoint with route `krew-workstation.krew-workstation.svc`. If the proxy returns 502/503, the host is not allow-listed (check that the ProxyEndpoint exists).
+**Allow list:** The chart creates a **ProxyEndpoint** (management.cattle.io) so the meta proxy allow list is updated automatically—same mechanism as other UI extensions. No manual Settings step. If you disabled it, set `metaProxy.enabled: true` or create a ProxyEndpoint with route `krew-workstation.krew-workstation.svc`. If the proxy returns **502/503** and the ProxyEndpoint exists, see **Troubleshooting → 502/503 from meta proxy** below.
 
 **Terminal (WebSocket):** The terminal tab needs `wss://<rancher-host>/krew-api`. Enable the chart’s Ingress so that path is routed to the backend:
 
@@ -146,11 +146,78 @@ Then restart the deployment: `kubectl rollout restart deployment krew-workstatio
 
 ## After install
 
-1. Rebuild the backend image (includes k9s): `docker build -t ghcr.io/aeltai/krew-workstation:latest ./backend`
+1. Rebuild the backend image (includes rk9s): `docker build -t ghcr.io/aeltai/krew-workstation:latest ./backend`
 2. Push to your registry and set: `--set image.repository=YOUR_REGISTRY/krew-workstation`
 3. The extension appears in Rancher Dashboard under "Krew Workstation" (terminal icon)
 
 ## Troubleshooting
+
+### 502/503 from meta proxy (Backend unreachable)
+
+Rancher’s **meta proxy** allow list (who can be called via `/meta/proxy/...`) is built from:
+
+**502 with whitelist correct:** The meta proxy assumes **HTTPS** by default. If your backend is plain HTTP (like krew-workstation on port 3000), the extension must use `/meta/proxy/http:/host:port` (one slash after `http:`). Without this, Rancher tries HTTPS and gets a connection error → 502.
+
+1. **ProxyEndpoint** resources (management.cattle.io) – the chart creates one so the backend is allow-listed automatically.
+2. The **whitelist-domain** global setting – a comma-separated list of hostnames.
+
+The controller that reconciles ProxyEndpoint into the allow list is only registered when **Multi-Cluster Management (MCM)** is enabled. If MCM is disabled, ProxyEndpoint is ignored and you get 502/503 even though the CR exists.
+
+**Manual fallback (works with or without MCM):** Add the backend host to **whitelist-domain** so the meta proxy allows it:
+
+- In Rancher UI: **Global Settings** (or **Settings** in the API) → find **whitelist-domain** → set or append (comma-separated) the hostname **without** port, e.g. `krew-workstation.krew-workstation.svc`. Save.
+- Or set the env var on the Rancher server (see below).
+
+**Option B – Add to Rancher deployment on the cluster**
+
+So the meta proxy allow list includes `krew-workstation.krew-workstation.svc` without using the UI:
+
+**If Rancher is installed with Helm** (e.g. `helm install rancher rancher-stable/rancher`), add the whitelist domain to the Helm values and upgrade. The official chart supports `extraEnv`:
+
+```yaml
+# values.yaml (or --set on CLI)
+extraEnv:
+  - name: CATTLE_WHITELIST_DOMAIN
+    value: "forums.rancher.com,krew-workstation.krew-workstation.svc"
+```
+
+If you already have `extraEnv`, append the `CATTLE_WHITELIST_DOMAIN` entry. Then:
+
+```bash
+helm upgrade rancher rancher-stable/rancher -n cattle-system -f values.yaml
+```
+
+(Use your actual Helm release name, namespace, and repo if different.)
+
+**If you prefer to patch the running deployment** (works for any install method):
+
+```bash
+# Add or update CATTLE_WHITELIST_DOMAIN on the Rancher deployment (default: cattle-system)
+kubectl set env deployment/rancher -n cattle-system \
+  CATTLE_WHITELIST_DOMAIN=forums.rancher.com,krew-workstation.krew-workstation.svc
+```
+
+If the deployment has a different name or namespace, adjust. To **append** to an existing value instead of replacing, get the current value first:
+
+```bash
+kubectl set env deployment/rancher -n cattle-system \
+  CATTLE_WHITELIST_DOMAIN="$(kubectl get deployment rancher -n cattle-system -o jsonpath='{.spec.template.spec.containers[0].env[?(@.name=="CATTLE_WHITELIST_DOMAIN")].value}'),krew-workstation.krew-workstation.svc"
+```
+
+If `CATTLE_WHITELIST_DOMAIN` is not set yet, the above may leave a leading comma; in that case set explicitly:
+
+```bash
+kubectl set env deployment/rancher -n cattle-system \
+  CATTLE_WHITELIST_DOMAIN=forums.rancher.com,krew-workstation.krew-workstation.svc
+```
+
+Rancher will roll out the new env; after the pod is ready, retry the Krew Workstation UI.
+
+After changing the setting (UI or deployment), the meta proxy uses the new list on the next request.
+
+The meta proxy validates the request hostname (port is stripped) against the allow list; it supports exact match, `*suffix` wildcards, and `%.` patterns (see Rancher `pkg/httpproxy/proxy.go`). Use the exact hostname above.
+
+*(Note: This is the meta proxy **domain** allow list. It is separate from HTTP_PROXY/NO_PROXY and CATTLE_WHITELIST_ENVVARS, which control outbound proxy and env var passthrough.)*
 
 ### Helm upgrade conflict with Rancher (`conflict with "rancher" ... imagePullPolicy`)
 

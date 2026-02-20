@@ -1,5 +1,5 @@
 # Register the krew-workstation backend with Rancher's meta proxy allow list (ProxyEndpoint).
-# This lets the UI extension call /meta/proxy/krew-workstation.krew-workstation.svc:3000/api/...
+# This lets the UI extension call /meta/proxy/http:/krew-workstation.krew-workstation.svc:3000/api/...
 # without manual Settings configuration. Same mechanism as node-driver / UI extensions.
 {{- if index (default dict .Values.metaProxy) "enabled" | default true }}
 apiVersion: management.cattle.io/v3

@@ -76,8 +76,8 @@
 
       <div v-show="activeTab === 'files'" class="panel files-panel">
         <div class="files-toolbar">
-          <button class="btn role-secondary sm" :disabled="fsPath === '/root'" @click="fsNavigate('/root')">Root</button>
-          <button class="btn role-secondary sm" :disabled="!fsPath || fsPath === '/root'" @click="fsNavigate(parentPath)">↑ Up</button>
+          <button class="btn role-secondary sm" :disabled="fsPath === homePath" @click="fsNavigate(homePath)">Home</button>
+          <button class="btn role-secondary sm" :disabled="!fsPath || fsPath === homePath" @click="fsNavigate(parentPath)">↑ Up</button>
           <span class="fs-path">{{ fsPath }}</span>
         </div>
         <div v-if="fsError" class="fs-error">{{ fsError }}</div>
@@ -140,13 +140,13 @@
           <div v-if="showCheatsheet" class="cheatsheet-panel">
             <div class="cheatsheet-title">Quick reference</div>
             <div class="cheatsheet-section">Aliases</div>
-            <code>k</code> = kubectl · <code>kk</code> = kubectl krew
+            <code>k</code> = kubectl · <code>kk</code> = kubectl krew · <code>k -cA</code> = run for all clusters
             <div class="cheatsheet-section">Krew</div>
             <code>kk list</code> · <code>kk search</code> · <code>kk install &lt;name&gt;</code><br>
             <code>kk uninstall</code> · <code>kk upgrade</code> · <code>kk update</code>
             <div class="cheatsheet-section">Plugins (run with k)</div>
             <code>k stern . -n &lt;ns&gt;</code> · <code>k get-all -n &lt;ns&gt;</code><br>
-            <code>k lineage &lt;res&gt;</code> · <code>k9s</code>
+            <code>k -cA get pods -A</code> — all clusters · <code>k lineage &lt;res&gt;</code> · <code>rk9s</code>
             <div class="cheatsheet-section">CLIs</div>
             <code>zellij</code> · <code>crictl</code> · <code>etcdctl</code> · <code>runc</code>
             <div class="cheatsheet-section">SSH to nodes</div>
@@ -161,16 +161,14 @@
 </template>
 
 <script>
-// Backend: use Rancher meta proxy (same as node-driver) so no Ingress for API. Dev: localhost:9000.
-const META_PROXY_BACKEND = '/meta/proxy/krew-workstation.krew-workstation.svc:3000';
+// Backend: use /krew-api (Ingress) so no meta proxy needed. Dev: localhost:9000.
 function getBackendUrl() {
   const o = window.location.origin;
   if (o.startsWith('http://localhost') || o.startsWith('http://127.0.0.1')) return 'http://localhost:9000';
-  return null; // use meta proxy (relative URL)
+  return o + '/krew-api';
 }
-const BACKEND_URL_DEV = getBackendUrl();
-const BACKEND_URL = BACKEND_URL_DEV || ''; // empty = use meta proxy
-const WS_URL = BACKEND_URL_DEV ? BACKEND_URL_DEV.replace(/^http/, 'ws') : (window.location.origin.replace(/^http/, 'ws') + '/krew-api');
+const BACKEND_URL = getBackendUrl();
+const WS_URL = BACKEND_URL.startsWith('http://localhost') ? BACKEND_URL.replace(/^http/, 'ws') : (window.location.origin.replace(/^http/, 'ws') + '/krew-api');
 
 function errMsg(e) {
   const m = e?.message ?? e?.error ?? (typeof e === 'string' ? e : null) ?? (e?.response?.data?.error);
@@ -264,7 +262,8 @@ export default {
       term:           null,
       fitAddon:       null,
       ws:             null,
-      fsPath:         '/root',
+      fsPath:         '/opt/krew-workstation',
+      homePath:       '/opt/krew-workstation',
       fsEntries:      [],
       fsError:        '',
       currentContext: '',
@@ -381,34 +380,37 @@ export default {
         const token = await getRancherToken();
         if (token) headers['Authorization'] = `Bearer ${token}`;
       } catch (_) {}
-      if (BACKEND_URL) {
-        const resp = await fetch(`${BACKEND_URL}${path}`, { method, headers, ...opts });
-        const data = await resp.json();
-        if (!resp.ok) throw new Error(data.error || `HTTP ${resp.status}`);
-        return data;
-      }
-      const url = META_PROXY_BACKEND + path;
-      const res = await this.$store.dispatch('management/request', {
-        url,
-        method,
-        headers,
-        data: opts.body || (opts.data ? JSON.stringify(opts.data) : undefined),
-        redirectUnauthorized: false,
-      }, { root: true });
-      if (res._status >= 400) {
-        const msg = (res.data && res.data.error) || res.message || (typeof res.data === 'string' ? res.data : null) || res?.response?.data?.error;
-        throw new Error(msg && String(msg) !== 'undefined' ? String(msg) : `HTTP ${res._status}`);
-      }
-      if (res.data !== undefined) return typeof res.data === 'object' ? res.data : JSON.parse(res.data || '{}');
-      const { _status, _headers, ...body } = res;
-      return body;
+      const resp = await fetch(`${BACKEND_URL}${path}`, { method, headers, ...opts });
+      const data = await resp.json().catch(() => ({}));
+      if (!resp.ok) throw new Error(data.error || `HTTP ${resp.status}`);
+      return data;
+    },
+
+    async rancherApi(method, path, body) {
+      const token = await getRancherToken();
+      const opts = { method, credentials: 'include', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } };
+      if (body && method !== 'GET') opts.body = typeof body === 'string' ? body : JSON.stringify(body);
+      const resp = await fetch(window.location.origin + path, opts);
+      const data = await resp.json().catch(() => ({}));
+      if (!resp.ok) throw new Error(data.message || data.error || `HTTP ${resp.status}`);
+      return data;
     },
 
     async fetchClusters() {
       try {
-        const data = await this.api('GET', '/api/clusters');
-        this.clusters = data.clusters || [];
-      } catch (e) {}
+        const raw = await this.rancherApi('GET', '/v1/management.cattle.io.clusters?limit=-1');
+        const arr = Array.isArray(raw.data) ? raw.data : (raw.data?.data || []);
+        this.clusters = arr.map((c) => ({
+          id:   c.metadata?.name || c.id,
+          name: c.spec?.displayName || c.metadata?.name || c.name || '?',
+          state: c.status?.conditions?.find((x) => x.type === 'Ready')?.status === 'True' ? 'active' : 'inactive',
+        }));
+      } catch (e) {
+        try {
+          const v3 = await this.rancherApi('GET', '/v3/clusters');
+          this.clusters = (v3.data || []).map((c) => ({ id: c.id, name: c.name || c.id, state: c.state || 'active' }));
+        } catch (_) {}
+      }
     },
 
     async syncKubeconfig() {
@@ -416,6 +418,7 @@ export default {
       this.error = '';
       try {
         const data = await this.api('POST', '/api/kubeconfig/sync');
+        await this.fetchClusters();
         await this.fetchContext();
         const n = data.clusters ?? 0;
         const msg = n > 0 ? `Kubeconfig synced for ${n} cluster(s)` : 'No clusters to sync';

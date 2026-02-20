@@ -4,7 +4,7 @@ const BLANK_CLUSTER = '_';
 import KrewPage from '../KrewPage.vue';
 
 // to achieve naming consistency throughout the extension
-const YOUR_PRODUCT_NAME = 'tools';
+const YOUR_PRODUCT_NAME = 'vishnu';
 const TOOLS_HUB_PAGE = 'hub';
 const KREW_PAGE = 'krew';
 

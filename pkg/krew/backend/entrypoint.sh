@@ -4,6 +4,7 @@ set -e
 # Use /opt/krew for non-root compatibility (Rancher enforces runAsNonRoot)
 KREW_ROOT="${KREW_ROOT:-/opt/krew}"
 export KREW_ROOT
+export HOME="${HOME:-/opt/krew-workstation}"
 export PATH="${KREW_ROOT}/bin:${PATH}"
 CONFIG_DIR="${CONFIG_DIR:-/opt/krew-workstation}"
 mkdir -p "${CONFIG_DIR}"
@@ -41,13 +42,12 @@ fi
 # Update plugin index
 kubectl krew update 2>/dev/null || true
 
-# Install k9s and ssh-jump first (sync) — user expects them immediately
-kubectl krew list 2>/dev/null | grep -q "^k9s$" || kubectl krew install k9s 2>/dev/null || true
+# Install ssh-jump first (sync) — user expects it immediately. rk9s is preinstalled as standalone binary.
 kubectl krew list 2>/dev/null | grep -q "^ssh-jump$" || kubectl krew install ssh-jump 2>/dev/null || true
 
-# Install other default plugins in background
+# Install other default plugins in background (browse-pvc needs gcompat for glibc binary)
 (
-  for p in stern lineage get-all crust-gather; do
+  for p in stern lineage get-all crust-gather browse-pvc; do
     kubectl krew list 2>/dev/null | grep -q "^${p}$" || kubectl krew install "$p" 2>/dev/null || true
   done
 ) &

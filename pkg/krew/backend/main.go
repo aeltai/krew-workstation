@@ -336,6 +336,9 @@ func rewriteKubeconfigServerURLs(cfg *kubeConfig) {
 		}
 		// Rancher cert is for localhost/rancher.cattle-system, not "rancher" — skip TLS verify for all
 		cluster["insecure-skip-tls-verify"] = true
+		// kubectl disallows insecure + certificate-authority together; remove cert fields
+		delete(cluster, "certificate-authority")
+		delete(cluster, "certificate-authority-data")
 	}
 }
 
@@ -346,7 +349,7 @@ func kubeConfigPath() string {
 
 // detectCLIs returns which container/runtime CLIs are installed.
 func detectCLIs() []string {
-	clis := []string{"crictl", "runc", "etcdctl", "zellij", "ssh"}
+	clis := []string{"crictl", "runc", "etcdctl", "zellij", "ssh", "rk9s"}
 	var found []string
 	for _, name := range clis {
 		if _, err := exec.LookPath(name); err == nil {
@@ -375,7 +378,7 @@ func fetchWelcome() string {
 	b.WriteString("\r\n")
 	b.WriteString("  ╔══════════════════════════════════════════════════════╗\r\n")
 	b.WriteString("  ║              Krew Workstation                        ║\r\n")
-	b.WriteString("  ║   k=kubectl   kk='kubectl krew'   tab completion ✓    ║\r\n")
+	b.WriteString("  ║   k=kubectl   kk='kubectl krew'   k -cA=all clusters  ║\r\n")
 	b.WriteString("  ╚══════════════════════════════════════════════════════╝\r\n\r\n")
 
 	if len(clis) > 0 {
@@ -394,7 +397,7 @@ func fetchWelcome() string {
 		}
 	}
 
-	b.WriteString("  Ready. Try: kk list | k9s | zellij | k ssh-jump\r\n\r\n")
+	b.WriteString("  Ready. Try: kk list | rk9s | gh | zellij | k ssh-jump\r\n\r\n")
 	return b.String()
 }
 
@@ -533,6 +536,27 @@ func registerRoutes(r gin.IRouter) {
 			return
 		}
 		c.JSON(200, gin.H{"message": "kubeconfig synced", "clusters": len(clusters)})
+	})
+
+	// Write kubeconfig from frontend (frontend gets it from Rancher API, posts here)
+	r.POST("/api/kubeconfig/write", func(c *gin.Context) {
+		var body struct {
+			Kubeconfig string `json:"kubeconfig"`
+		}
+		if err := c.ShouldBindJSON(&body); err != nil || body.Kubeconfig == "" {
+			c.JSON(400, gin.H{"error": "kubeconfig required in body"})
+			return
+		}
+		kubeDir := filepath.Dir(kubeConfigPath())
+		if err := os.MkdirAll(kubeDir, 0700); err != nil {
+			c.JSON(500, gin.H{"error": err.Error()})
+			return
+		}
+		if err := os.WriteFile(kubeConfigPath(), []byte(body.Kubeconfig), 0600); err != nil {
+			c.JSON(500, gin.H{"error": err.Error()})
+			return
+		}
+		c.JSON(200, gin.H{"message": "kubeconfig written"})
 	})
 
 	r.GET("/api/kubeconfig", func(c *gin.Context) {
@@ -684,8 +708,8 @@ func registerRoutes(r gin.IRouter) {
 		// Send custom welcome (fetched in background)
 		conn.WriteMessage(websocket.BinaryMessage, []byte(welcome))
 
-		// Inject aliases
-		ptmx.Write([]byte("alias k=kubectl; alias kk='kubectl krew'\n"))
+		// Inject aliases (k wraps kubectl; -cA = all clusters)
+		ptmx.Write([]byte("alias k=/usr/local/bin/kubectl-wrapper; alias kk='kubectl krew'\n"))
 
 		go func() {
 			for {
@@ -725,19 +749,23 @@ func registerRoutes(r gin.IRouter) {
 	})
 
 	// ── Filesystem browser (safe, restricted paths) ──
-
+	// Use HOME (/opt/krew-workstation) as default — container runs non-root, /root is inaccessible
+	homeDir := os.Getenv("HOME")
+	if homeDir == "" {
+		homeDir = "/opt/krew-workstation"
+	}
 	allowedDirs := map[string]bool{
-		"/root": true, "/app": true, "/tmp": true,
+		homeDir: true, "/opt/krew": true, "/tmp": true,
 	}
 
 	r.GET("/api/fs", func(c *gin.Context) {
 		rawPath := c.Query("path")
 		if rawPath == "" {
-			rawPath = "/root"
+			rawPath = homeDir
 		}
 		clean := filepath.Clean(rawPath)
 		if !filepath.IsAbs(clean) {
-			clean = filepath.Join("/root", clean)
+			clean = filepath.Join(homeDir, clean)
 		}
 		if !allowedDirs[clean] {
 			allowed := false

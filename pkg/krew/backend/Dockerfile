@@ -5,8 +5,15 @@ RUN go mod download
 COPY *.go ./
 RUN CGO_ENABLED=0 GOOS=linux go build -o krew-manager .
 
+# Build rk9s (SUSE/Rancher k9s fork - rancher, fleet, rke2-k3s, longhorn, harvester, kubewarden)
+FROM golang:1.25-alpine AS rk9s-builder
+RUN apk add --no-cache git
+RUN git clone --depth 1 https://github.com/aeltai/k9s.git /tmp/k9s && \
+    cd /tmp/k9s && go build -o rk9s . && mv /tmp/k9s/rk9s /rk9s
+
 FROM alpine:latest
-RUN apk add --no-cache curl git bash bash-completion runc openssh-client
+# gcompat: lets glibc-built krew plugins (e.g. browse-pvc) run on Alpine/musl
+RUN apk add --no-cache curl git bash bash-completion runc openssh-client gcompat
 
 # Zellij (terminal multiplexer)
 RUN apk add --no-cache --repository https://dl-cdn.alpinelinux.org/alpine/edge/community zellij || \
@@ -31,12 +38,15 @@ RUN cd /tmp && \
 RUN curl -LO "https://dl.k8s.io/release/$(curl -sL https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" \
     && chmod +x kubectl && mv kubectl /usr/local/bin/
 
-# Install k9s (standalone binary — more reliable than krew in restricted networks)
+COPY --from=rk9s-builder /rk9s /usr/local/bin/rk9s
+RUN chmod +x /usr/local/bin/rk9s
+
+# Install GitHub CLI (gh) — issues, PRs, workflow runs, logs
 RUN cd /tmp && \
-    K9S_VER=$(curl -sL https://api.github.com/repos/derailed/k9s/releases/latest | grep tag_name | cut -d'"' -f4) && \
-    curl -fsSL "https://github.com/derailed/k9s/releases/download/${K9S_VER}/k9s_Linux_amd64.tar.gz" | tar xz && \
-    mv k9s /usr/local/bin/ && chmod +x /usr/local/bin/k9s && \
-    rm -rf /tmp/* 2>/dev/null || true
+    GH_VER=$(curl -sL https://api.github.com/repos/cli/cli/releases/latest | grep tag_name | cut -d'"' -f4) && \
+    curl -fsSL "https://github.com/cli/cli/releases/download/${GH_VER}/gh_${GH_VER#v}_linux_amd64.tar.gz" | tar xz && \
+    mv gh_*/bin/gh /usr/local/bin/ && chmod +x /usr/local/bin/gh && \
+    rm -rf /tmp/gh_* 2>/dev/null || true
 
 # Install krew to /opt/krew (non-root compatible)
 RUN mkdir -p /opt/krew && \
@@ -62,6 +72,8 @@ RUN adduser -D -u 1000 krewuser && mkdir -p /opt/krew-workstation && chown -R 10
 
 COPY --from=builder /app/krew-manager /usr/local/bin/krew-manager
 RUN chmod 755 /usr/local/bin/krew-manager
+COPY kubectl-wrapper.sh /usr/local/bin/kubectl-wrapper
+RUN chmod +x /usr/local/bin/kubectl-wrapper
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
