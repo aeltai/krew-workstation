@@ -1,0 +1,115 @@
+[     445ms] [WARNING] [Vue warn]: defineEmits() is a compiler-hint helper that is only usable inside <script setup> of a single file component. Its arguments should be compiled away and passing it at runtime has no effect. @ https://localhost:8005/js/chunk-vendors.js:4167
+[     469ms] [WARNING] [Vue warn]: Component "v-select" has already been registered in target app. @ https://localhost:8005/js/chunk-vendors.js:4167
+[     471ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8005/js/chunk-vendors.js:459342
+[     474ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component NweHomePage with the 'plain' layout specified  @ https://localhost:8005/js/chunk-vendors.js:77698
+[     474ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8005/js/chunk-vendors.js:459342
+[     476ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component ToolsPage with the 'plain' layout specified  @ https://localhost:8005/js/chunk-vendors.js:77698
+[     476ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component KrewPage with the 'plain' layout specified  @ https://localhost:8005/js/chunk-vendors.js:77698
+[     476ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8005/js/chunk-vendors.js:459342
+[     477ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8005/js/chunk-vendors.js:77702
+[     477ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8005/js/chunk-vendors.js:459342
+[     491ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8005/js/chunk-vendors.js:77702
+[     491ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8005/js/chunk-vendors.js:77702
+[     491ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8005/js/chunk-vendors.js:77702
+[     491ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8005/js/chunk-vendors.js:77702
+[     491ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8005/js/chunk-vendors.js:77702
+[     491ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8005/js/chunk-vendors.js:459342
+[     580ms] [WARNING] All of schema is not loaded yet @ https://localhost:8005/js/chunk-vendors.js:52455
+[     580ms] [WARNING] All of schema is not loaded yet @ https://localhost:8005/js/chunk-vendors.js:52455
+[     580ms] [WARNING] All of namespace is not loaded yet @ https://localhost:8005/js/chunk-vendors.js:52455
+[    1164ms] [WARNING] All of schema is not loaded yet @ https://localhost:8005/js/chunk-vendors.js:52455
+[    1165ms] [WARNING] All of namespace is not loaded yet @ https://localhost:8005/js/chunk-vendors.js:52455
+[    1212ms] [WARNING] [Vue Router warn]: Discarded invalid param(s) "resource" when navigating. See https://github.com/vuejs/router/blob/main/packages/router/CHANGELOG.md#414-2022-08-22 for more details. @ https://localhost:8005/js/chunk-vendors.js:459342
+[    1213ms] [WARNING] [Vue Router warn]: Discarded invalid param(s) "product" when navigating. See https://github.com/vuejs/router/blob/main/packages/router/CHANGELOG.md#414-2022-08-22 for more details. @ https://localhost:8005/js/chunk-vendors.js:459342
+[    1213ms] [WARNING] [Vue Router warn]: Discarded invalid param(s) "product" when navigating. See https://github.com/vuejs/router/blob/main/packages/router/CHANGELOG.md#414-2022-08-22 for more details. @ https://localhost:8005/js/chunk-vendors.js:459342
+[    1213ms] [WARNING] [Vue Router warn]: Discarded invalid param(s) "product" when navigating. See https://github.com/vuejs/router/blob/main/packages/router/CHANGELOG.md#414-2022-08-22 for more details. @ https://localhost:8005/js/chunk-vendors.js:459342
+[   20667ms] [WARNING] [Vue Router warn]: Discarded invalid param(s) "resource" when navigating. See https://github.com/vuejs/router/blob/main/packages/router/CHANGELOG.md#414-2022-08-22 for more details. @ https://localhost:8005/js/chunk-vendors.js:459342
+[   20667ms] [WARNING] [Vue Router warn]: Discarded invalid param(s) "product" when navigating. See https://github.com/vuejs/router/blob/main/packages/router/CHANGELOG.md#414-2022-08-22 for more details. @ https://localhost:8005/js/chunk-vendors.js:459342
+[   20667ms] [WARNING] [Vue Router warn]: Discarded invalid param(s) "product" when navigating. See https://github.com/vuejs/router/blob/main/packages/router/CHANGELOG.md#414-2022-08-22 for more details. @ https://localhost:8005/js/chunk-vendors.js:459342
+[   20668ms] [WARNING] [Vue Router warn]: Discarded invalid param(s) "product" when navigating. See https://github.com/vuejs/router/blob/main/packages/router/CHANGELOG.md#414-2022-08-22 for more details. @ https://localhost:8005/js/chunk-vendors.js:459342
+[   36123ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:9000/api/clusters/local/plugins/access-matrix/install:0
+[   60107ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:9000/api/clusters/local/plugins/access-matrix/install:0
+[   80392ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:9000/api/clusters/local/plugins/access-matrix/install:0
+[   88230ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:9000/api/clusters/local/plugins/advise-psp/install:0
+[   88925ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:9000/api/clusters/local/plugins/advise-policy/install:0
+[   90207ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:9000/api/clusters/local/plugins/aks/install:0
+[  203165ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:9000/api/plugins:0
+[  207174ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:9000/api/plugins:0
+[  207633ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:9000/api/plugins/update:0
+[  208351ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:9000/api/plugins/update:0
+[  208802ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:9000/api/plugins/update:0
+[  208969ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:9000/api/plugins/update:0
+[  226023ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:9000/api/plugins/update:0
+[  226638ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:9000/api/plugins/update:0
+[  227018ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:9000/api/plugins/update:0
+[  227220ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:9000/api/plugins/update:0
+[  227386ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:9000/api/plugins/update:0
+[  227552ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:9000/api/plugins/update:0
+[  228020ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:9000/api/plugins:0
+[  228420ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:9000/api/plugins:0
+[  228570ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:9000/api/plugins:0
+[  228722ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:9000/api/plugins:0
+[  229022ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:9000/api/plugins/update:0
+[  229222ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:9000/api/plugins/update:0
+[  229690ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:9000/api/plugins:0
+[  229872ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:9000/api/plugins:0
+[  230023ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:9000/api/plugins:0
+[  230193ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:9000/api/plugins:0
+[  230355ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:9000/api/plugins:0
+[  230505ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:9000/api/plugins:0
+[  230655ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:9000/api/plugins:0
+[  230822ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:9000/api/plugins:0
+[  231122ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:9000/api/plugins/update:0
+[  231493ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:9000/api/plugins:0
+[  231873ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:9000/api/plugins/update:0
+[  232557ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:9000/api/plugins/update:0
+[  232959ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:9000/api/plugins:0
+[  233409ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:9000/api/plugins/update:0
+[  234210ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:9000/api/plugins/update:0
+[  234611ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:9000/api/plugins:0
+[  235010ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:9000/api/plugins/update:0
+[  235379ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:9000/api/plugins:0
+[  235778ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:9000/api/plugins/update:0
+[  236129ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:9000/api/plugins:0
+[  236568ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:9000/api/plugins/update:0
+[  236862ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:9000/api/plugins:0
+[  245932ms] [WARNING] [Vue warn]: defineEmits() is a compiler-hint helper that is only usable inside <script setup> of a single file component. Its arguments should be compiled away and passing it at runtime has no effect. @ https://localhost:8005/js/chunk-vendors.js:4167
+[  245957ms] [WARNING] [Vue warn]: Component "v-select" has already been registered in target app. @ https://localhost:8005/js/chunk-vendors.js:4167
+[  245960ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8005/js/chunk-vendors.js:459342
+[  245963ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component NweHomePage with the 'plain' layout specified  @ https://localhost:8005/js/chunk-vendors.js:77698
+[  245963ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8005/js/chunk-vendors.js:459342
+[  245964ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component ToolsPage with the 'plain' layout specified  @ https://localhost:8005/js/chunk-vendors.js:77698
+[  245964ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component KrewPage with the 'plain' layout specified  @ https://localhost:8005/js/chunk-vendors.js:77698
+[  245964ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8005/js/chunk-vendors.js:459342
+[  245965ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8005/js/chunk-vendors.js:77702
+[  245965ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8005/js/chunk-vendors.js:459342
+[  245980ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8005/js/chunk-vendors.js:77702
+[  245980ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8005/js/chunk-vendors.js:77702
+[  245980ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8005/js/chunk-vendors.js:77702
+[  245980ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8005/js/chunk-vendors.js:77702
+[  245980ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8005/js/chunk-vendors.js:77702
+[  245980ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8005/js/chunk-vendors.js:459342
+[  246067ms] [WARNING] All of schema is not loaded yet @ https://localhost:8005/js/chunk-vendors.js:52455
+[  246068ms] [WARNING] All of schema is not loaded yet @ https://localhost:8005/js/chunk-vendors.js:52455
+[  246068ms] [WARNING] All of namespace is not loaded yet @ https://localhost:8005/js/chunk-vendors.js:52455
+[  246655ms] [WARNING] All of schema is not loaded yet @ https://localhost:8005/js/chunk-vendors.js:52455
+[  246655ms] [WARNING] All of namespace is not loaded yet @ https://localhost:8005/js/chunk-vendors.js:52455
+[  246727ms] [WARNING] [Vue Router warn]: Discarded invalid param(s) "resource" when navigating. See https://github.com/vuejs/router/blob/main/packages/router/CHANGELOG.md#414-2022-08-22 for more details. @ https://localhost:8005/js/chunk-vendors.js:459342
+[  246728ms] [WARNING] [Vue Router warn]: Discarded invalid param(s) "product" when navigating. See https://github.com/vuejs/router/blob/main/packages/router/CHANGELOG.md#414-2022-08-22 for more details. @ https://localhost:8005/js/chunk-vendors.js:459342
+[  246728ms] [WARNING] [Vue Router warn]: Discarded invalid param(s) "product" when navigating. See https://github.com/vuejs/router/blob/main/packages/router/CHANGELOG.md#414-2022-08-22 for more details. @ https://localhost:8005/js/chunk-vendors.js:459342
+[  246728ms] [WARNING] [Vue Router warn]: Discarded invalid param(s) "product" when navigating. See https://github.com/vuejs/router/blob/main/packages/router/CHANGELOG.md#414-2022-08-22 for more details. @ https://localhost:8005/js/chunk-vendors.js:459342
+[  246751ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:9000/api/plugins:0
+[  247789ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:9000/api/plugins/update:0
+[  248242ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:9000/api/plugins:0

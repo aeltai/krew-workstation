@@ -1,0 +1,805 @@
+[    7268ms] [WARNING] [Vue warn]: defineEmits() is a compiler-hint helper that is only usable inside <script setup> of a single file component. Its arguments should be compiled away and passing it at runtime has no effect. @ https://localhost:8006/js/chunk-vendors.js:4167
+[    7294ms] [WARNING] [Vue warn]: Component "v-select" has already been registered in target app. @ https://localhost:8006/js/chunk-vendors.js:4167
+[    7297ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    7301ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component NweHomePage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[    7301ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    7302ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component ToolsPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[    7302ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component KrewPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[    7302ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    7303ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    7303ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    7320ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    7320ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    7320ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    7320ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    7320ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    7320ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    7374ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://localhost:8006/index.f139dd4b83efc005.hot-update.json:0
+[    7645ms] [WARNING] [Vue warn]: defineEmits() is a compiler-hint helper that is only usable inside <script setup> of a single file component. Its arguments should be compiled away and passing it at runtime has no effect. @ https://localhost:8006/js/chunk-vendors.js:4167
+[    7656ms] [WARNING] [Vue warn]: Component "v-select" has already been registered in target app. @ https://localhost:8006/js/chunk-vendors.js:4167
+[    7658ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    7660ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component NweHomePage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[    7660ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    7661ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component ToolsPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[    7661ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component KrewPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[    7661ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    7661ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    7661ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    7673ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    7673ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    7673ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    7673ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    7673ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    7673ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    7829ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://localhost:8006/index.f139dd4b83efc005.hot-update.json:0
+[    7953ms] [WARNING] [Vue warn]: defineEmits() is a compiler-hint helper that is only usable inside <script setup> of a single file component. Its arguments should be compiled away and passing it at runtime has no effect. @ https://localhost:8006/js/chunk-vendors.js:4167
+[    7963ms] [WARNING] [Vue warn]: Component "v-select" has already been registered in target app. @ https://localhost:8006/js/chunk-vendors.js:4167
+[    7964ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    7965ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component NweHomePage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[    7966ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    7966ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component ToolsPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[    7966ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component KrewPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[    7966ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    7967ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    7967ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    7975ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    7975ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    7975ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    7975ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    7975ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    7975ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    8043ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://localhost:8006/index.f139dd4b83efc005.hot-update.json:0
+[    8160ms] [WARNING] [Vue warn]: defineEmits() is a compiler-hint helper that is only usable inside <script setup> of a single file component. Its arguments should be compiled away and passing it at runtime has no effect. @ https://localhost:8006/js/chunk-vendors.js:4167
+[    8171ms] [WARNING] [Vue warn]: Component "v-select" has already been registered in target app. @ https://localhost:8006/js/chunk-vendors.js:4167
+[    8172ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    8174ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component NweHomePage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[    8174ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    8174ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component ToolsPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[    8174ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component KrewPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[    8174ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    8175ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    8175ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    8191ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    8191ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    8191ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    8191ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    8191ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    8191ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    8256ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://localhost:8006/index.f139dd4b83efc005.hot-update.json:0
+[    8394ms] [WARNING] [Vue warn]: defineEmits() is a compiler-hint helper that is only usable inside <script setup> of a single file component. Its arguments should be compiled away and passing it at runtime has no effect. @ https://localhost:8006/js/chunk-vendors.js:4167
+[    8405ms] [WARNING] [Vue warn]: Component "v-select" has already been registered in target app. @ https://localhost:8006/js/chunk-vendors.js:4167
+[    8407ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    8409ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component NweHomePage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[    8409ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    8410ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component ToolsPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[    8410ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component KrewPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[    8410ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    8411ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    8411ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    8429ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    8430ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    8430ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    8430ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    8430ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    8430ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    8509ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://localhost:8006/index.f139dd4b83efc005.hot-update.json:0
+[    8622ms] [WARNING] [Vue warn]: defineEmits() is a compiler-hint helper that is only usable inside <script setup> of a single file component. Its arguments should be compiled away and passing it at runtime has no effect. @ https://localhost:8006/js/chunk-vendors.js:4167
+[    8631ms] [WARNING] [Vue warn]: Component "v-select" has already been registered in target app. @ https://localhost:8006/js/chunk-vendors.js:4167
+[    8633ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    8634ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component NweHomePage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[    8634ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    8634ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component ToolsPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[    8634ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component KrewPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[    8634ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    8635ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    8635ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    8648ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    8648ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    8648ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    8648ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    8648ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    8648ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    8773ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://localhost:8006/index.f139dd4b83efc005.hot-update.json:0
+[    8900ms] [WARNING] [Vue warn]: defineEmits() is a compiler-hint helper that is only usable inside <script setup> of a single file component. Its arguments should be compiled away and passing it at runtime has no effect. @ https://localhost:8006/js/chunk-vendors.js:4167
+[    8910ms] [WARNING] [Vue warn]: Component "v-select" has already been registered in target app. @ https://localhost:8006/js/chunk-vendors.js:4167
+[    8911ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    8912ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component NweHomePage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[    8912ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    8913ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component ToolsPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[    8913ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component KrewPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[    8913ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    8913ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    8913ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    8926ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    8926ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    8926ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    8926ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    8926ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    8926ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    8937ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://localhost:8006/index.f139dd4b83efc005.hot-update.json:0
+[    9036ms] [WARNING] [Vue warn]: defineEmits() is a compiler-hint helper that is only usable inside <script setup> of a single file component. Its arguments should be compiled away and passing it at runtime has no effect. @ https://localhost:8006/js/chunk-vendors.js:4167
+[    9045ms] [WARNING] [Vue warn]: Component "v-select" has already been registered in target app. @ https://localhost:8006/js/chunk-vendors.js:4167
+[    9046ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    9047ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component NweHomePage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[    9048ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    9048ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component ToolsPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[    9048ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component KrewPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[    9048ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    9048ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    9048ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    9061ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    9061ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    9061ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    9061ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    9061ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    9061ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    9071ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://localhost:8006/index.f139dd4b83efc005.hot-update.json:0
+[    9171ms] [WARNING] [Vue warn]: defineEmits() is a compiler-hint helper that is only usable inside <script setup> of a single file component. Its arguments should be compiled away and passing it at runtime has no effect. @ https://localhost:8006/js/chunk-vendors.js:4167
+[    9181ms] [WARNING] [Vue warn]: Component "v-select" has already been registered in target app. @ https://localhost:8006/js/chunk-vendors.js:4167
+[    9182ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    9183ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component NweHomePage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[    9183ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    9184ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component ToolsPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[    9184ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component KrewPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[    9184ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    9189ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    9189ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    9197ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    9197ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    9197ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    9197ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    9197ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    9197ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    9207ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://localhost:8006/index.f139dd4b83efc005.hot-update.json:0
+[    9307ms] [WARNING] [Vue warn]: defineEmits() is a compiler-hint helper that is only usable inside <script setup> of a single file component. Its arguments should be compiled away and passing it at runtime has no effect. @ https://localhost:8006/js/chunk-vendors.js:4167
+[    9316ms] [WARNING] [Vue warn]: Component "v-select" has already been registered in target app. @ https://localhost:8006/js/chunk-vendors.js:4167
+[    9321ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    9323ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component NweHomePage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[    9323ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    9323ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component ToolsPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[    9323ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component KrewPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[    9324ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    9324ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    9324ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    9332ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    9332ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    9332ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    9332ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    9332ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    9332ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    9343ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://localhost:8006/index.f139dd4b83efc005.hot-update.json:0
+[    9440ms] [WARNING] [Vue warn]: defineEmits() is a compiler-hint helper that is only usable inside <script setup> of a single file component. Its arguments should be compiled away and passing it at runtime has no effect. @ https://localhost:8006/js/chunk-vendors.js:4167
+[    9453ms] [WARNING] [Vue warn]: Component "v-select" has already been registered in target app. @ https://localhost:8006/js/chunk-vendors.js:4167
+[    9454ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    9455ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component NweHomePage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[    9456ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    9456ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component ToolsPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[    9456ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component KrewPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[    9456ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    9456ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    9457ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    9464ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    9464ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    9464ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    9464ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    9464ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    9464ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    9476ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://localhost:8006/index.f139dd4b83efc005.hot-update.json:0
+[    9574ms] [WARNING] [Vue warn]: defineEmits() is a compiler-hint helper that is only usable inside <script setup> of a single file component. Its arguments should be compiled away and passing it at runtime has no effect. @ https://localhost:8006/js/chunk-vendors.js:4167
+[    9587ms] [WARNING] [Vue warn]: Component "v-select" has already been registered in target app. @ https://localhost:8006/js/chunk-vendors.js:4167
+[    9588ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    9589ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component NweHomePage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[    9590ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    9590ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component ToolsPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[    9590ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component KrewPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[    9590ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    9590ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    9591ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    9598ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    9598ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    9598ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    9598ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    9598ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    9599ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    9609ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://localhost:8006/index.f139dd4b83efc005.hot-update.json:0
+[    9713ms] [WARNING] [Vue warn]: defineEmits() is a compiler-hint helper that is only usable inside <script setup> of a single file component. Its arguments should be compiled away and passing it at runtime has no effect. @ https://localhost:8006/js/chunk-vendors.js:4167
+[    9727ms] [WARNING] [Vue warn]: Component "v-select" has already been registered in target app. @ https://localhost:8006/js/chunk-vendors.js:4167
+[    9729ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    9730ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component NweHomePage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[    9730ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    9730ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component ToolsPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[    9730ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component KrewPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[    9731ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    9731ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    9731ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    9739ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    9739ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    9739ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    9739ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    9739ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    9739ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    9750ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://localhost:8006/index.f139dd4b83efc005.hot-update.json:0
+[    9854ms] [WARNING] [Vue warn]: defineEmits() is a compiler-hint helper that is only usable inside <script setup> of a single file component. Its arguments should be compiled away and passing it at runtime has no effect. @ https://localhost:8006/js/chunk-vendors.js:4167
+[    9867ms] [WARNING] [Vue warn]: Component "v-select" has already been registered in target app. @ https://localhost:8006/js/chunk-vendors.js:4167
+[    9869ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    9870ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component NweHomePage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[    9870ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    9871ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component ToolsPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[    9871ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component KrewPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[    9871ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    9871ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    9871ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    9879ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    9879ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    9879ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    9879ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    9879ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[    9879ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[    9890ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://localhost:8006/index.f139dd4b83efc005.hot-update.json:0
+[    9995ms] [WARNING] [Vue warn]: defineEmits() is a compiler-hint helper that is only usable inside <script setup> of a single file component. Its arguments should be compiled away and passing it at runtime has no effect. @ https://localhost:8006/js/chunk-vendors.js:4167
+[   10009ms] [WARNING] [Vue warn]: Component "v-select" has already been registered in target app. @ https://localhost:8006/js/chunk-vendors.js:4167
+[   10011ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   10012ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component NweHomePage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   10012ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   10013ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component ToolsPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   10013ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component KrewPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   10013ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   10013ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   10013ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   10021ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   10021ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   10021ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   10021ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   10021ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   10021ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   10036ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://localhost:8006/index.f139dd4b83efc005.hot-update.json:0
+[   10140ms] [WARNING] [Vue warn]: defineEmits() is a compiler-hint helper that is only usable inside <script setup> of a single file component. Its arguments should be compiled away and passing it at runtime has no effect. @ https://localhost:8006/js/chunk-vendors.js:4167
+[   10150ms] [WARNING] [Vue warn]: Component "v-select" has already been registered in target app. @ https://localhost:8006/js/chunk-vendors.js:4167
+[   10151ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   10152ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component NweHomePage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   10152ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   10153ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component ToolsPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   10153ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component KrewPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   10153ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   10153ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   10153ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   10161ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   10161ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   10161ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   10161ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   10161ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   10161ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   10172ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://localhost:8006/index.f139dd4b83efc005.hot-update.json:0
+[   10280ms] [WARNING] [Vue warn]: defineEmits() is a compiler-hint helper that is only usable inside <script setup> of a single file component. Its arguments should be compiled away and passing it at runtime has no effect. @ https://localhost:8006/js/chunk-vendors.js:4167
+[   10289ms] [WARNING] [Vue warn]: Component "v-select" has already been registered in target app. @ https://localhost:8006/js/chunk-vendors.js:4167
+[   10291ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   10292ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component NweHomePage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   10292ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   10293ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component ToolsPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   10293ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component KrewPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   10293ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   10293ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   10293ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   10301ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   10301ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   10301ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   10301ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   10301ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   10301ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   10314ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://localhost:8006/index.f139dd4b83efc005.hot-update.json:0
+[   10420ms] [WARNING] [Vue warn]: defineEmits() is a compiler-hint helper that is only usable inside <script setup> of a single file component. Its arguments should be compiled away and passing it at runtime has no effect. @ https://localhost:8006/js/chunk-vendors.js:4167
+[   10429ms] [WARNING] [Vue warn]: Component "v-select" has already been registered in target app. @ https://localhost:8006/js/chunk-vendors.js:4167
+[   10430ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   10431ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component NweHomePage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   10431ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   10432ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component ToolsPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   10432ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component KrewPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   10432ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   10432ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   10432ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   10440ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   10440ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   10440ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   10440ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   10440ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   10440ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   10450ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://localhost:8006/index.f139dd4b83efc005.hot-update.json:0
+[   10549ms] [WARNING] [Vue warn]: defineEmits() is a compiler-hint helper that is only usable inside <script setup> of a single file component. Its arguments should be compiled away and passing it at runtime has no effect. @ https://localhost:8006/js/chunk-vendors.js:4167
+[   10558ms] [WARNING] [Vue warn]: Component "v-select" has already been registered in target app. @ https://localhost:8006/js/chunk-vendors.js:4167
+[   10559ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   10560ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component NweHomePage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   10560ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   10561ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component ToolsPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   10561ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component KrewPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   10561ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   10561ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   10561ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   10569ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   10569ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   10569ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   10569ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   10569ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   10569ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   10580ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://localhost:8006/index.f139dd4b83efc005.hot-update.json:0
+[   10681ms] [WARNING] [Vue warn]: defineEmits() is a compiler-hint helper that is only usable inside <script setup> of a single file component. Its arguments should be compiled away and passing it at runtime has no effect. @ https://localhost:8006/js/chunk-vendors.js:4167
+[   10691ms] [WARNING] [Vue warn]: Component "v-select" has already been registered in target app. @ https://localhost:8006/js/chunk-vendors.js:4167
+[   10693ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   10694ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component NweHomePage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   10694ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   10695ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component ToolsPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   10695ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component KrewPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   10695ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   10695ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   10695ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   10709ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   10709ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   10709ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   10709ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   10709ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   10709ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   10719ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://localhost:8006/index.f139dd4b83efc005.hot-update.json:0
+[   10818ms] [WARNING] [Vue warn]: defineEmits() is a compiler-hint helper that is only usable inside <script setup> of a single file component. Its arguments should be compiled away and passing it at runtime has no effect. @ https://localhost:8006/js/chunk-vendors.js:4167
+[   10826ms] [WARNING] [Vue warn]: Component "v-select" has already been registered in target app. @ https://localhost:8006/js/chunk-vendors.js:4167
+[   10828ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   10829ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component NweHomePage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   10829ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   10829ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component ToolsPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   10829ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component KrewPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   10830ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   10830ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   10830ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   10842ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   10842ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   10842ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   10842ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   10842ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   10842ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   10851ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://localhost:8006/index.f139dd4b83efc005.hot-update.json:0
+[   10949ms] [WARNING] [Vue warn]: defineEmits() is a compiler-hint helper that is only usable inside <script setup> of a single file component. Its arguments should be compiled away and passing it at runtime has no effect. @ https://localhost:8006/js/chunk-vendors.js:4167
+[   10958ms] [WARNING] [Vue warn]: Component "v-select" has already been registered in target app. @ https://localhost:8006/js/chunk-vendors.js:4167
+[   10959ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   10960ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component NweHomePage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   10960ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   10961ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component ToolsPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   10961ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component KrewPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   10961ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   10961ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   10961ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   10973ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   10973ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   10973ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   10973ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   10973ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   10973ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   10984ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://localhost:8006/index.f139dd4b83efc005.hot-update.json:0
+[   11081ms] [WARNING] [Vue warn]: defineEmits() is a compiler-hint helper that is only usable inside <script setup> of a single file component. Its arguments should be compiled away and passing it at runtime has no effect. @ https://localhost:8006/js/chunk-vendors.js:4167
+[   11090ms] [WARNING] [Vue warn]: Component "v-select" has already been registered in target app. @ https://localhost:8006/js/chunk-vendors.js:4167
+[   11091ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   11093ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component NweHomePage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   11093ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   11093ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component ToolsPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   11093ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component KrewPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   11093ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   11094ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   11094ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   11105ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   11105ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   11105ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   11105ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   11105ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   11105ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   11116ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://localhost:8006/index.f139dd4b83efc005.hot-update.json:0
+[   11223ms] [WARNING] [Vue warn]: defineEmits() is a compiler-hint helper that is only usable inside <script setup> of a single file component. Its arguments should be compiled away and passing it at runtime has no effect. @ https://localhost:8006/js/chunk-vendors.js:4167
+[   11233ms] [WARNING] [Vue warn]: Component "v-select" has already been registered in target app. @ https://localhost:8006/js/chunk-vendors.js:4167
+[   11234ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   11236ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component NweHomePage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   11236ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   11236ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component ToolsPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   11237ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component KrewPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   11237ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   11237ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   11237ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   11256ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   11256ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   11256ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   11256ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   11256ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   11256ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   11287ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://localhost:8006/index.f139dd4b83efc005.hot-update.json:0
+[   11405ms] [WARNING] [Vue warn]: defineEmits() is a compiler-hint helper that is only usable inside <script setup> of a single file component. Its arguments should be compiled away and passing it at runtime has no effect. @ https://localhost:8006/js/chunk-vendors.js:4167
+[   11415ms] [WARNING] [Vue warn]: Component "v-select" has already been registered in target app. @ https://localhost:8006/js/chunk-vendors.js:4167
+[   11416ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   11417ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component NweHomePage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   11417ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   11418ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component ToolsPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   11418ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component KrewPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   11418ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   11424ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   11424ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   11432ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   11432ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   11432ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   11432ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   11432ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   11432ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   11445ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://localhost:8006/index.f139dd4b83efc005.hot-update.json:0
+[   11557ms] [WARNING] [Vue warn]: defineEmits() is a compiler-hint helper that is only usable inside <script setup> of a single file component. Its arguments should be compiled away and passing it at runtime has no effect. @ https://localhost:8006/js/chunk-vendors.js:4167
+[   11567ms] [WARNING] [Vue warn]: Component "v-select" has already been registered in target app. @ https://localhost:8006/js/chunk-vendors.js:4167
+[   11576ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   11578ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component NweHomePage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   11578ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   11578ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component ToolsPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   11578ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component KrewPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   11578ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   11579ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   11579ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   11587ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   11587ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   11587ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   11587ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   11587ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   11587ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   11610ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://localhost:8006/index.f139dd4b83efc005.hot-update.json:0
+[   11717ms] [WARNING] [Vue warn]: defineEmits() is a compiler-hint helper that is only usable inside <script setup> of a single file component. Its arguments should be compiled away and passing it at runtime has no effect. @ https://localhost:8006/js/chunk-vendors.js:4167
+[   11730ms] [WARNING] [Vue warn]: Component "v-select" has already been registered in target app. @ https://localhost:8006/js/chunk-vendors.js:4167
+[   11732ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   11733ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component NweHomePage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   11733ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   11734ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component ToolsPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   11734ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component KrewPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   11734ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   11734ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   11734ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   11742ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   11742ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   11742ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   11743ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   11743ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   11743ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   11754ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://localhost:8006/index.f139dd4b83efc005.hot-update.json:0
+[   11853ms] [WARNING] [Vue warn]: defineEmits() is a compiler-hint helper that is only usable inside <script setup> of a single file component. Its arguments should be compiled away and passing it at runtime has no effect. @ https://localhost:8006/js/chunk-vendors.js:4167
+[   11866ms] [WARNING] [Vue warn]: Component "v-select" has already been registered in target app. @ https://localhost:8006/js/chunk-vendors.js:4167
+[   11868ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   11869ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component NweHomePage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   11869ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   11870ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component ToolsPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   11870ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component KrewPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   11870ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   11870ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   11870ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   11878ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   11878ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   11878ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   11878ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   11878ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   11878ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   11892ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://localhost:8006/index.f139dd4b83efc005.hot-update.json:0
+[   11990ms] [WARNING] [Vue warn]: defineEmits() is a compiler-hint helper that is only usable inside <script setup> of a single file component. Its arguments should be compiled away and passing it at runtime has no effect. @ https://localhost:8006/js/chunk-vendors.js:4167
+[   12004ms] [WARNING] [Vue warn]: Component "v-select" has already been registered in target app. @ https://localhost:8006/js/chunk-vendors.js:4167
+[   12005ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   12006ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component NweHomePage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   12007ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   12007ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component ToolsPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   12007ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component KrewPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   12007ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   12008ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   12008ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   12016ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   12016ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   12016ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   12016ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   12016ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   12016ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   12028ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://localhost:8006/index.f139dd4b83efc005.hot-update.json:0
+[   12125ms] [WARNING] [Vue warn]: defineEmits() is a compiler-hint helper that is only usable inside <script setup> of a single file component. Its arguments should be compiled away and passing it at runtime has no effect. @ https://localhost:8006/js/chunk-vendors.js:4167
+[   12139ms] [WARNING] [Vue warn]: Component "v-select" has already been registered in target app. @ https://localhost:8006/js/chunk-vendors.js:4167
+[   12140ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   12141ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component NweHomePage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   12142ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   12142ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component ToolsPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   12142ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component KrewPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   12142ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   12143ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   12143ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   12151ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   12151ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   12151ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   12151ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   12151ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   12151ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   12163ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://localhost:8006/index.f139dd4b83efc005.hot-update.json:0
+[   12264ms] [WARNING] [Vue warn]: defineEmits() is a compiler-hint helper that is only usable inside <script setup> of a single file component. Its arguments should be compiled away and passing it at runtime has no effect. @ https://localhost:8006/js/chunk-vendors.js:4167
+[   12278ms] [WARNING] [Vue warn]: Component "v-select" has already been registered in target app. @ https://localhost:8006/js/chunk-vendors.js:4167
+[   12279ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   12281ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component NweHomePage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   12281ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   12281ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component ToolsPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   12281ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component KrewPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   12281ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   12282ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   12282ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   12290ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   12290ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   12290ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   12290ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   12290ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   12290ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   12364ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://localhost:8006/index.f139dd4b83efc005.hot-update.json:0
+[   12491ms] [WARNING] [Vue warn]: defineEmits() is a compiler-hint helper that is only usable inside <script setup> of a single file component. Its arguments should be compiled away and passing it at runtime has no effect. @ https://localhost:8006/js/chunk-vendors.js:4167
+[   12501ms] [WARNING] [Vue warn]: Component "v-select" has already been registered in target app. @ https://localhost:8006/js/chunk-vendors.js:4167
+[   12502ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   12503ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component NweHomePage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   12503ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   12504ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component ToolsPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   12504ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component KrewPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   12504ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   12504ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   12504ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   12512ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   12512ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   12512ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   12512ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   12512ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   12512ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   12526ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://localhost:8006/index.f139dd4b83efc005.hot-update.json:0
+[   12690ms] [WARNING] [Vue warn]: defineEmits() is a compiler-hint helper that is only usable inside <script setup> of a single file component. Its arguments should be compiled away and passing it at runtime has no effect. @ https://localhost:8006/js/chunk-vendors.js:4167
+[   12699ms] [WARNING] [Vue warn]: Component "v-select" has already been registered in target app. @ https://localhost:8006/js/chunk-vendors.js:4167
+[   12701ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   12702ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component NweHomePage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   12702ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   12703ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component ToolsPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   12703ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component KrewPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   12703ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   12703ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   12703ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   12712ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   12712ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   12712ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   12712ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   12712ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   12712ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   13361ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://localhost:8006/index.f139dd4b83efc005.hot-update.json:0
+[   13975ms] [WARNING] [Vue warn]: defineEmits() is a compiler-hint helper that is only usable inside <script setup> of a single file component. Its arguments should be compiled away and passing it at runtime has no effect. @ https://localhost:8006/js/chunk-vendors.js:4167
+[   13987ms] [WARNING] [Vue warn]: Component "v-select" has already been registered in target app. @ https://localhost:8006/js/chunk-vendors.js:4167
+[   13988ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   14002ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component NweHomePage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   14003ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   14003ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component ToolsPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   14003ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component KrewPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   14003ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   14004ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   14004ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   14013ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   14013ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   14013ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   14013ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   14013ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   14013ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   14044ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://localhost:8006/index.f139dd4b83efc005.hot-update.json:0
+[   14661ms] [WARNING] [Vue warn]: defineEmits() is a compiler-hint helper that is only usable inside <script setup> of a single file component. Its arguments should be compiled away and passing it at runtime has no effect. @ https://localhost:8006/js/chunk-vendors.js:4167
+[   14671ms] [WARNING] [Vue warn]: Component "v-select" has already been registered in target app. @ https://localhost:8006/js/chunk-vendors.js:4167
+[   14672ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   14674ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component NweHomePage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   14674ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   14685ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component ToolsPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   14685ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. 
+
+Found a component KrewPage with the 'plain' layout specified  @ https://localhost:8006/js/chunk-vendors.js:77698
+[   14685ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   14686ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   14686ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   14694ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   14694ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   14694ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   14694ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   14694ms] [WARNING] Layouts have been deprecated. We still have parent routes which use the same name and styling as the previous layouts. You should specify a parent, we're currently setting the parent to 'default' @ https://localhost:8006/js/chunk-vendors.js:77702
+[   14694ms] [WARNING] [Vue Router warn]: Finding ancestor route "/" failed for "/" @ https://localhost:8006/js/chunk-vendors.js:459342
+[   14722ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://localhost:8006/index.f139dd4b83efc005.hot-update.json:0

@@ -98,6 +98,8 @@ func rancherRequestWithToken(method, path, token string) ([]byte, error) {
 	if resp.StatusCode >= 400 {
 		if resp.StatusCode == 401 {
 			fmt.Printf("[krew] Rancher API 401: url=%s (token len=%d)\n", url, len(tok))
+			// User-friendly hint: browser token used against internal URL fails; need public host or RANCHER_TOKEN
+			return nil, fmt.Errorf("401 Unauthorized: Rancher rejected the token. Set rancher.publicHost to your Rancher URL (e.g. rancher.35.157.202.39.sslip.io) so the backend calls the same host as your browser; or set rancher.token / RANCHER_TOKEN")
 		}
 		return nil, fmt.Errorf("rancher API %s returned %d: %s", path, resp.StatusCode, string(body))
 	}
@@ -163,6 +165,9 @@ func fetchKubeconfigWithToken(clusterID, token string) (string, error) {
 		return "", err
 	}
 	if resp.StatusCode >= 400 {
+		if resp.StatusCode == 401 {
+			return "", fmt.Errorf("401 Unauthorized: set rancher.publicHost to your Rancher URL, or set rancher.token / RANCHER_TOKEN")
+		}
 		return "", fmt.Errorf("kubeconfig API returned %d: %s", resp.StatusCode, string(body))
 	}
 
@@ -432,6 +437,30 @@ func main() {
 		c.Next()
 	})
 
+	// Register routes on root (e.g. /health) and under /krew-api (e.g. /krew-api/health) for Ingress
+	registerRoutes(r)
+	registerRoutes(r.Group("/krew-api"))
+
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "3000"
+	}
+	tokenSet := "unset"
+	if rancherToken() != "" {
+		tokenSet = "set"
+	}
+	publicHostSet := "unset"
+	if os.Getenv("RANCHER_PUBLIC_HOST") != "" {
+		publicHostSet = "set"
+	}
+	fmt.Printf("krew-manager listening on :%s  rancherURL=%s  RANCHER_TOKEN=%s  RANCHER_PUBLIC_HOST=%s\n", port, rancherURL(), tokenSet, publicHostSet)
+	if err := r.Run(":" + port); err != nil {
+		fmt.Fprintf(os.Stderr, "failed to start: %v\n", err)
+		os.Exit(1)
+	}
+}
+
+func registerRoutes(r gin.IRouter) {
 	r.GET("/health", func(c *gin.Context) {
 		c.JSON(200, gin.H{"status": "healthy"})
 	})
@@ -471,6 +500,7 @@ func main() {
 		token := tokenFromRequest(c)
 		clusters, err := fetchClustersWithToken(token)
 		if err != nil {
+			fmt.Printf("[krew] sync failed fetchClusters: %v\n", err)
 			c.JSON(502, gin.H{"error": err.Error()})
 			return
 		}
@@ -482,6 +512,7 @@ func main() {
 		for _, cl := range clusters {
 			cfg, err := fetchKubeconfigWithToken(cl.ID, token)
 			if err != nil {
+				fmt.Printf("[krew] sync failed fetchKubeconfig %s: %v\n", cl.Name, err)
 				c.JSON(502, gin.H{"error": fmt.Sprintf("cluster %s: %v", cl.Name, err)})
 				return
 			}
@@ -639,6 +670,7 @@ func main() {
 		cmd.Env = append(os.Environ(),
 			"TERM=xterm-256color",
 			"KREW_ROOT="+krewRoot(),
+			"KUBECONFIG="+kubeConfigPath(),
 			fmt.Sprintf("PATH=%s:%s", filepath.Join(krewRoot(), "bin"), os.Getenv("PATH")),
 		)
 
@@ -758,22 +790,4 @@ func main() {
 		}
 		c.JSON(200, gin.H{"path": clean, "entries": list})
 	})
-
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "3000"
-	}
-	tokenSet := "unset"
-	if rancherToken() != "" {
-		tokenSet = "set"
-	}
-	publicHostSet := "unset"
-	if os.Getenv("RANCHER_PUBLIC_HOST") != "" {
-		publicHostSet = "set"
-	}
-	fmt.Printf("krew-manager listening on :%s  rancherURL=%s  RANCHER_TOKEN=%s  RANCHER_PUBLIC_HOST=%s\n", port, rancherURL(), tokenSet, publicHostSet)
-	if err := r.Run(":" + port); err != nil {
-		fmt.Fprintf(os.Stderr, "failed to start: %v\n", err)
-		os.Exit(1)
-	}
 }

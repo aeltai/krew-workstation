@@ -21,6 +21,13 @@ bootstrap:
     repository: bitnami/kubectl
     tag: "latest"
 
+# Meta proxy - register backend with Rancher's proxy allow list (ProxyEndpoint) so /meta/proxy/... works.
+# Same mechanism as node-driver / UI extensions; no manual Settings needed.
+metaProxy:
+  enabled: true
+  # backendHost: optional override; default is <release-fullname>.<namespace>.svc (e.g. krew-workstation.krew-workstation.svc)
+  backendHost: ""
+
 # UI extension - loads the Krew Workstation UI in Rancher Dashboard
 uiPlugin:
   enabled: true
@@ -77,13 +84,10 @@ service:
 
 ingress:
   enabled: false
+  # host: override for path /krew-api (default: rancher.publicHost). Enable so terminal WebSocket works at wss://<host>/krew-api.
+  host: ""
   className: ""
   annotations: {}
-  hosts:
-    - host: krew-workstation.local
-      paths:
-        - path: /
-          pathType: Prefix
   tls: []
 
 resources:
@@ -103,9 +107,11 @@ autoscaling:
 rancher:
   # URL to Rancher API (from within cluster, use rancher.cattle-system.svc or your ingress)
   url: "https://rancher.cattle-system.svc"
-  # Public host users use to reach Rancher (e.g. rancher.35.157.202.39.sslip.io). Set so tokens issued by the UI are accepted when the backend calls the internal URL.
+  # REQUIRED for "Connect to the cluster" / kubeconfig sync: the host users use in the browser (no https://).
+  # Without this, backend uses internal URL and Rancher returns 401 for browser tokens.
+  # Example: rancher.35.157.202.39.sslip.io
   publicHost: ""
-  # Optional: bearer token for backend-initiated calls (avoids 401 on Sync; list all clusters)
+  # Optional: bearer token for backend-initiated calls (avoids 401; use if you prefer not to set publicHost)
   token: ""
   # Optional: use an existing Secret for token and public host (avoids putting secrets in values/CLI)
   existingSecret:

@@ -33,9 +33,9 @@ If Rancher uses a different URL from inside the cluster, set it:
 --set rancher.url=https://YOUR_RANCHER_INGRESS_HOST
 ```
 
-## Rancher public host (fix 401 when opening the plugin)
+## Rancher public host (fix 401 / "Sync failed" when connecting to the cluster)
 
-If the plugin page loads but shows "must authenticate" or 401 when syncing kubeconfig, the backend is calling Rancher at the internal URL while the token was issued for the URL you use in the browser. Set the public host to match your Rancher UI URL:
+If the plugin shows **401 Unauthorized** or **"Sync failed: undefined"** when you click "Connect to the cluster" / sync kubeconfig, the backend is calling Rancher at the internal URL while the token was issued for the URL you use in the browser. Set the public host to match your Rancher UI URL:
 
 ```bash
 helm upgrade krew-workstation ./helm/krew-workstation -n krew-workstation \
@@ -44,9 +44,56 @@ helm upgrade krew-workstation ./helm/krew-workstation -n krew-workstation \
 
 (Use your actual Rancher host, without `https://`.)
 
-## Backend URL (same cluster, no port-forward)
+## Backend via Rancher meta proxy (no Ingress for API)
 
-The extension calls the backend at **same host as Rancher** + `/krew-api` (e.g. `https://rancher.35.157.202.39.sslip.io/krew-api`). So whatever serves your Rancher UI (Ingress or LB) must route path `/krew-api` to the `krew-workstation` service in `krew-workstation` namespace (port 3000). Add that path to your existing Rancher ingress; no separate Ingress is required.
+The extension uses **Rancher’s meta proxy** (same as node-driver): requests go to `/meta/proxy/krew-workstation.krew-workstation.svc:3000/api/...` so Rancher’s backend proxies to the krew-workstation Service. No Ingress path is required for REST API (Sync, clusters, plugins, etc.).
+
+**Allow list:** The chart creates a **ProxyEndpoint** (management.cattle.io) so the meta proxy allow list is updated automatically—same mechanism as other UI extensions. No manual Settings step. If you disabled it, set `metaProxy.enabled: true` or create a ProxyEndpoint with route `krew-workstation.krew-workstation.svc`. If the proxy returns 502/503, the host is not allow-listed (check that the ProxyEndpoint exists).
+
+**Terminal (WebSocket):** The terminal tab needs `wss://<rancher-host>/krew-api`. Enable the chart’s Ingress so that path is routed to the backend:
+
+```bash
+helm upgrade krew-workstation ./helm/krew-workstation -n krew-workstation \
+  --set ingress.enabled=true \
+  --set ingress.host=rancher.35.157.202.39.sslip.io
+```
+
+Use your Rancher host (same as in the UI). If you already set `rancher.publicHost` in values, the Ingress can use it; otherwise set `ingress.host`.
+
+**Alternative: patch the Rancher Ingress** so `/krew-api` is on the same Ingress (one resource). The Ingress backend must be in the same namespace as the Ingress (e.g. `cattle-system`). Create a proxy Service and Endpoints there, then patch:
+
+```bash
+# 1) Proxy Service in cattle-system (no selector)
+kubectl apply -f - <<'EOF'
+apiVersion: v1
+kind: Service
+metadata:
+  name: krew-workstation
+  namespace: cattle-system
+spec:
+  ports:
+    - port: 3000
+      targetPort: 3000
+      protocol: TCP
+      name: http
+EOF
+
+# 2) Copy Endpoints from krew-workstation so the Service has backends
+kubectl get endpoints krew-workstation -n krew-workstation -o json \
+  | jq '.metadata |= {"name": "krew-workstation", "namespace": "cattle-system"} | del(.metadata.resourceVersion, .metadata.uid, .metadata.selfLink, .metadata.creationTimestamp)' \
+  | kubectl apply -f -
+
+# 3) Add path /krew-api to Rancher Ingress (adjust namespace/name if yours differ)
+kubectl patch ingress rancher -n cattle-system --type=json -p='[
+  {"op": "add", "path": "/spec/rules/0/http/paths/-", "value": {
+    "path": "/krew-api",
+    "pathType": "Prefix",
+    "backend": {"service": {"name": "krew-workstation", "port": {"number": 3000}}}
+  }}
+]'
+```
+
+After that you can disable the chart’s own Ingress: `--set ingress.enabled=false`. Re-run step 2 if krew-workstation pods change (Endpoints are not updated automatically across namespaces).
 
 ## Rancher API token (required for Sync / list all clusters)
 

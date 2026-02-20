@@ -161,14 +161,21 @@
 </template>
 
 <script>
-// Backend URL: same pattern as other ui-plugin-examples (node-driver uses relative /meta/proxy/*, VncViewer uses window.location). Same origin + /krew-api so no port-forward; dev uses localhost:9000.
+// Backend: use Rancher meta proxy (same as node-driver) so no Ingress for API. Dev: localhost:9000.
+const META_PROXY_BACKEND = '/meta/proxy/krew-workstation.krew-workstation.svc:3000';
 function getBackendUrl() {
   const o = window.location.origin;
   if (o.startsWith('http://localhost') || o.startsWith('http://127.0.0.1')) return 'http://localhost:9000';
-  return o + '/krew-api';
+  return null; // use meta proxy (relative URL)
 }
-const BACKEND_URL = getBackendUrl();
-const WS_URL = BACKEND_URL.replace(/^http/, 'ws');
+const BACKEND_URL_DEV = getBackendUrl();
+const BACKEND_URL = BACKEND_URL_DEV || ''; // empty = use meta proxy
+const WS_URL = BACKEND_URL_DEV ? BACKEND_URL_DEV.replace(/^http/, 'ws') : (window.location.origin.replace(/^http/, 'ws') + '/krew-api');
+
+function errMsg(e) {
+  const m = e?.message ?? e?.error ?? (typeof e === 'string' ? e : null) ?? (e?.response?.data?.error);
+  return (m && String(m) !== 'undefined') ? String(m) : 'Unknown error';
+}
 
 // Get Rancher token from current session (cookie sent automatically to same origin)
 let _tokenCache = { token: null, expires: 0 };
@@ -196,7 +203,7 @@ async function getRancherToken() {
       });
       if (!resp.ok) {
         const err = await resp.json().catch(() => ({}));
-        throw new Error(err.message || `Token API ${resp.status}`);
+        throw new Error(err?.message || `Token API ${resp.status}`);
       }
       const data = await resp.json();
       const token = data.status?.bearerToken || data.status?.value || data.token;
@@ -369,19 +376,32 @@ export default {
       }
     },
     async api(method, path, opts = {}) {
-      const headers = { ...opts.headers };
+      const headers = { 'Content-Type': 'application/json', ...opts.headers };
       try {
         const token = await getRancherToken();
         if (token) headers['Authorization'] = `Bearer ${token}`;
       } catch (_) {}
-      const resp = await fetch(`${BACKEND_URL}${path}`, {
+      if (BACKEND_URL) {
+        const resp = await fetch(`${BACKEND_URL}${path}`, { method, headers, ...opts });
+        const data = await resp.json();
+        if (!resp.ok) throw new Error(data.error || `HTTP ${resp.status}`);
+        return data;
+      }
+      const url = META_PROXY_BACKEND + path;
+      const res = await this.$store.dispatch('management/request', {
+        url,
         method,
-        headers: { 'Content-Type': 'application/json', ...headers },
-        ...opts,
-      });
-      const data = await resp.json();
-      if (!resp.ok) throw new Error(data.error || `HTTP ${resp.status}`);
-      return data;
+        headers,
+        data: opts.body || (opts.data ? JSON.stringify(opts.data) : undefined),
+        redirectUnauthorized: false,
+      }, { root: true });
+      if (res._status >= 400) {
+        const msg = (res.data && res.data.error) || res.message || (typeof res.data === 'string' ? res.data : null) || res?.response?.data?.error;
+        throw new Error(msg && String(msg) !== 'undefined' ? String(msg) : `HTTP ${res._status}`);
+      }
+      if (res.data !== undefined) return typeof res.data === 'object' ? res.data : JSON.parse(res.data || '{}');
+      const { _status, _headers, ...body } = res;
+      return body;
     },
 
     async fetchClusters() {
@@ -401,7 +421,7 @@ export default {
         const msg = n > 0 ? `Kubeconfig synced for ${n} cluster(s)` : 'No clusters to sync';
         this.pendingSyncMessage = msg;
       } catch (e) {
-        this.error = `Sync failed: ${e.message}`;
+        this.error = `Sync failed: ${errMsg(e)}`;
         await this.fetchContext();
       } finally {
         this.syncingKubeconfig = false;
@@ -449,7 +469,7 @@ export default {
         const data = await this.api('GET', '/api/plugins');
         this.plugins = data.plugins || [];
       } catch (e) {
-        this.error = `Backend unreachable at ${BACKEND_URL} — ${e.message}`;
+        this.error = `Backend unreachable — ${errMsg(e)}`;
       } finally {
         this.loading = false;
       }
@@ -463,7 +483,7 @@ export default {
         this.message = 'Plugin index updated';
         await this.loadPlugins();
       } catch (e) {
-        this.error = `Update failed: ${e.message}`;
+        this.error = `Update failed: ${errMsg(e)}`;
       } finally {
         this.loading = false;
       }
@@ -491,7 +511,7 @@ export default {
         this.message = `Uninstalled ${p.name}`;
         await this.loadPlugins();
       } catch (e) {
-        this.error = `Uninstall failed: ${e.message}`;
+        this.error = `Uninstall failed: ${errMsg(e)}`;
       } finally {
         this.busy = '';
       }
@@ -518,7 +538,7 @@ export default {
         this.fsPath = data.path;
         this.fsEntries = data.entries || [];
       } catch (e) {
-        this.fsError = e.message;
+        this.fsError = errMsg(e);
       }
     },
 
@@ -534,7 +554,7 @@ export default {
         await loadScript(`${XTERM_CDN}/xterm@${XTERM_VER}/lib/xterm.js`);
         await loadScript(`${XTERM_CDN}/xterm-addon-fit@${FIT_VER}/lib/xterm-addon-fit.js`);
       } catch (e) {
-        container.innerHTML = `<p class="fs-error">Failed to load terminal: ${e.message}</p>`;
+        container.innerHTML = `<p class="fs-error">Failed to load terminal: ${errMsg(e)}</p>`;
         return;
       }
 
@@ -596,7 +616,7 @@ export default {
         this.term?.writeln('\r\nDisconnected.');
       };
       ws.onerror = () => {
-        this.term?.writeln('\r\nWebSocket error. Is the backend running on ' + BACKEND_URL + '?');
+        this.term?.writeln('\r\nWebSocket error. Is the backend reachable at ' + (WS_URL || BACKEND_URL || 'krew-workstation') + '?');
       };
       ws.onmessage = (ev) => {
         if (ev.data instanceof ArrayBuffer && this.term) {
