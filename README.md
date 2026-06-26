@@ -1,6 +1,18 @@
 # Krew Workstation
 
-A Rancher UI extension that lets you manage kubectl plugins (via [Krew](https://krew.sigs.k8s.io/)) from the Rancher Dashboard. Terminal, plugin catalog, kubeconfig sync, k9s, stern, and more.
+A Rancher UI extension that lets you manage kubectl plugins (via [Krew](https://krew.sigs.k8s.io/)) from the Rancher Dashboard. Terminal, plugin catalog, kubeconfig sync, k9s, stern, backups, and more.
+
+**Related:** [Developer Portal](https://github.com/aeltai/rancher-devportal) is a separate extension for self-service environments (Fleet, operators, virtual clusters).
+
+## Documentation
+
+- [Extension development](docs/extension.md)
+- [Local development](docs/development.md)
+- [Publishing / GitHub Pages](docs/publishing.md)
+- [Helm chart](helm/README.md)
+
+Extension bundle (GitHub Pages):  
+`https://aeltai.github.io/krew-workstation/extensions/krew/0.1.0/plugin/`
 
 ## Architecture
 

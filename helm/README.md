@@ -20,7 +20,7 @@ This chart deploys to the **management cluster** (local), where Rancher UI runs.
 helm install krew-workstation ./krew-workstation \
   --set rancher.url=https://rancher.cattle-system.svc \
   --set rancher.token="token-xxx" \
-  --set uiPlugin.endpoint="https://raw.githubusercontent.com/YOUR_ORG/ui-plugin-examples/main/extensions/krew-plugin-manager/0.1.0" \
+  --set uiPlugin.endpoint="https://aeltai.github.io/krew-workstation/extensions/krew/0.1.0/plugin" \
   --create-namespace \
   -n krew-workstation
 ```
