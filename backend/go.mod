@@ -1,6 +1,6 @@
 module krew-manager
 
-go 1.21
+go 1.23
 
 require (
 	github.com/creack/pty/v2 v2.0.1

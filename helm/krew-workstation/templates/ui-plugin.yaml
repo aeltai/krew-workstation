@@ -3,12 +3,13 @@ apiVersion: catalog.cattle.io/v1
 kind: UIPlugin
 metadata:
   name: {{ include "krew-workstation.fullname" . }}
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ .Values.uiPlugin.namespace | default .Release.Namespace }}
   labels:
     {{- include "krew-workstation.labels" . | nindent 4 }}
 spec:
   plugin:
-    name: {{ include "krew-workstation.fullname" . }}
+    # Must match extension plugin/package.json "name" for sidebar to show
+    name: {{ .Values.uiPlugin.pluginName | default "krew" }}
     version: {{ .Values.uiPlugin.version | default .Chart.AppVersion | quote }}
     endpoint: {{ .Values.uiPlugin.endpoint | quote }}
     noCache: {{ .Values.uiPlugin.noCache }}

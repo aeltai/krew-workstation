@@ -1,8 +1,11 @@
 node_modules/
 dist/
+.env
 .shell/
 *.log
 .DS_Store
 backend/krew-manager
 backend/krew-manager-*
+.local-plugins/*
+!.local-plugins/.gitkeep
 *.png

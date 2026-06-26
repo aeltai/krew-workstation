@@ -1,4 +1,4 @@
-FROM golang:1.21-alpine AS builder
+FROM golang:1.26-alpine AS builder
 WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download
@@ -6,7 +6,7 @@ COPY *.go ./
 RUN CGO_ENABLED=0 GOOS=linux go build -o krew-manager .
 
 FROM alpine:latest
-RUN apk add --no-cache curl git bash bash-completion runc openssh-client
+RUN apk add --no-cache curl git bash bash-completion runc openssh-client make
 
 # Zellij (terminal multiplexer)
 RUN apk add --no-cache --repository https://dl-cdn.alpinelinux.org/alpine/edge/community zellij || \
@@ -54,8 +54,13 @@ ENV PATH="/root/.krew/bin:${PATH}"
 RUN kubectl krew update
 
 COPY --from=builder /app/krew-manager /usr/local/bin/krew-manager
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+COPY --from=builder /usr/local/go /usr/local/go
+ENV PATH="/usr/local/go/bin:${PATH}"
+ENV GOPATH=/root/go
+ENV GOMODCACHE=/root/go/pkg/mod
+
+COPY entrypoint.sh install-local-plugins.sh install-local-binaries.sh /
+RUN chmod +x /entrypoint.sh /install-local-plugins.sh /install-local-binaries.sh
 
 HEALTHCHECK --interval=30s --timeout=10s --retries=3 CMD curl -f http://localhost:3000/health || exit 1
 

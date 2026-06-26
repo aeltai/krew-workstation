@@ -24,6 +24,10 @@ bootstrap:
 # UI extension - loads the Krew Workstation UI in Rancher Dashboard
 uiPlugin:
   enabled: true
+  # Must match extension plugin/package.json "name" so Rancher shows it in sidebar
+  pluginName: krew
+  # Rancher expects extensions in cattle-ui-plugin-system (not Release.Namespace)
+  namespace: cattle-ui-plugin-system
   version: "0.1.0"
   # URL to extension JS bundle (must be built and published)
   # e.g. https://raw.githubusercontent.com/aeltai/ui-plugin-examples/main/extensions/krew-plugin-manager/0.1.0
@@ -94,10 +98,15 @@ autoscaling:
 
 # Rancher connection - backend fetches kubeconfig from Rancher API
 rancher:
-  # URL to Rancher API (from within cluster, use rancher.cattle-system.svc or your ingress)
   url: "https://rancher.cattle-system.svc"
-  # Optional: bearer token for backend-initiated calls (UI typically passes token per-request)
+  # Host users use in browser (no https://). Required for kubeconfig sync.
+  publicHost: ""  # e.g. rancher.35.157.202.39.sslip.io
   token: ""
+  # Use existing secret instead of chart-created one (recommended)
+  existingSecret:
+    name: ""       # e.g. krew-workstation-rancher
+    tokenKey: token
+    publicHostKey: publicHost
 
 # Persistent volume for krew plugins (survives pod restarts)
 persistence:

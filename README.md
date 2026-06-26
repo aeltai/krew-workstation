@@ -26,21 +26,32 @@ docker compose up -d
 
 Wait a minute or two for Rancher to boot. It will be at **https://localhost:8449**.
 
-### 2. Create a Rancher API token
+### 2. Rancher authentication (RBAC)
 
-Log into Rancher at https://localhost:8449 (password: `admin`), then go to **User Avatar → Account & API Keys → Create API Key**. Copy the bearer token.
+When embedded in Rancher Dashboard, the extension **does not need a separate API key**. It mints a short-lived bearer token from your logged-in Rancher session (`ext.cattle.io/Token`).
 
-### 3. Set the token and restart the backend
+Each user gets:
+- Their own kubeconfig (scoped by Rancher RBAC via `generateKubeconfig`)
+- Cluster list filtered to clusters they can access
+- **Backups** tab only if the backup operator is installed **and** they can `list` Backup/Restore CRs
+- Terminal shell using **their** kubeconfig (token passed on WebSocket connect)
+
+**Local dev only:** `RANCHER_TOKEN` in `.env` is a service-account fallback (admin-level). For RBAC testing, set `ALLOW_SERVICE_TOKEN=false` in docker-compose and log in as different Rancher users.
+
+Optional: create API keys under **User Avatar → Account & API Keys** for CI/automation — not required for normal UI use.
+
+### 3. (Optional dev) Service token
 
 ```bash
-export RANCHER_TOKEN="token-xxxxx:yyyyyyyyyyyyyy"
+# .env — fallback when UI session token is unavailable during local dev
+RANCHER_TOKEN="token-xxxxx:yyyyyyyyyyyyyy"
 docker compose up -d --build krew-backend
 ```
 
 ### 4. Run the UI dev server
 
 ```bash
-cd ../..   # ui-plugin-examples root
+cd ../..   # repo root
 yarn install
 API=http://localhost:8089 yarn dev
 ```
@@ -77,5 +88,6 @@ See [helm/README.md](helm/README.md) for full options.
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `RANCHER_URL` | `https://rancher:443` | Rancher API URL |
-| `RANCHER_TOKEN` | (optional) | Rancher API bearer token; UI passes per-request |
+| `RANCHER_TOKEN` | (optional) | Dev-only service token fallback when UI session token unavailable |
+| `ALLOW_SERVICE_TOKEN` | `true` | Set `false` to require per-user Authorization on all `/api/*` routes |
 | `PORT` | `3000` | Backend listen port |

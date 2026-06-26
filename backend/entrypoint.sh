@@ -4,6 +4,23 @@ set -e
 KREW_ROOT="${KREW_ROOT:-/root/.krew}"
 export PATH="${KREW_ROOT}/bin:${PATH}"
 
+# Shell identity (prompt + welcome banner)
+WS_USER="${WORKSTATION_USER:-stormtrooper}"
+WS_HOST="${WORKSTATION_HOST:-deathstar}"
+export WORKSTATION_USER="$WS_USER"
+export WORKSTATION_HOST="$WS_HOST"
+hostname "$WS_HOST" 2>/dev/null || true
+mkdir -p /etc/krew-workstation
+cat > /etc/krew-workstation/shell.env <<EOF
+export WORKSTATION_USER='$WS_USER'
+export WORKSTATION_HOST='$WS_HOST'
+export PS1='${WS_USER}@${WS_HOST}:\w\$ '
+EOF
+if ! grep -q 'krew-workstation shell.env' /root/.bashrc 2>/dev/null; then
+  touch /root/.bashrc
+  echo '[ -f /etc/krew-workstation/shell.env ] && . /etc/krew-workstation/shell.env' >> /root/.bashrc
+fi
+
 # If krew binary missing (e.g. fresh volume overwrote image), install krew
 if ! command -v krew >/dev/null 2>&1; then
   echo "[entrypoint] Installing krew..."
@@ -35,8 +52,26 @@ if ! grep -q 'kubectl-completion' /root/.bashrc 2>/dev/null; then
   } >> /root/.bashrc
 fi
 
+# krew-workstation shell aliases (avoid injecting via PTY — prevents echo in terminal)
+if ! grep -q 'krew-workstation aliases' /root/.bashrc 2>/dev/null; then
+  {
+    echo ''
+    echo '# krew-workstation aliases'
+    echo "alias k=kubectl"
+    echo "alias kk='kubectl krew'"
+  } >> /root/.bashrc
+fi
+
 # Update plugin index
 kubectl krew update 2>/dev/null || true
+
+# Local dev plugins bind-mounted at /opt/local-plugins/<name> (e.g. rk2s)
+. /install-local-plugins.sh
+install_local_krew_plugins
+
+# Local CLIs from .local-plugins/<name>/bin/ (rk9s, rancher-polymorph, ...)
+. /install-local-binaries.sh
+install_local_binaries
 
 # Install k9s and ssh-jump first (sync) — user expects them immediately
 kubectl krew list 2>/dev/null | grep -q "^k9s$" || kubectl krew install k9s 2>/dev/null || true

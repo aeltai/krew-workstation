@@ -21,12 +21,17 @@ services:
         - linux/amd64
     ports:
       - "9000:3000"
+    hostname: deathstar
     environment:
       - RANCHER_URL=https://rancher:443
       - RANCHER_TOKEN=${RANCHER_TOKEN:-}
+      - WORKSTATION_USER=stormtrooper
+      - WORKSTATION_HOST=deathstar
+      # ALLOW_SERVICE_TOKEN=false  # production: require per-user Rancher session token only
     volumes:
       - krew-data:/root/.krew
       - ssh-keys:/root/.ssh
+      - ./.local-plugins:/opt/local-plugins:ro
     depends_on:
       - rancher
     restart: unless-stopped

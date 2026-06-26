@@ -328,9 +328,21 @@ func kubeConfigPath() string {
 	return filepath.Join(home, ".kube", "config")
 }
 
+func workstationIdentity() (user, host string) {
+	user = os.Getenv("WORKSTATION_USER")
+	host = os.Getenv("WORKSTATION_HOST")
+	if user == "" {
+		user = "stormtrooper"
+	}
+	if host == "" {
+		host = "deathstar"
+	}
+	return user, host
+}
+
 // detectCLIs returns which container/runtime CLIs are installed.
 func detectCLIs() []string {
-	clis := []string{"crictl", "runc", "etcdctl", "zellij", "ssh"}
+	clis := []string{"go", "k9s", "rk9s", "rancher-polymorph", "zellij", "crictl", "runc", "etcdctl", "ssh"}
 	var found []string
 	for _, name := range clis {
 		if _, err := exec.LookPath(name); err == nil {
@@ -338,6 +350,21 @@ func detectCLIs() []string {
 		}
 	}
 	return found
+}
+
+func welcomeLine(label, value string, b *strings.Builder) {
+	if value == "" {
+		return
+	}
+	b.WriteString("    ")
+	b.WriteString(label)
+	pad := 12 - len(label)
+	if pad < 1 {
+		pad = 1
+	}
+	b.WriteString(strings.Repeat(" ", pad))
+	b.WriteString(value)
+	b.WriteString("\r\n")
 }
 
 // fetchWelcome runs kk list in background and returns formatted output.
@@ -354,31 +381,64 @@ func fetchWelcome() string {
 	}
 
 	clis := detectCLIs()
+	wsUser, wsHost := workstationIdentity()
+	ctx, _ := runKubectlConfig("current-context")
+	ctx = strings.TrimSpace(ctx)
+	if ctx == "" {
+		ctx = "(not synced — open Krew page to sync kubeconfig)"
+	}
+
+	backup := fetchBackupOperatorStatus()
+	backupStatus := "not installed"
+	if backup.Installed {
+		backupStatus = "connected · " + backup.PodName
+	} else if backup.NamespaceOK {
+		backupStatus = "namespace ready · pod starting"
+	}
 
 	var b strings.Builder
 	b.WriteString("\r\n")
-	b.WriteString("  ╔══════════════════════════════════════════════════════╗\r\n")
-	b.WriteString("  ║              Krew Workstation                        ║\r\n")
-	b.WriteString("  ║   k=kubectl   kk='kubectl krew'   tab completion ✓    ║\r\n")
-	b.WriteString("  ╚══════════════════════════════════════════════════════╝\r\n\r\n")
+	b.WriteString("  ┌──────────────────────────────────────────────────────────────┐\r\n")
+	b.WriteString("  │  Krew Workstation                                            │\r\n")
+	b.WriteString("  │  kubectl plugins · cluster tools · Rancher backup workflows  │\r\n")
+	b.WriteString("  └──────────────────────────────────────────────────────────────┘\r\n\r\n")
+
+	b.WriteString("  Session\r\n")
+	welcomeLine("shell", wsUser+"@"+wsHost, &b)
+	welcomeLine("go", runtime.Version(), &b)
+	welcomeLine("context", ctx, &b)
+	welcomeLine("backup op", backupStatus, &b)
+	b.WriteString("\r\n")
 
 	if len(clis) > 0 {
-		b.WriteString("  CLIs: ")
-		b.WriteString(strings.Join(clis, ", "))
+		b.WriteString("  Tools\r\n")
+		welcomeLine("binaries", strings.Join(clis, ", "), &b)
 		b.WriteString("\r\n")
-		b.WriteString("  k ssh-jump — SSH to nodes via jump host\r\n\r\n")
 	}
 
 	if listOut != "" {
 		plugins := parsePluginNames(listOut)
 		if len(plugins) > 0 {
-			b.WriteString("  Installed plugins: ")
-			b.WriteString(strings.Join(plugins, ", "))
-			b.WriteString("\r\n\r\n")
+			b.WriteString("  Krew plugins\r\n")
+			welcomeLine("installed", strings.Join(plugins, ", "), &b)
+			b.WriteString("\r\n")
 		}
 	}
 
-	b.WriteString("  Ready. Try: kk list | k9s | zellij | k ssh-jump\r\n\r\n")
+	b.WriteString("  Quick start\r\n")
+	b.WriteString("    kk list / kk search <name>     browse & install plugins\r\n")
+	b.WriteString("    k get pods -A                  kubectl (alias: k)\r\n")
+	b.WriteString("    rk9s / k9s                     cluster UI\r\n")
+	b.WriteString("    rancher-polymorph ui           backup sanitize & restore\r\n")
+	b.WriteString("    zellij                         terminal multiplexer\r\n")
+	b.WriteString("\r\n")
+	b.WriteString("  Tabs above: Terminal · Plugins · Files")
+	if backup.Installed {
+		b.WriteString(" · Backups")
+	}
+	b.WriteString("\r\n")
+	b.WriteString("\r\n")
+
 	return b.String()
 }
 
@@ -398,7 +458,10 @@ func parsePluginNames(listOut string) []string {
 }
 
 func runKubectlConfig(args ...string) (string, error) {
-	kubeCfg := kubeConfigPath()
+	return runKubectlConfigPath(kubeConfigPath(), args...)
+}
+
+func runKubectlConfigPath(kubeCfg string, args ...string) (string, error) {
 	cmd := exec.Command("kubectl", append([]string{"config"}, args...)...)
 	cmd.Env = append(os.Environ(), "KUBECONFIG="+kubeCfg)
 	out, err := cmd.CombinedOutput()
@@ -425,28 +488,41 @@ func main() {
 		c.JSON(200, gin.H{"status": "healthy"})
 	})
 
-	r.GET("/api/info", func(c *gin.Context) {
-		hostname, _ := os.Hostname()
+	api := r.Group("/api")
+	api.Use(requireAuthMiddleware())
+
+	api.GET("/auth/me", func(c *gin.Context) {
+		ru, err := loadRequestUser(c)
+		if err != nil {
+			c.JSON(http.StatusUnauthorized, AuthMeResponse{Error: err.Error()})
+			return
+		}
+		caps := evaluateCapabilities(ru.Token, ru.Kubeconfig)
+		c.JSON(200, AuthMeResponse{
+			User:         ru.User,
+			AuthMode:     ru.AuthMode,
+			Capabilities: caps,
+		})
+	})
+
+	api.GET("/info", func(c *gin.Context) {
+		wsUser, wsHost := workstationIdentity()
 		c.JSON(200, gin.H{
-			"baseImage":   "alpine:latest",
-			"goVersion":  runtime.Version(),
-			"hostname":   hostname,
-			"krewRoot":   krewRoot(),
+			"baseImage":        "alpine:latest",
+			"goVersion":        runtime.Version(),
+			"hostname":         wsHost,
+			"workstationUser":  wsUser,
+			"workstationHost":  wsHost,
+			"workstationLabel": wsUser + "@" + wsHost,
+			"krewRoot":         krewRoot(),
 		})
 	})
 
 	// ── Rancher clusters (for the UI dropdown) ──
 
-	tokenFromRequest := func(c *gin.Context) string {
-		if h := c.GetHeader("Authorization"); strings.HasPrefix(h, "Bearer ") {
-			return strings.TrimPrefix(h, "Bearer ")
-		}
-		return c.GetHeader("X-Rancher-Token")
-	}
-
-	r.GET("/api/clusters", func(c *gin.Context) {
-		token := tokenFromRequest(c)
-		clusters, err := fetchClustersWithToken(token)
+	api.GET("/clusters", func(c *gin.Context) {
+		ru, _ := loadRequestUser(c)
+		clusters, err := fetchClustersWithToken(ru.Token)
 		if err != nil {
 			c.JSON(502, gin.H{"error": err.Error()})
 			return
@@ -454,47 +530,41 @@ func main() {
 		c.JSON(200, ClustersResponse{Clusters: clusters})
 	})
 
-	// ── Kubeconfig: sync from Rancher, get current context ──
-
-	r.POST("/api/kubeconfig/sync", func(c *gin.Context) {
-		token := tokenFromRequest(c)
-		clusters, err := fetchClustersWithToken(token)
+	api.POST("/kubeconfig/sync", func(c *gin.Context) {
+		ru, _ := loadRequestUser(c)
+		n, err := syncKubeconfigForUser(ru.Token, ru)
 		if err != nil {
 			c.JSON(502, gin.H{"error": err.Error()})
 			return
 		}
-		if len(clusters) == 0 {
+		if n == 0 {
 			c.JSON(200, gin.H{"message": "no clusters to sync", "clusters": 0})
 			return
 		}
-		var configs []string
-		for _, cl := range clusters {
-			cfg, err := fetchKubeconfigWithToken(cl.ID, token)
-			if err != nil {
-				c.JSON(502, gin.H{"error": fmt.Sprintf("cluster %s: %v", cl.Name, err)})
-				return
-			}
-			configs = append(configs, cfg)
-		}
-		merged, err := mergeKubeconfigs(configs)
-		if err != nil {
-			c.JSON(500, gin.H{"error": err.Error()})
-			return
-		}
-		kubeDir := filepath.Dir(kubeConfigPath())
-		if err := os.MkdirAll(kubeDir, 0700); err != nil {
-			c.JSON(500, gin.H{"error": err.Error()})
-			return
-		}
-		if err := os.WriteFile(kubeConfigPath(), merged, 0600); err != nil {
-			c.JSON(500, gin.H{"error": err.Error()})
-			return
-		}
-		c.JSON(200, gin.H{"message": "kubeconfig synced", "clusters": len(clusters)})
+		c.JSON(200, gin.H{
+			"message":         "kubeconfig synced",
+			"clusters":        n,
+			"polymorphConfig": polymorphConfigPath,
+			"user":            ru.User.Username,
+		})
 	})
 
-	r.GET("/api/kubeconfig", func(c *gin.Context) {
-		data, err := os.ReadFile(kubeConfigPath())
+	api.GET("/backups/status", func(c *gin.Context) {
+		ru, _ := loadRequestUser(c)
+		caps := evaluateCapabilities(ru.Token, ru.Kubeconfig)
+		if !caps.Backups {
+			c.JSON(http.StatusForbidden, gin.H{
+				"error":        "insufficient permissions for Rancher Backup resources",
+				"capabilities": caps,
+			})
+			return
+		}
+		c.JSON(200, fetchBackupsStatusForKubeconfig(ru.Kubeconfig))
+	})
+
+	api.GET("/kubeconfig", func(c *gin.Context) {
+		ru, _ := loadRequestUser(c)
+		data, err := os.ReadFile(ru.Kubeconfig)
 		if err != nil {
 			if os.IsNotExist(err) {
 				c.JSON(404, gin.H{"error": "kubeconfig not found; sync from Rancher first"})
@@ -507,8 +577,9 @@ func main() {
 		c.Data(200, "application/x-yaml", data)
 	})
 
-	r.GET("/api/context", func(c *gin.Context) {
-		out, err := runKubectlConfig("current-context")
+	api.GET("/context", func(c *gin.Context) {
+		ru, _ := loadRequestUser(c)
+		out, err := runKubectlConfigPath(ru.Kubeconfig, "current-context")
 		ctx := strings.TrimSpace(out)
 		if err != nil || ctx == "" {
 			c.JSON(200, gin.H{"context": ""})
@@ -517,9 +588,7 @@ func main() {
 		c.JSON(200, gin.H{"context": ctx})
 	})
 
-	// ── Global plugin management (not per-cluster) ──
-
-	r.GET("/api/plugins", func(c *gin.Context) {
+	api.GET("/plugins", func(c *gin.Context) {
 		installedOutput, _ := runKrew("list")
 		installed := parseInstalledPlugins(installedOutput)
 
@@ -543,7 +612,7 @@ func main() {
 		})
 	})
 
-	r.POST("/api/plugins/:name/install", func(c *gin.Context) {
+	api.POST("/plugins/:name/install", func(c *gin.Context) {
 		name := c.Param("name")
 
 		updateOut, _ := runKrew("update")
@@ -556,7 +625,7 @@ func main() {
 		c.JSON(200, PluginsResponse{TerminalOutput: output})
 	})
 
-	r.DELETE("/api/plugins/:name", func(c *gin.Context) {
+	api.DELETE("/plugins/:name", func(c *gin.Context) {
 		name := c.Param("name")
 
 		output, err := runKrew("uninstall", name)
@@ -567,7 +636,7 @@ func main() {
 		c.JSON(200, PluginsResponse{TerminalOutput: output})
 	})
 
-	r.POST("/api/plugins/:name/upgrade", func(c *gin.Context) {
+	api.POST("/plugins/:name/upgrade", func(c *gin.Context) {
 		name := c.Param("name")
 
 		updateOut, _ := runKrew("update")
@@ -580,7 +649,7 @@ func main() {
 		c.JSON(200, PluginsResponse{TerminalOutput: output})
 	})
 
-	r.POST("/api/plugins/update", func(c *gin.Context) {
+	api.POST("/plugins/update", func(c *gin.Context) {
 		output, err := runKrew("update")
 		if err != nil {
 			c.JSON(500, PluginsResponse{Error: err.Error(), TerminalOutput: output})
@@ -589,7 +658,7 @@ func main() {
 		c.JSON(200, PluginsResponse{TerminalOutput: output})
 	})
 
-	r.GET("/api/plugins/installed", func(c *gin.Context) {
+	api.GET("/plugins/installed", func(c *gin.Context) {
 		output, err := runKrew("list")
 		if err != nil {
 			c.JSON(500, gin.H{"error": err.Error()})
@@ -610,13 +679,23 @@ func main() {
 	}
 
 	r.GET("/api/ws/shell", func(c *gin.Context) {
+		ru, err := loadRequestUser(c)
+		if err != nil {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
+			return
+		}
+		caps := evaluateCapabilities(ru.Token, ru.Kubeconfig)
+		if !caps.Terminal {
+			c.JSON(http.StatusForbidden, gin.H{"error": "terminal access denied"})
+			return
+		}
+
 		conn, err := wsUpgrader.Upgrade(c.Writer, c.Request, nil)
 		if err != nil {
 			return
 		}
 		defer conn.Close()
 
-		// Fetch welcome in background (kk list, version, update, info) — blocks up to 12s
 		welcome := fetchWelcome()
 
 		shell := "/bin/bash"
@@ -628,6 +707,7 @@ func main() {
 		cmd.Env = append(os.Environ(),
 			"TERM=xterm-256color",
 			"KREW_ROOT="+krewRoot(),
+			"KUBECONFIG="+ru.Kubeconfig,
 			fmt.Sprintf("PATH=%s:%s", filepath.Join(krewRoot(), "bin"), os.Getenv("PATH")),
 		)
 
@@ -640,9 +720,6 @@ func main() {
 
 		// Send custom welcome (fetched in background)
 		conn.WriteMessage(websocket.BinaryMessage, []byte(welcome))
-
-		// Inject aliases
-		ptmx.Write([]byte("alias k=kubectl; alias kk='kubectl krew'\n"))
 
 		go func() {
 			for {
@@ -686,8 +763,10 @@ func main() {
 	allowedDirs := map[string]bool{
 		"/root": true, "/app": true, "/tmp": true,
 	}
+	// Ensure backups dir exists for rancher-polymorph restore flows
+	_ = os.MkdirAll("/root/backups", 0700)
 
-	r.GET("/api/fs", func(c *gin.Context) {
+	api.GET("/fs", func(c *gin.Context) {
 		rawPath := c.Query("path")
 		if rawPath == "" {
 			rawPath = "/root"
