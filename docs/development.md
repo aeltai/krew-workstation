@@ -1,52 +1,33 @@
 # Local development
 
-## Prerequisites
+## Both extensions in one Rancher UI
 
-- Node.js 20+
-- Docker / Docker Compose
-- Yarn
+Krew Workstation and [Developer Portal](https://github.com/aeltai/rancher-devportal) are **separate repos** but both show in the **same Rancher Dashboard sidebar**. GitHub Pages is only CDN for the extension JS — not a user-facing app.
 
-## Stack
+### Link Developer Portal for local dev
 
-| Service | URL | Notes |
-|---------|-----|-------|
-| Rancher | https://localhost:8449 | Bootstrap password `admin` |
-| krew-backend | http://localhost:9000 | Mapped from container :3000 |
-| UI dev server | https://localhost:8005 | `yarn dev` |
+```bash
+./scripts/link-devportal.sh
+```
 
-## Steps
+This symlinks `../rancher-devportal/pkg/devportal` into `pkg/devportal`. One `yarn dev` loads **both** extensions.
 
-### 1. Start Rancher and backend
+### Start stack
 
 ```bash
 docker compose up -d
-```
-
-Optional `.env` for dev service token fallback:
-
-```
-RANCHER_TOKEN=token-xxxxx:yyyy
-```
-
-### 2. Install UI dependencies
-
-```bash
+docker compose -f ../rancher-devportal/docker-compose.local.yml up -d   # devportal API :9010
+./scripts/link-devportal.sh
 yarn install
+API=http://localhost:8089 yarn dev
 ```
 
-`postinstall` patches `@rancher/shell` for Vue 3.
+Open **https://localhost:8005** only (not a separate port):
 
-### 3. Run the extension dev server
-
-```bash
-API=http://localhost:9000 yarn dev
-```
-
-`API` points the Shell dev proxy at krew-backend.
-
-### 4. Open Rancher UI
-
-Navigate to **Tools → Krew Workstation** at https://localhost:8005 (log in with Rancher credentials).
+| Sidebar | Extension |
+|---------|-----------|
+| **Tools → Krew Workstation** | Terminal, plugins, backups |
+| **Platform → Developer Portal** | Self-service environments |
 
 ## RBAC testing
 

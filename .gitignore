@@ -9,4 +9,5 @@ backend/krew-manager
 backend/krew-manager-*
 .local-plugins/*
 !.local-plugins/.gitkeep
+pkg/devportal
 *.png

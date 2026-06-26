@@ -2,7 +2,28 @@
 
 A Rancher UI extension that lets you manage kubectl plugins (via [Krew](https://krew.sigs.k8s.io/)) from the Rancher Dashboard. Terminal, plugin catalog, kubeconfig sync, k9s, stern, backups, and more.
 
-**Related:** [Developer Portal](https://github.com/aeltai/rancher-devportal) is a separate extension for self-service environments (Fleet, operators, virtual clusters).
+## Related extensions
+
+[Developer Portal](https://github.com/aeltai/rancher-devportal) is a **separate repo** but appears in the **same Rancher sidebar** (not a separate website). GitHub Pages only hosts the JS bundle.
+
+### Local dev — both extensions in one UI
+
+```bash
+./scripts/link-devportal.sh   # symlink ../rancher-devportal/pkg/devportal → pkg/devportal
+docker compose -f ../rancher-devportal/docker-compose.local.yml up -d   # backend :9010
+API=http://localhost:8089 yarn dev   # https://localhost:8005 — Tools → Krew + Platform → Developer Portal
+```
+
+Do **not** run a second dev server on port 8006.
+
+### Rancher at https://localhost:8449
+
+Apply both UIPlugins so extensions load in the real Dashboard:
+
+```bash
+kubectl apply -f deploy/uiplugin-devportal.yaml
+# Krew: helm install or existing UIPlugin from krew-workstation chart
+```
 
 ## Documentation
 
