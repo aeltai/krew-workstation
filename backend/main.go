@@ -342,7 +342,7 @@ func workstationIdentity() (user, host string) {
 
 // detectCLIs returns which container/runtime CLIs are installed.
 func detectCLIs() []string {
-	clis := []string{"go", "k9s", "rk9s", "rancher-polymorph", "zellij", "crictl", "runc", "etcdctl", "ssh"}
+	clis := []string{"go", "k9s", "rk9s", "rancher-polymorph", "zellij", "crictl", "runc", "etcdctl", "ssh", "helm", "longhornctl", "virtctl", "fleet", "rancher", "kwctl"}
 	var found []string
 	for _, name := range clis {
 		if _, err := exec.LookPath(name); err == nil {
@@ -350,6 +350,53 @@ func detectCLIs() []string {
 		}
 	}
 	return found
+}
+
+func cliVersionLine(name string) string {
+	path, err := exec.LookPath(name)
+	if err != nil {
+		return fmt.Sprintf("  ✗ %-14s (not installed)", name)
+	}
+	_ = path
+	switch name {
+	case "kubectl":
+		out, err := exec.Command("kubectl", "version", "--client", "--short").CombinedOutput()
+		if err == nil {
+			return fmt.Sprintf("  ✓ %-14s %s", name, strings.TrimSpace(string(out)))
+		}
+	case "helm":
+		out, err := exec.Command("helm", "version", "--short").CombinedOutput()
+		if err == nil {
+			return fmt.Sprintf("  ✓ %-14s %s", name, strings.TrimSpace(string(out)))
+		}
+	case "etcdctl":
+		out, err := exec.Command("etcdctl", "version").CombinedOutput()
+		if err == nil {
+			line := strings.Split(strings.TrimSpace(string(out)), "\n")[0]
+			return fmt.Sprintf("  ✓ %-14s %s", name, line)
+		}
+	default:
+		out, err := exec.Command(name, "version").CombinedOutput()
+		if err == nil {
+			line := strings.Split(strings.TrimSpace(string(out)), "\n")[0]
+			if len(line) > 60 {
+				line = line[:57] + "..."
+			}
+			return fmt.Sprintf("  ✓ %-14s %s", name, line)
+		}
+	}
+	return fmt.Sprintf("  ✓ %-14s installed", name)
+}
+
+func fetchCLIToolsBanner() string {
+	tools := []string{"kubectl", "helm", "longhornctl", "virtctl", "fleet", "rancher", "kwctl", "etcdctl"}
+	var b strings.Builder
+	b.WriteString("  === CLI Tools ===\r\n")
+	for _, t := range tools {
+		b.WriteString(cliVersionLine(t))
+		b.WriteString("\r\n")
+	}
+	return b.String()
 }
 
 func welcomeLine(label, value string, b *strings.Builder) {
@@ -408,6 +455,9 @@ func fetchWelcome() string {
 	welcomeLine("go", runtime.Version(), &b)
 	welcomeLine("context", ctx, &b)
 	welcomeLine("backup op", backupStatus, &b)
+	b.WriteString("\r\n")
+
+	b.WriteString(fetchCLIToolsBanner())
 	b.WriteString("\r\n")
 
 	if len(clis) > 0 {

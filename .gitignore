@@ -1,6 +1,7 @@
 node_modules/
 dist/
 dist-pkg/
+_site/
 .env
 .shell/
 *.log

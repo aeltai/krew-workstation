@@ -28,6 +28,22 @@ vueConfig.chainWebpack = (webpackConfig) => {
   }
 
   webpackConfig.plugins.delete('eslint');
+
+  // Follow symlinks so pkg/devportal (symlinked from rancher-devportal) is watched
+  webpackConfig.resolve.symlinks(true);
+
+  // Poll for changes — necessary for symlinked directories
+  webpackConfig.plugin('watchman-fix').use(
+    class WatchSymlinksPlugin {
+      apply(compiler) {
+        compiler.options.watchOptions = {
+          ...compiler.options.watchOptions,
+          followSymlinks: true,
+          poll: 500,
+        };
+      }
+    }
+  );
 };
 
 module.exports = vueConfig;
