@@ -344,6 +344,7 @@ function loadCss(href) {
 
 export default {
   name: 'KrewPage',
+  layout: 'plain',
 
   data() {
     return {
@@ -833,13 +834,15 @@ export default {
 .krew-page {
   display: flex;
   flex-direction: column;
-  flex: 1;
-  min-height: 0;
+  box-sizing: border-box;
+  /* Break out of Shell plain layout IndentedPanel (90% width) */
+  width: 111.12%;
+  margin-left: -5.56%;
+  height: calc(100vh - 60px);
   max-width: none;
-  margin: 0;
-  padding: 0;
+  padding: 6px 12px;
   overflow: hidden;
-  background: var(--krew-bg, var(--body-bg));
+  background: var(--krew-bg, #0d0d0d);
 }
 
 .krew-header {

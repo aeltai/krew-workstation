@@ -161,3 +161,89 @@ patchFile('nav/Group.vue', [
         refs.forEach((grp) => {`,
   },
 ], 'getGroupRefs()');
+
+// Vue 3.2 compiler-sfc rejects intersection/imported type aliases in defineProps().
+const rcRoot = path.join(__dirname, '../node_modules/@rancher/shell/rancher-components');
+
+function patchAbsolute(base, relPath, patches, marker) {
+  const target = path.join(base, relPath);
+
+  if (!fs.existsSync(target)) {
+    return;
+  }
+
+  let source = fs.readFileSync(target, 'utf8');
+
+  if (source.includes(marker)) {
+    return;
+  }
+
+  let applied = 0;
+
+  for (const { before, after } of patches) {
+    if (!source.includes(before)) {
+      console.warn(`patch-shell-vue3-refs: pattern missing in ${relPath}`);
+      continue;
+    }
+    source = source.replace(before, after);
+    applied += 1;
+  }
+
+  if (applied > 0) {
+    fs.writeFileSync(target, source);
+    console.log(`patch-shell-vue3-refs: applied ${applied} patch(es) to ${relPath}`);
+  }
+}
+
+patchAbsolute(rcRoot, 'RcButton/RcButton.vue', [
+  {
+    before: 'const props = defineProps<ButtonRoleProps & ButtonSizeProps>();',
+    after: `interface RcButtonComponentProps extends ButtonRoleProps, ButtonSizeProps {}
+
+const props = defineProps<RcButtonComponentProps>();`,
+  },
+], 'RcButtonComponentProps');
+
+patchAbsolute(rcRoot, 'RcDropdown/types.ts', [
+  {
+    before: `export type RcDropdownMenuComponentProps = {
+  options: DropdownOption[];
+  buttonRole?: keyof ButtonRoleProps;
+  buttonSize?: keyof ButtonSizeProps;
+  buttonAriaLabel?: string;
+  dropdownAriaLabel?: string;
+  dataTestid?: string;
+}`,
+    after: `export interface RcDropdownMenuComponentProps {
+  options: DropdownOption[];
+  buttonRole?: keyof ButtonRoleProps;
+  buttonSize?: keyof ButtonSizeProps;
+  buttonAriaLabel?: string;
+  dropdownAriaLabel?: string;
+  dataTestid?: string;
+}`,
+  },
+], 'export interface RcDropdownMenuComponentProps');
+
+patchAbsolute(rcRoot, 'RcDropdown/RcDropdownMenu.vue', [
+  {
+    before: `import { RcDropdownMenuComponentProps, DropdownOption } from './types';
+import IconOrSvg from '@shell/components/IconOrSvg';
+
+withDefaults(defineProps<RcDropdownMenuComponentProps>(), {`,
+    after: `import { DropdownOption } from './types';
+import { ButtonRoleProps, ButtonSizeProps } from '@components/RcButton/types';
+import IconOrSvg from '@shell/components/IconOrSvg';
+
+interface RcDropdownMenuComponentProps {
+  options: DropdownOption[];
+  buttonRole?: keyof ButtonRoleProps;
+  buttonSize?: keyof ButtonSizeProps;
+  buttonAriaLabel?: string;
+  dropdownAriaLabel?: string;
+  dataTestid?: string;
+}
+
+withDefaults(defineProps<RcDropdownMenuComponentProps>(), {`,
+  },
+], 'interface RcDropdownMenuComponentProps {');
