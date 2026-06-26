@@ -1,7 +1,6 @@
-// definition of a "blank cluster" in Rancher Dashboard
 const BLANK_CLUSTER = '_';
 
-export function init($plugin: any, store: any) {
+export function init($plugin, store) {
   const YOUR_PRODUCT_NAME = 'tools';
   const TOOLS_HUB_PAGE = 'hub';
   const KREW_PAGE = 'krew';
@@ -12,7 +11,6 @@ export function init($plugin: any, store: any) {
     virtualType,
   } = $plugin.DSL(store, YOUR_PRODUCT_NAME);
 
-  // Registering a top-level product — goes directly to Krew Workstation
   product({
     icon:  'terminal',
     label: 'Krew Workstation',
@@ -22,12 +20,11 @@ export function init($plugin: any, store: any) {
       name: `${YOUR_PRODUCT_NAME}-c-cluster-${KREW_PAGE}`,
       params: {
         product: YOUR_PRODUCT_NAME,
-        cluster: BLANK_CLUSTER
-      }
-    }
+        cluster: BLANK_CLUSTER,
+      },
+    },
   });
 
-  // Creating custom pages
   virtualType({
     label: 'Krew Workstation',
     name: KREW_PAGE,
@@ -35,12 +32,11 @@ export function init($plugin: any, store: any) {
       name: `${YOUR_PRODUCT_NAME}-c-cluster-${KREW_PAGE}`,
       params: {
         product: YOUR_PRODUCT_NAME,
-        cluster: BLANK_CLUSTER
-      }
+        cluster: BLANK_CLUSTER,
+      },
     },
-    icon: 'terminal'
+    icon: 'terminal',
   });
 
-  // Registering the defined pages as side-menu entries
   basicType([KREW_PAGE]);
-} 
+}
