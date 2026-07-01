@@ -36,7 +36,25 @@ services:
       - rancher
     restart: unless-stopped
 
+  gitea:
+    image: gitea/gitea:1.22-rootless
+    environment:
+      - GITEA__database__DB_TYPE=sqlite3
+      - GITEA__server__DOMAIN=localhost
+      - GITEA__server__ROOT_URL=http://localhost:3001/
+      - GITEA__server__HTTP_PORT=3000
+      - GITEA__server__SSH_PORT=2222
+      - GITEA__service__DISABLE_REGISTRATION=true
+      - GITEA__security__INSTALL_LOCK=true
+    ports:
+      - "3001:3000"
+      - "2222:2222"
+    volumes:
+      - gitea-data:/data
+    restart: unless-stopped
+
 volumes:
   rancher-data:
   krew-data:
   ssh-keys:
+  gitea-data:
