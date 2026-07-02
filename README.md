@@ -4,14 +4,14 @@ A Rancher UI extension that lets you manage kubectl plugins (via [Krew](https://
 
 ## Related extensions
 
-[Developer Portal](https://github.com/aeltai/rancher-devportal) is a **separate repo** but appears in the **same Rancher sidebar** (not a separate website). GitHub Pages only hosts the JS bundle.
+[Geeko-Ops](https://github.com/aeltai/rancher-devportal) is a **separate repo** but appears in the **same Rancher sidebar** — an ops marketplace for self-service environments (not a separate website). GitHub Pages only hosts the JS bundle.
 
 ### Local dev — both extensions in one UI
 
 ```bash
 ./scripts/link-devportal.sh   # symlink ../rancher-devportal/pkg/devportal → pkg/devportal
 docker compose -f ../rancher-devportal/docker-compose.local.yml up -d   # backend :9010
-API=http://localhost:8089 yarn dev   # https://localhost:8005 — Tools → Krew + Platform → Developer Portal
+API=http://localhost:8089 yarn dev   # https://localhost:8005 — Krew + Geeko-Ops in sidebar
 ```
 
 Do **not** run a second dev server on port 8006.

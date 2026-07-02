@@ -20,6 +20,12 @@ const vueConfig = config(__dirname, {
 
 vueConfig.lintOnSave = false;
 
+// SPA fallback — avoid 404 when opening /platform/c/_/portal or /tools/c/_/krew directly
+vueConfig.devServer = {
+  ...(vueConfig.devServer || {}),
+  historyApiFallback: true,
+};
+
 const existingChainWebpack = vueConfig.chainWebpack;
 
 vueConfig.chainWebpack = (webpackConfig) => {

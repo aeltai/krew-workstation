@@ -1,9 +1,9 @@
-# Register Developer Portal UI extension in Rancher (same Dashboard as Krew Workstation).
+# Register Geeko-Ops UI extension in Rancher (same Dashboard as Krew Workstation).
 # GitHub Pages hosts the JS bundle only — the UI appears inside Rancher, not as a separate site.
 apiVersion: catalog.cattle.io/v1
 kind: UIPlugin
 metadata:
-  name: rancher-devportal
+  name: geeko-ops
   namespace: cattle-ui-plugin-system
 spec:
   plugin:
@@ -12,7 +12,7 @@ spec:
     endpoint: "https://aeltai.github.io/rancher-devportal/extensions/devportal/0.1.0/plugin"
     noCache: true
     metadata:
-      catalog.cattle.io/display-name: Developer Portal
+      catalog.cattle.io/display-name: Geeko-Ops
       catalog.cattle.io/kube-version: ">= 1.16.0-0"
       catalog.cattle.io/rancher-version: ">= 2.10.0-0"
       catalog.cattle.io/ui-extensions-version: ">= 3.0.0 < 4.0.0"

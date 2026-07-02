@@ -1,0 +1,17 @@
+# Register Krew Workstation UI extension in Rancher.
+apiVersion: catalog.cattle.io/v1
+kind: UIPlugin
+metadata:
+  name: krew-workstation
+  namespace: cattle-ui-plugin-system
+spec:
+  plugin:
+    name: krew
+    version: "0.1.0"
+    endpoint: "https://aeltai.github.io/krew-workstation/extensions/krew/0.1.0/plugin"
+    noCache: true
+    metadata:
+      catalog.cattle.io/display-name: Krew Workstation
+      catalog.cattle.io/kube-version: ">= 1.16.0-0"
+      catalog.cattle.io/rancher-version: ">= 2.10.0-0"
+      catalog.cattle.io/ui-extensions-version: ">= 3.0.0 < 4.0.0"
