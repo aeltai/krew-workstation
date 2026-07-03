@@ -275,47 +275,42 @@
 </template>
 
 <script>
-const BACKEND_URL = 'http://localhost:9000';
-const WS_URL = BACKEND_URL.replace(/^http/, 'ws');
-
-// Get Rancher token from current session (cookie sent automatically to same origin)
-let _tokenCache = { token: null, expires: 0 };
-async function getRancherToken() {
-  if (_tokenCache.token && Date.now() < _tokenCache.expires) return _tokenCache.token;
-  const base = window.location.origin;
-  // Try Steve API (management cluster may be "local" or have a custom ID)
-  const paths = [
-    '/k8s/clusters/local/apis/ext.cattle.io/v1/tokens',
-    '/v1/tokens.ext.cattle.io',
-  ];
-  let lastErr;
-  for (const apiPath of paths) {
-    try {
-      const resp = await fetch(`${base}${apiPath}`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          apiVersion: 'ext.cattle.io/v1',
-          kind:       'Token',
-          metadata:   { generateName: 'krew-' },
-          spec:       { description: 'Krew Workstation', ttl: 3600000 },
-        }),
-      });
-      if (!resp.ok) {
-        const err = await resp.json().catch(() => ({}));
-        throw new Error(err.message || `Token API ${resp.status}`);
-      }
-      const data = await resp.json();
-      const token = data.status?.bearerToken || data.status?.value || data.token;
-      if (token) _tokenCache = { token, expires: Date.now() + 50 * 60 * 1000 };
-      return token;
-    } catch (e) {
-      lastErr = e;
-    }
+function krewBackendUrl() {
+  if (typeof window === 'undefined') {
+    return 'http://localhost:9000';
   }
-  throw lastErr || new Error('Could not get Rancher token');
+  const { hostname, port, pathname } = window.location;
+  const isLocalHost = hostname === 'localhost' || hostname === '127.0.0.1';
+  if (isLocalHost && port === '8005') {
+    return '/krew-api';
+  }
+  const inRancher = pathname.includes('/dashboard/');
+  if (inRancher) {
+    // Local k3d/dev: backend runs in docker-compose on the host (not yet in-cluster on ARM k3d).
+    if (hostname === 'rancher.test' || hostname === 'localhost' || hostname === '127.0.0.1') {
+      return 'http://localhost:9000';
+    }
+    const clusterMatch = pathname.match(/\/dashboard\/c\/([^/]+)\//);
+    let clusterId = clusterMatch ? clusterMatch[1] : 'local';
+    if (clusterId === '_') clusterId = 'local';
+    return `/k8s/clusters/${clusterId}/api/v1/namespaces/krew-workstation/services/http:krew-workstation:3000/proxy`;
+  }
+  if (isLocalHost) {
+    return 'http://localhost:9000';
+  }
+  return 'http://localhost:9000';
 }
+
+function wsUrlFrom(httpBase) {
+  if (httpBase.startsWith('/')) {
+    const proto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    return `${proto}//${window.location.host}${httpBase}`;
+  }
+  return httpBase.replace(/^http/, 'ws');
+}
+
+// Cached Rancher API token minted from the logged-in session.
+let _tokenCache = { token: null, expires: 0 };
 
 const XTERM_CDN = 'https://cdn.jsdelivr.net/npm';
 const XTERM_VER = '5.3.0';
@@ -497,6 +492,44 @@ export default {
   },
 
   methods: {
+    async getRancherToken() {
+      if (_tokenCache.token && Date.now() < _tokenCache.expires) return _tokenCache.token;
+
+      const body = { type: 'token', description: 'Krew Workstation', ttl: 3600000 };
+      let data;
+
+      // Prefer Shell store request — same path as Rancher UI, includes CSRF handling.
+      if (this.$store) {
+        data = await this.$store.dispatch('rancher/request', {
+          url:    '/v3/token',
+          method: 'post',
+          data:   body,
+        }, { root: true });
+      } else if (this.$axios) {
+        ({ data } = await this.$axios.post('/v3/token', body));
+      } else {
+        const headers = { 'Content-Type': 'application/json', Accept: 'application/json' };
+        const csrf = this.$cookies?.get?.('CSRF', { parseJSON: false })
+          || (typeof document !== 'undefined' && document.cookie.match(/(?:^|;\s*)CSRF=([^;]+)/)?.[1]);
+        if (csrf) headers['x-api-csrf'] = decodeURIComponent(csrf);
+        const resp = await fetch(`${window.location.origin}/v3/token`, {
+          method:      'POST',
+          credentials: 'include',
+          headers,
+          body:        JSON.stringify(body),
+        });
+        if (!resp.ok) {
+          const err = await resp.json().catch(() => ({}));
+          throw new Error(err.message || `Token request failed (${resp.status})`);
+        }
+        data = await resp.json();
+      }
+
+      const token = data?.token;
+      if (!token) throw new Error('Could not get Rancher token');
+      _tokenCache = { token, expires: Date.now() + 50 * 60 * 1000 };
+      return token;
+    },
     toggleTheme() {
       this.darkMode = !this.darkMode;
       this.$nextTick(() => this.applyTerminalTheme());
@@ -512,12 +545,21 @@ export default {
       }
     },
     async api(method, path, opts = {}) {
+      const backend = krewBackendUrl();
+      const viaK8sProxy = backend.includes('/services/http:krew-workstation');
+      let url = `${backend}${path}`;
       const headers = { ...opts.headers };
       try {
-        const token = await getRancherToken();
-        if (token) headers['Authorization'] = `Bearer ${token}`;
+        const token = await this.getRancherToken();
+        if (token) {
+          headers['Authorization'] = `Bearer ${token}`;
+          if (viaK8sProxy) {
+            const sep = path.includes('?') ? '&' : '?';
+            url = `${url}${sep}token=${encodeURIComponent(token)}`;
+          }
+        }
       } catch (_) {}
-      const resp = await fetch(`${BACKEND_URL}${path}`, {
+      const resp = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json', ...headers },
         ...opts,
@@ -606,7 +648,7 @@ export default {
         const data = await this.api('GET', '/api/plugins');
         this.plugins = data.plugins || [];
       } catch (e) {
-        this.error = `Backend unreachable at ${BACKEND_URL} — ${e.message}`;
+        this.error = `Backend unreachable at ${krewBackendUrl()} — ${e.message}`;
       } finally {
         this.loading = false;
       }
@@ -768,9 +810,10 @@ export default {
 
     connectShell() {
       if (this.ws && this.ws.readyState === WebSocket.OPEN) return;
-      getRancherToken().then((token) => {
+      const wsBase = wsUrlFrom(krewBackendUrl());
+      this.getRancherToken().then((token) => {
         const qs = token ? `?token=${encodeURIComponent(token)}` : '';
-        const ws = new WebSocket(`${WS_URL}/api/ws/shell${qs}`);
+        const ws = new WebSocket(`${wsBase}/api/ws/shell${qs}`);
         this.ws = ws;
         this.bindShell(ws);
       }).catch((e) => {
@@ -795,7 +838,7 @@ export default {
         this.term?.writeln('\r\nDisconnected.');
       };
       ws.onerror = () => {
-        this.term?.writeln('\r\nWebSocket error. Is the backend running on ' + BACKEND_URL + '?');
+        this.term?.writeln('\r\nWebSocket error. Is the backend running at ' + krewBackendUrl() + '?');
       };
       ws.onmessage = (ev) => {
         if (ev.data instanceof ArrayBuffer && this.term) {

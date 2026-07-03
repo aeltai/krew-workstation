@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"net"
 	"net/http"
 	"net/url"
 	"os"
@@ -283,7 +284,17 @@ func mergeKubeconfigs(configs []string) ([]byte, error) {
 	}
 
 	rewriteKubeconfigServerURLs(&merged)
+	preferManagementContext(&merged)
 	return yaml.Marshal(merged)
+}
+
+func preferManagementContext(cfg *kubeConfig) {
+	for _, c := range cfg.Contexts {
+		if c.Name == "local" {
+			cfg.CurrentContext = "local"
+			return
+		}
+	}
 }
 
 // rewriteKubeconfigServerURLs replaces 127.0.0.1/localhost in cluster server URLs
@@ -302,6 +313,13 @@ func rewriteKubeconfigServerURLs(cfg *kubeConfig) {
 	} else if rancherU.Port() == "" && rancherU.Scheme == "http" {
 		rancherHost = rancherU.Hostname() + ":80"
 	}
+	publicHost := strings.TrimSpace(os.Getenv("RANCHER_PUBLIC_HOST"))
+	publicHostname := publicHost
+	if publicHostname != "" {
+		if h, _, err := net.SplitHostPort(publicHostname); err == nil {
+			publicHostname = h
+		}
+	}
 	for i := range cfg.Clusters {
 		cluster := cfg.Clusters[i].Cluster
 		server, _ := cluster["server"].(string)
@@ -313,12 +331,18 @@ func rewriteKubeconfigServerURLs(cfg *kubeConfig) {
 			continue
 		}
 		host := su.Hostname()
-		if host == "127.0.0.1" || host == "localhost" || host == "::1" {
+		needsRewrite := host == "127.0.0.1" || host == "localhost" || host == "::1" ||
+			host == publicHostname || host == "rancher.test" ||
+			strings.Contains(su.Path, "/k8s/clusters/")
+		if needsRewrite {
 			su.Scheme = rancherU.Scheme
 			su.Host = rancherHost
 			cluster["server"] = su.String()
 		}
-		// Rancher cert is for localhost/rancher.cattle-system, not "rancher" — skip TLS verify for all
+		// Rancher cert is for localhost/rancher.cattle-system, not "rancher" — skip TLS verify for all.
+		// kubectl rejects CA data together with insecure-skip-tls-verify.
+		delete(cluster, "certificate-authority")
+		delete(cluster, "certificate-authority-data")
 		cluster["insecure-skip-tls-verify"] = true
 	}
 }

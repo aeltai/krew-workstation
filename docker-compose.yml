@@ -22,8 +22,11 @@ services:
     ports:
       - "9000:3000"
     hostname: deathstar
+    extra_hosts:
+      - "rancher.test:host-gateway"
     environment:
-      - RANCHER_URL=https://rancher:443
+      - RANCHER_URL=https://rancher.test:19443
+      - RANCHER_PUBLIC_HOST=rancher.test:19443
       - RANCHER_TOKEN=${RANCHER_TOKEN:-}
       - WORKSTATION_USER=stormtrooper
       - WORKSTATION_HOST=deathstar
@@ -32,8 +35,6 @@ services:
       - krew-data:/root/.krew
       - ssh-keys:/root/.ssh
       - ./.local-plugins:/opt/local-plugins:ro
-    depends_on:
-      - rancher
     restart: unless-stopped
 
   gitea:

@@ -1,82 +1,51 @@
 FROM golang:1.26-alpine AS builder
+ARG TARGETARCH
 WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download
 COPY *.go ./
-RUN CGO_ENABLED=0 GOOS=linux go build -o krew-manager .
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=${TARGETARCH} go build -o krew-manager .
 
 FROM alpine:latest
-RUN apk add --no-cache curl git bash bash-completion runc openssh-client make
+ARG TARGETARCH
+RUN apk add --no-cache curl git bash bash-completion runc openssh-client make unzip
 
-# Zellij (terminal multiplexer)
-RUN apk add --no-cache --repository https://dl-cdn.alpinelinux.org/alpine/edge/community zellij || \
+# Map Docker TARGETARCH to upstream release naming
+RUN case "${TARGETARCH}" in \
+      amd64) export ARCH=amd64 K8S_ARCH=amd64 ZJ_ARCH=x86_64 KWCTL=kwctl-linux-x86_64 K9S=k9s_Linux_amd64 ;; \
+      arm64) export ARCH=arm64 K8S_ARCH=arm64 ZJ_ARCH=aarch64 KWCTL=kwctl-linux-aarch64 K9S=k9s_Linux_arm64 ;; \
+      *) echo "unsupported TARGETARCH=${TARGETARCH}"; exit 1 ;; \
+    esac && \
+    apk add --no-cache --repository https://dl-cdn.alpinelinux.org/alpine/edge/community zellij || \
     (cd /tmp && ZJ_VER=$(curl -sL https://api.github.com/repos/zellij-org/zellij/releases/latest | grep tag_name | cut -d'"' -f4) && \
-     curl -fsSL "https://github.com/zellij-org/zellij/releases/download/${ZJ_VER}/zellij-${ZJ_VER}-x86_64-unknown-linux-musl.tar.gz" | tar xz && \
-     mv zellij /usr/local/bin/ && chmod +x /usr/local/bin/zellij)
-
-# crictl (container runtime CLI)
-RUN cd /tmp && \
+     curl -fsSL "https://github.com/zellij-org/zellij/releases/download/${ZJ_VER}/zellij-${ZJ_VER}-${ZJ_ARCH}-unknown-linux-musl.tar.gz" | tar xz && \
+     mv zellij /usr/local/bin/ && chmod +x /usr/local/bin/zellij) && \
+    cd /tmp && \
     CRICTL_VER=$(curl -sL https://api.github.com/repos/kubernetes-sigs/cri-tools/releases/latest | grep tag_name | cut -d'"' -f4) && \
-    curl -fsSL "https://github.com/kubernetes-sigs/cri-tools/releases/download/${CRICTL_VER}/crictl-${CRICTL_VER}-linux-amd64.tar.gz" | tar xz -C /usr/local/bin && \
-    rm -rf /tmp/* 2>/dev/null || true
-
-# etcdctl
-RUN cd /tmp && \
+    curl -fsSL "https://github.com/kubernetes-sigs/cri-tools/releases/download/${CRICTL_VER}/crictl-${CRICTL_VER}-linux-${ARCH}.tar.gz" | tar xz -C /usr/local/bin && \
     ETCD_VER=$(curl -sL https://api.github.com/repos/etcd-io/etcd/releases/latest | grep tag_name | cut -d'"' -f4) && \
-    curl -fsSL "https://github.com/etcd-io/etcd/releases/download/${ETCD_VER}/etcd-${ETCD_VER}-linux-amd64.tar.gz" | tar xz && \
-    mv etcd-${ETCD_VER}-linux-amd64/etcdctl /usr/local/bin/ && chmod +x /usr/local/bin/etcdctl && \
-    rm -rf /tmp/etcd-* 2>/dev/null || true
-
-# Install kubectl
-RUN curl -LO "https://dl.k8s.io/release/$(curl -sL https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" \
-    && chmod +x kubectl && mv kubectl /usr/local/bin/
-
-# Helm
-RUN cd /tmp && \
+    curl -fsSL "https://github.com/etcd-io/etcd/releases/download/${ETCD_VER}/etcd-${ETCD_VER}-linux-${ARCH}.tar.gz" | tar xz && \
+    mv etcd-${ETCD_VER}-linux-${ARCH}/etcdctl /usr/local/bin/ && chmod +x /usr/local/bin/etcdctl && \
+    curl -fsSL "https://dl.k8s.io/release/$(curl -sL https://dl.k8s.io/release/stable.txt)/bin/linux/${K8S_ARCH}/kubectl" -o /usr/local/bin/kubectl && chmod +x /usr/local/bin/kubectl && \
     HELM_VER=$(curl -sL https://api.github.com/repos/helm/helm/releases/latest | grep '"tag_name"' | head -1 | cut -d'"' -f4) && \
-    curl -fsSL "https://get.helm.sh/helm-${HELM_VER}-linux-amd64.tar.gz" | tar xz && \
-    mv linux-amd64/helm /usr/local/bin/ && chmod +x /usr/local/bin/helm && \
-    rm -rf /tmp/linux-amd64
-
-# Rancher CLI
-RUN cd /tmp && \
+    curl -fsSL "https://get.helm.sh/helm-${HELM_VER}-linux-${ARCH}.tar.gz" | tar xz && \
+    mv linux-${ARCH}/helm /usr/local/bin/ && chmod +x /usr/local/bin/helm && \
     RANCHER_VER=$(curl -sL https://api.github.com/repos/rancher/cli/releases/latest | grep '"tag_name"' | head -1 | cut -d'"' -f4) && \
-    curl -fsSL "https://github.com/rancher/cli/releases/download/${RANCHER_VER}/rancher-linux-amd64-${RANCHER_VER}.tar.gz" | tar xz && \
+    curl -fsSL "https://github.com/rancher/cli/releases/download/${RANCHER_VER}/rancher-linux-${ARCH}-${RANCHER_VER}.tar.gz" | tar xz && \
     mv rancher-${RANCHER_VER}/rancher /usr/local/bin/rancher && chmod +x /usr/local/bin/rancher && \
-    rm -rf /tmp/rancher-* 2>/dev/null || true
-
-# Fleet CLI (single binary, not tarball)
-RUN cd /tmp && \
     FLEET_VER=$(curl -sL https://api.github.com/repos/rancher/fleet/releases/latest | grep '"tag_name"' | head -1 | cut -d'"' -f4) && \
-    curl -fsSL "https://github.com/rancher/fleet/releases/download/${FLEET_VER}/fleet-linux-amd64" \
-      -o /usr/local/bin/fleet && chmod +x /usr/local/bin/fleet
-
-# kwctl (Kubewarden) — shipped as zip
-RUN apk add --no-cache unzip && cd /tmp && \
+    curl -fsSL "https://github.com/rancher/fleet/releases/download/${FLEET_VER}/fleet-linux-${ARCH}" -o /usr/local/bin/fleet && chmod +x /usr/local/bin/fleet && \
     KWCTL_VER=$(curl -sL https://api.github.com/repos/kubewarden/kwctl/releases/latest | grep '"tag_name"' | head -1 | cut -d'"' -f4) && \
-    curl -fsSL "https://github.com/kubewarden/kwctl/releases/download/${KWCTL_VER}/kwctl-linux-x86_64.zip" -o kwctl.zip && \
-    unzip -j kwctl.zip kwctl-linux-x86_64 -d /usr/local/bin/ && \
-    mv /usr/local/bin/kwctl-linux-x86_64 /usr/local/bin/kwctl && chmod +x /usr/local/bin/kwctl && \
-    rm -f kwctl.zip
-
-# virtctl (KubeVirt)
-RUN cd /tmp && \
+    curl -fsSL "https://github.com/kubewarden/kwctl/releases/download/${KWCTL_VER}/${KWCTL}.zip" -o kwctl.zip && \
+    unzip -j kwctl.zip "${KWCTL}" -d /usr/local/bin/ && mv /usr/local/bin/${KWCTL} /usr/local/bin/kwctl && chmod +x /usr/local/bin/kwctl && \
     VIRT_VER=$(curl -sL https://api.github.com/repos/kubevirt/kubevirt/releases/latest | grep '"tag_name"' | head -1 | cut -d'"' -f4) && \
-    curl -fsSL "https://github.com/kubevirt/kubevirt/releases/download/${VIRT_VER}/virtctl-${VIRT_VER}-linux-amd64" \
-      -o /usr/local/bin/virtctl && chmod +x /usr/local/bin/virtctl
-
-# longhornctl
-RUN cd /tmp && \
+    curl -fsSL "https://github.com/kubevirt/kubevirt/releases/download/${VIRT_VER}/virtctl-${VIRT_VER}-linux-${ARCH}" -o /usr/local/bin/virtctl && chmod +x /usr/local/bin/virtctl && \
     LH_VER=$(curl -sL https://api.github.com/repos/longhorn/cli/releases/latest | grep '"tag_name"' | head -1 | cut -d'"' -f4) && \
-    curl -fsSL "https://github.com/longhorn/cli/releases/download/${LH_VER}/longhornctl-linux-amd64" \
-      -o /usr/local/bin/longhornctl && chmod +x /usr/local/bin/longhornctl
-
-# Install k9s (standalone binary — more reliable than krew in restricted networks)
-RUN cd /tmp && \
+    curl -fsSL "https://github.com/longhorn/cli/releases/download/${LH_VER}/longhornctl-linux-${ARCH}" -o /usr/local/bin/longhornctl && chmod +x /usr/local/bin/longhornctl && \
     K9S_VER=$(curl -sL https://api.github.com/repos/derailed/k9s/releases/latest | grep tag_name | cut -d'"' -f4) && \
-    curl -fsSL "https://github.com/derailed/k9s/releases/download/${K9S_VER}/k9s_Linux_amd64.tar.gz" | tar xz && \
+    curl -fsSL "https://github.com/derailed/k9s/releases/download/${K9S_VER}/${K9S}.tar.gz" | tar xz && \
     mv k9s /usr/local/bin/ && chmod +x /usr/local/bin/k9s && \
-    rm -rf /tmp/* 2>/dev/null || true
+    rm -rf /tmp/*
 
 # Install krew
 RUN set -x && \

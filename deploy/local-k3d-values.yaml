@@ -1,0 +1,14 @@
+# Krew Workstation on k3d Rancher management cluster.
+replicaCount: 1
+
+uiPlugin:
+  enabled: false
+
+rancher:
+  url: "https://rancher.cattle-system.svc:443"
+  publicHost: "rancher.test:19443"
+  token: ""
+
+persistence:
+  enabled: true
+  size: 1Gi
