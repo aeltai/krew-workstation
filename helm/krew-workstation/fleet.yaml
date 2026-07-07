@@ -7,14 +7,10 @@ helm:
     imagePullSecrets:
       - name: ghcr-pull
     podSecurityContext:
-      runAsNonRoot: true
-      runAsUser: 65532
-      fsGroup: 65532
-      seccompProfile:
-        type: RuntimeDefault
+      runAsNonRoot: false
     securityContext:
-      runAsUser: 65532
-      runAsNonRoot: true
+      runAsUser: 0
+      runAsNonRoot: false
       allowPrivilegeEscalation: false
     image:
       repository: ghcr.io/aeltai/krew-workstation
