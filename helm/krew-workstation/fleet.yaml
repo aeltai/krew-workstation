@@ -1,0 +1,23 @@
+defaultNamespace: krew-system
+helm:
+  releaseName: krew-workstation
+  takeOwnership: true
+  values:
+    imagePullSecrets:
+      - name: ghcr-pull
+    image:
+      repository: ghcr.io/aeltai/krew-workstation
+      tag: latest
+    rancher:
+      url: https://rancher.cattle-system.svc
+      existingSecret:
+        name: krew-workstation-rancher
+        tokenKey: token
+        publicHostKey: publicHost
+    uiPlugin:
+      enabled: true
+      endpoint: https://aeltai.github.io/krew-workstation/extensions/krew/0.1.0/plugin
+    persistence:
+      enabled: true
+      storageClass: local-path
+      size: 1Gi
