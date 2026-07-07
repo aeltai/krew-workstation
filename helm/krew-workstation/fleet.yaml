@@ -2,9 +2,20 @@ defaultNamespace: krew-system
 helm:
   releaseName: krew-workstation
   takeOwnership: true
+  createNamespace: false
   values:
     imagePullSecrets:
       - name: ghcr-pull
+    podSecurityContext:
+      runAsNonRoot: true
+      runAsUser: 65532
+      fsGroup: 65532
+      seccompProfile:
+        type: RuntimeDefault
+    securityContext:
+      runAsUser: 65532
+      runAsNonRoot: true
+      allowPrivilegeEscalation: false
     image:
       repository: ghcr.io/aeltai/krew-workstation
       tag: latest
@@ -18,6 +29,4 @@ helm:
       enabled: true
       endpoint: https://aeltai.github.io/krew-workstation/extensions/krew/0.1.0/plugin
     persistence:
-      enabled: true
-      storageClass: local-path
-      size: 1Gi
+      enabled: false
