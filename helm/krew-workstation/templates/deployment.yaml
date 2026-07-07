@@ -71,11 +71,18 @@ spec:
               value: /opt/krew-workstation
             - name: PORT
               value: "3000"
-          {{- if .Values.persistence.enabled }}
           volumeMounts:
+            {{- if .Values.persistence.enabled }}
             - name: krew-data
               mountPath: /opt/krew
-          {{- end }}
+            {{- else }}
+            - name: krew-data
+              mountPath: /opt/krew
+            - name: krew-home
+              mountPath: /opt/krew-workstation
+            - name: tmp
+              mountPath: /tmp
+            {{- end }}
           livenessProbe:
             httpGet:
               path: /health
@@ -90,12 +97,19 @@ spec:
             periodSeconds: 5
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-      {{- if .Values.persistence.enabled }}
       volumes:
+        {{- if .Values.persistence.enabled }}
         - name: krew-data
           persistentVolumeClaim:
             claimName: {{ include "krew-workstation.fullname" . }}-krew
-      {{- end }}
+        {{- else }}
+        - name: krew-data
+          emptyDir: {}
+        - name: krew-home
+          emptyDir: {}
+        - name: tmp
+          emptyDir: {}
+        {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
